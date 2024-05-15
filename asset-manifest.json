@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/GoodMenu_CBNUOS/static/css/main.c8412874.css",
+    "main.js": "/GoodMenu_CBNUOS/static/js/main.9ef20b3e.js",
+    "static/js/453.7fd061e3.chunk.js": "/GoodMenu_CBNUOS/static/js/453.7fd061e3.chunk.js",
+    "index.html": "/GoodMenu_CBNUOS/index.html",
+    "main.c8412874.css.map": "/GoodMenu_CBNUOS/static/css/main.c8412874.css.map",
+    "main.9ef20b3e.js.map": "/GoodMenu_CBNUOS/static/js/main.9ef20b3e.js.map",
+    "453.7fd061e3.chunk.js.map": "/GoodMenu_CBNUOS/static/js/453.7fd061e3.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c8412874.css",
+    "static/js/main.9ef20b3e.js"
+  ]
+}
