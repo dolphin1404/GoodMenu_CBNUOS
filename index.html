@@ -135,25 +135,42 @@
         anchor: new naver.maps.Point(25, 52) // 마커의 앵커 지점 (이미지의 아래 중앙)
     };
 
-    var marker1 = new naver.maps.Marker({
-        position: new naver.maps.LatLng(36.624303, 127.449607),
-        map: map,
-        title: '명장국밥 개신점',
-        icon: markerImage // 커스텀 마커 이미지 적용
-    });
+    var markers = [
+        new naver.maps.Marker({
+            position: new naver.maps.LatLng(36.624303, 127.449607),
+            map: map,
+            title: '명장국밥 개신점',
+            icon: markerImage // 커스텀 마커 이미지 적용
+        }),
+        new naver.maps.Marker({
+            position: new naver.maps.LatLng(36.626117, 127.452091),
+            map: map,
+            title: '보통의 국수집',
+            icon: markerImage // 동일한 커스텀 마커 이미지 적용
+        }),
+        new naver.maps.Marker({
+            position: new naver.maps.LatLng(36.625669, 127.463756),
+            map: map,
+            title: '구룡산 한식',
+            icon: markerImage // 동일한 커스텀 마커 이미지 적용
+        })
+    ];
 
-    var marker2 = new naver.maps.Marker({
-        position: new naver.maps.LatLng(36.626117, 127.452091),
-        map: map,
-        title: '보통의 국수집',
-        icon: markerImage // 동일한 커스텀 마커 이미지 적용
-    });
-    
-    var marker3 = new naver.maps.Marker({
-        position: new naver.maps.LatLng(36.625669, 127.463756),
-        map: map,
-        title: '구룡산 한식',
-        icon: markerImage // 동일한 커스텀 마커 이미지 적용
+    document.getElementById('searchBtn').addEventListener('click', function() {
+        var searchInput = document.getElementById('searchInput').value.trim();
+        var found = false;
+
+        markers.forEach(marker => {
+            if (marker.getTitle().includes(searchInput)) {
+                map.setCenter(marker.getPosition());
+                map.setZoom(21);
+                found = true;
+            }
+        });
+
+        if (!found) {
+            alert('해당 핀을 찾을 수 없습니다.');
+        }
     });
 </script>
 </body>
