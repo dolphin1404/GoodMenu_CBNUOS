@@ -71,12 +71,46 @@
             bottom: -200px;
             left: 33.333%;
             z-index: 998;
+            display: none; /* Initially hidden */
         }
 
         #container3 {
             bottom: -200px;
             left: 66.666%;
             z-index: 997;
+        }
+
+        .popup {
+            display: none; /* Initially hidden */
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5); /* Semi-transparent background */
+            top: 0;
+            left: 0;
+            z-index: 2000; /* Above other content */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 80%; /* Width adjusted to 80% of the viewport width */
+            max-width: 600px; /* Maximum width */
+            text-align: left; /* Align text to the left */
+        }
+
+        .close-btn {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            float: right; /* Align close button to the right */
         }
     </style>
 </head>
@@ -88,8 +122,8 @@
     <button id="toggleBtn">Toggle</button>
     <div id="container1" class="container-column">
         <ul>
-            <li><a href="https://map.naver.com/p/search/%EB%AA%85%EC%9E%A5%EA%B5%AD%EB%B0%A5/place/1973507892?placePath=?entry=pll&from=nx&fromNxList=true&searchType=place&c=15.00,0,0,0,dh">명장국밥</a></li>
-            <li><a href="#container2">항목 2</a></li>
+            <li><a href="#" id="link1">명장국밥</a></li>
+            <li><a href="#" id ="link2">보통의 국수집</a></li>
             <li><a href="#container2">항목 3</a></li>
             <li><a href="#container2">항목 4</a></li>
             <li><a href="#container2">항목 5</a></li>
@@ -101,11 +135,17 @@
         </ul>
     </div>
     <div id="container2" class="container-column">
-        <p>This is the second sliding container.</p>
+        <p id="container2Content">This is the second sliding container.</p>
     </div>
     <div id="container3" class="container-column">
         <p>This is the third sliding container.</p>
     </div>    
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <button class="close-btn" onclick="closePopup()">Close</button>
+            <div id="popupContent">Popup Content</div>
+        </div>
+    </div>
 <script>
     var mapOptions = {
         center: new naver.maps.LatLng(36.624325, 127.449550),
@@ -116,6 +156,8 @@
 
     const toggleBtn = document.getElementById('toggleBtn');
     const containers = [document.getElementById('container1'), document.getElementById('container2'), document.getElementById('container3')];
+    const popup = document.getElementById('popup');
+    const popupContent = document.getElementById('popupContent');
 
     toggleBtn.addEventListener('click', function() {
         containers.forEach(container => {
@@ -144,6 +186,33 @@
         title: '명장국밥 개신점',
         icon: markerImage // 커스텀 마커 이미지 적용
     });
+
+    document.getElementById('link1').addEventListener('click', function(event) {
+        event.preventDefault(); // 링크의 기본 동작을 막음
+        popupContent.innerHTML = `
+            <h2>명장국밥 개신점</h2>
+            <p>여기는 명장국밥 개신점입니다.</p>
+            <p>주소: 충북 청주시 서원구 개신동</p>
+            <p>전화번호: 043-123-4567</p>
+            <p><a href="https://map.naver.com/p/search/%EB%AA%85%EC%9E%A5%EA%B5%AD%EB%B0%A5/place/1973507892?c=15.00,0,0,0,dh&placePath=/home" target="_blank">식당정보</a></p>
+        `;
+        popup.style.display = 'flex'; // Show the popup
+    });
+    document.getElementById('link2').addEventListener('click', function(event) {
+        event.preventDefault(); // 링크의 기본 동작을 막음
+        popupContent.innerHTML = `
+            <h2>보통의 국수집</h2>
+            <p>충북대 칼국수 맛집입니다.</p>
+            <p>영업시간 잘 확인하십시오.</p>
+            <p>주소: 충청북도 청주시 서원구 성봉로242번길 43</p>
+            <p>전화번호: 043-902-2760</p>
+            <p><a href="https://map.naver.com/p/entry/place/1544653142?lng=127.4520901&lat=36.6261336&placePath=%2Fhome&entry=plt&searchType=place&c=15.00,0,0,0,dh">식당정보</a></p>
+        `;
+        popup.style.display = 'flex'; // Show the popup
+    });
+    function closePopup() {
+        popup.style.display = 'none'; // Hide the popup
+    }
 </script>
 </body>
 </html>
