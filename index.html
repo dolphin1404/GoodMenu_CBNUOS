@@ -11,6 +11,7 @@
             position: relative;
             width: 100%;
             height: 100vh; /* 전체 화면 높이로 설정 */
+            overflow: hidden; /* Keep overflow hidden to prevent containers from extending beyond viewport */
         }
 
         #searchBox {
@@ -57,6 +58,7 @@
             left: 0;
             transition: bottom 0.5s ease, transform 0.5s ease;
             text-align: center;
+            overflow: hidden; /* Hide containers by default */
         }
 
         #container1 {
@@ -153,6 +155,12 @@
             map: map,
             title: '구룡산 한식',
             icon: markerImage // 동일한 커스텀 마커 이미지 적용
+        }),
+        new naver.maps.Marker({
+            position: new naver.maps.LatLng(36.624039, 127.450508),
+            map: map,
+            title: '현고 들깨칼국수',
+            icon: markerImage // 동일한 커스텀 마커 이미지 적용
         })
     ];
 
@@ -163,7 +171,7 @@
         markers.forEach(marker => {
             if (marker.getTitle().includes(searchInput)) {
                 map.setCenter(marker.getPosition());
-                map.setZoom(21);
+                map.setZoom(25);
                 found = true;
             }
         });
@@ -172,6 +180,7 @@
             alert('해당 핀을 찾을 수 없습니다.');
         }
     });
+
 </script>
 </body>
 </html>
