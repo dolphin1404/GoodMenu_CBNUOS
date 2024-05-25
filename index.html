@@ -98,7 +98,7 @@
 
 <script>
     var mapOptions = {
-        center: new naver.maps.LatLng(36.624325, 127.449550),
+        center: new naver.maps.LatLng(36.625316, 127.450883), // 두 마커의 중간점으로 초기 중심 설정
         zoom: 15
     };
 
@@ -135,11 +135,18 @@
         anchor: new naver.maps.Point(25, 52) // 마커의 앵커 지점 (이미지의 아래 중앙)
     };
 
-    var marker = new naver.maps.Marker({
-        position: new naver.maps.LatLng(36.624325, 127.449550),
+    var marker1 = new naver.maps.Marker({
+        position: new naver.maps.LatLng(36.624303, 127.449607),
         map: map,
         title: '명장국밥 개신점',
         icon: markerImage // 커스텀 마커 이미지 적용
+    });
+
+    var marker2 = new naver.maps.Marker({
+        position: new naver.maps.LatLng(36.626117, 127.452091),
+        map: map,
+        title: '보통의 국수집',
+        icon: markerImage // 동일한 커스텀 마커 이미지 적용
     });
 </script>
 </body>
