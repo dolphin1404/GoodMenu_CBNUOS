@@ -122,16 +122,10 @@
     <button id="toggleBtn">Toggle</button>
     <div id="container1" class="container-column">
         <ul>
-            <li><a href="#" id="link1">명장국밥</a></li>
-            <li><a href="#" id ="link2">보통의 국수집</a></li>
-            <li><a href="#container2">항목 3</a></li>
-            <li><a href="#container2">항목 4</a></li>
-            <li><a href="#container2">항목 5</a></li>
-            <li><a href="#container2">항목 6</a></li>
-            <li><a href="#container2">항목 7</a></li>
-            <li><a href="#container2">항목 8</a></li>
-            <li><a href="#container2">항목 9</a></li>
-            <li><a href="#container2">항목 10</a></li>
+            <li><a href="#" >한식</a></li>
+            <li><a href="#" >중식</a></li>
+            <li><a href="#" id="link3">양식</a></li>
+            <li><a href="#" id="link4">국수</a></li>
         </ul>
     </div>
     <div id="container2" class="container-column">
@@ -146,6 +140,53 @@
             <div id="popupContent">Popup Content</div>
         </div>
     </div>
+    <script>
+        // 클릭 이벤트를 감지하여 container3의 내용을 변경하는 함수
+        function changeContainerContent(content) {
+            // container3의 내용을 변경합니다.
+            var container3 = document.getElementById('container3');
+            container3.innerHTML = content;
+        }
+
+        // container1의 링크 클릭 이벤트를 처리하는 함수
+        function handleLinkClick(event) {
+            event.preventDefault(); // 링크의 기본 동작을 막습니다.
+            
+            // 클릭된 링크의 텍스트를 가져옵니다.
+            var selectedFood = event.target.innerText;
+
+            // container3의 내용을 선택된 음식에 따라 변경합니다.
+            switch (selectedFood) {
+                case '한식':
+                    changeContainerContent(`
+                        <ul>
+                            <li><a href="#" id="link1">명장국밥</a></li>
+                            <li><a href="#">항목 3</a></li>
+                            <li><a href="#">항목 4</a></li>
+                            <li><a href="#">항목 5</a></li>
+                        </ul>
+                    `);
+                    break;
+                case '국수':
+                    changeContainerContent(`
+                        <ul>
+                            <li><a href="#" id="link2">보통의 국수집</a></li>
+                            <li><a href="#">항목 3</a></li>
+                            <li><a href="#">항목 4</a></li>
+                            <li><a href="#">항목 5</a></li>
+                        </ul>
+                    `);
+                    break;
+                // 다른 음식 분류에 따라서도 case를 추가할 수 있습니다.
+            }
+        }
+        // container1의 링크에 클릭 이벤트 리스너를 추가합니다.
+        var links = document.querySelectorAll('#container1 a');
+        links.forEach(function(link) {
+            link.addEventListener('click', handleLinkClick);
+        });
+    </script>
+
 <script>
     var mapOptions = {
         center: new naver.maps.LatLng(36.624325, 127.449550),
@@ -216,3 +257,4 @@
 </script>
 </body>
 </html>
+
