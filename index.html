@@ -1,103 +1,174 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+    />
     <title>네이버 지도와 검색창</title>
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=93gqruosnz"></script>
+    <script
+      src="https://kit.fontawesome.com/b7507b22be.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="./bootstrap4/css/bootstrap.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script
+      type="text/javascript"
+      src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=93gqruosnz"
+    ></script>
+
     <style>
-        #mapContainer {
-            position: relative;
-            width: 100%;
-            height: 100vh; /* 전체 화면 높이로 설정 */
-            overflow: hidden; /* Keep overflow hidden to prevent containers from extending beyond viewport */
-        }
+      body {
+        display: flex;
+        margin: 0;
+      }
+      #sidebar {
+        width: 4.5rem;
+        height: 100vh;
+        background-color: #f8f9fa;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
 
-        #searchBox {
-            position: absolute;
-            top: 10px; /* 맵 상단에서 10px 아래에 위치 */
-            left: 50%; /* 가운데 정렬을 위해 왼쪽 여백 50% */
-            transform: translateX(-50%); /* 가운데 정렬 */
-            z-index: 1000; /* 검색창이 맵 위에 나타나도록 설정 */
-            background-color: white;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);     
-        }
+      #mapContainer {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
 
-        #map {
-            width: 100%;
-            height: calc(100vh - 40px); /* 검색창 높이를 고려하여 맵의 높이 조정 */
-        }
+      #searchBox {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        background-color: white;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      #map {
+        width: 100%;
+        height: calc(100vh - 40px);
+      }
+
+      #toggleBtn {
+        width: 50px;
+        height: 50px;
+        background-color: lightgreen;
+        border: none;
+        border-radius: 50%;
+        font-size: 30px;
+        line-height: 40px;
+        cursor: pointer;
+        position: fixed;
+        bottom: 10px;
+        left: calc(50% - 25px);
+        transition: background-color 0.3s ease, bottom 0.5s ease;
+        z-index: 1001; /* 컨테이너보다 위에 위치하도록 z-index를 더 높게 설정 */
+    }
+    
+      #toggleBtn:hover {
+        background-color: lightyellow;
+      }
+
+      .container-column {
+        width: 33.333%;
+        height: 200px;
+        background-color: rgb(209, 209, 102);
+        position: fixed;
+        left: 0;
+        transition: bottom 0.5s ease, transform 0.5s ease;
+        text-align: center;
+        overflow: hidden; /* Hide containers by default */
+    }
 
 
-        #toggleBtn {
-            width: 50px;
-            height: 50px;
-            background-color: lightgreen;
-            border: none;
-            border-radius: 50%;
-            font-size: 30px;
-            line-height: 40px;
-            cursor: pointer;
-            position: fixed;
-            bottom: 10px;
-            left: calc(50% - 25px);
-            transition: background-color 0.3s ease, bottom 0.5s ease;
-            z-index: 1001; /* 컨테이너보다 위에 위치하도록 z-index를 더 높게 설정 */
-        }
+      #container1 {
+        bottom: -200px;
+        z-index: 999;
+      }
 
-        #toggleBtn:hover {
-            background-color: lightyellow;
-        }
+      #container2 {
+        bottom: -200px;
+        left: 33.333%;
+        z-index: 998;
+      }
 
-        .container-column {
-            width: 33.333%;
-            height: 200px;
-            background-color: rgb(209, 209, 102);
-            position: fixed;
-            left: 0;
-            transition: bottom 0.5s ease, transform 0.5s ease;
-            text-align: center;
-            overflow: hidden; /* Hide containers by default */
-        }
+      #container3 {
+        bottom: -200px;
+        left: 66.666%;
+        z-index: 997;
+      }
+      .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 4.5rem; /* Adjusted to appear next to the sidebar */
+        background-color: #fcedaa;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+      }
 
-        #container1 {
-            bottom: -200px;
-            z-index: 999;
-        }
-        #container2 {
-            bottom: -200px;
-            left: 33.333%;
-            z-index: 998;
-        }
+      .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #363636;
+        display: block;
+        transition: 0.3s;
+      }
 
-        #container3 {
-            bottom: -200px;
-            left: 66.666%;
-            z-index: 997;
-        }
-        
-        .popup-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            width: 80%; /* Width adjusted to 80% of the viewport width */
-            max-width: 600px; /* Maximum width */
-            text-align: left; /* Align text to the left */
-        }
+      .sidenav a:hover {
+        color: #a9cfe2;
+      }
 
-        .close-btn {
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 3px;
-            cursor: pointer;
-            float: right; /* Align close button to the right */
+      .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+      }
+      @media screen and (max-height: 450px) {
+        .sidenav {
+          padding-top: 15px;
         }
+        .sidenav a {
+          font-size: 18px;
+        }
+      }
+      .popup-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        width: 80%; /* Width adjusted to 80% of the viewport width */
+        max-width: 600px; /* Maximum width */
+        text-align: left; /* Align text to the left */
+    }
+    .close-btn {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        float: right; /* Align close button to the right */
+    }
+
     </style>
     <style>
         /* 컨테이너 1과 2 메뉴의 네모 버튼 형태 스타일링 */
@@ -114,21 +185,143 @@
     cursor: pointer; /* 마우스 커서를 포인터로 변경합니다. */
     transition: background-color 0.3s ease; /* 배경색 변화에 애니메이션 효과를 추가합니다. */
 }
-
 #container1 ul li a:hover,
 #container2List li a:hover {
     background-color: lightgreen; /* 마우스 오버 시 배경색 변경합니다. */
 }
 
     </style>
-</head>
-<body>
-    <div id="mapContainer">
-        <div id="searchBox">
-            <input type="text" id="searchInput" placeholder="장소를 검색하세요">
-            <button id="searchBtn">검색</button>
+
+
+    <link href="sidebars.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="b-example-divider b-example-vr"></div>
+    <!-- ? -->
+    <div
+      class="d-flex flex-column flex-shrink-0 bg-body-tertiary"
+      style="width: 4.5rem"
+    >
+      <a
+        href="#"
+        class="d-block p-3 link-body-emphasis text-decoration-none"
+        title="CBNU"
+        data-bs-toggle="tooltip"
+        data-bs-placement="right"
+      >
+        <img
+          src="https://i.imgur.com/3XbMneV.png"
+          alt="Icon"
+          width="50"
+          height="50"
+        />
+        <span class="visually-hidden">Icon-only</span>
+      </a>
+      <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+        <li class="nav-item">
+          <a
+            href="/"
+            class="nav-link active py-3 border-bottom rounded-0"
+            aria-current="page"
+            title="Home"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+          >
+            <i class="fa-solid fa-house fa-xl"></i>
+          </a>
+        </li>
+        <!-- search -->
+        <li>
+          <a
+            href="#"
+            class="nav-link py-3 border-bottom rounded-0"
+            title="search"
+            data-bs-toggle="modal"
+            data-bs-target="#searchModal"
+          >
+            <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+          </a>
+        </li>
+        <!--- school information --->
+        <li>
+          <a
+            href="#"
+            class="nav-link py-3 border-bottom rounded-0"
+            title="Customers"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+          >
+            <i class="fa-solid fa-school-flag fa-lg"></i>
+          </a>
+        </li>
+        <!-- stars -->
+        <li>
+          <a
+            href="#"
+            class="nav-link py-3 border-bottom rounded-0"
+            title="Stars"
+            data-bs-toggle="tooltip"
+            data-bs-target="mySidenav"
+            onclick="toggleNav()"
+          >
+            <i class="fa-solid fa-star fa-lg"></i>
+          </a>
+        </li>
+        <!--- random --->
+        <li>
+          <a
+            href="#"
+            class="nav-link py-3 border-bottom rounded-0"
+            title="Products"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+          >
+            <i class="fa-solid fa-shuffle fa-lg"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="searchModal"
+      tabindex="-1"
+      aria-labelledby="searchModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="container-fluid">
+              <form class="d-flex">
+                <input
+                  class="form-control me-2"
+                  type="search"
+                  placeholder="Search"
+                  aria-label="Search"
+                />
+                <button class="btn btn-outline-success" type="submit">
+                  <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
-        <div id="map"></div>
+      </div>
+    </div>
+    <!-- mySidenav -->
+    <div id="mySidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"
+        >&times;</a
+      >
+      <a href="#">About</a>
+      <a href="#">Services</a>
+      <a href="#">Clients</a>
+      <a href="#">Contact</a>
+    </div>
+    <!-- mapContainer -->
+    <div id="mapContainer">
+      <div id="map"></div>
     </div>
     <button id="toggleBtn">⇧⇧</button>
     <div id="container1" class="container-column">
@@ -160,181 +353,216 @@
             <div id="popupContent">Popup Content</div>
         </div>
     </div>    
+   
+    <script>
+      var mapOptions = {
+        center: new naver.maps.LatLng(36.625316, 127.450883),
+        zoom: 15,
+      };
+
+      var map = new naver.maps.Map("map", mapOptions);
+
+      const toggleBtn = document.getElementById("toggleBtn");
+      const containers = [
+        document.getElementById("container1"),
+        document.getElementById("container2"),
+        document.getElementById("container3"),
+      ];
+
+      toggleBtn.addEventListener('click', function() {
+        containers.forEach(container => {
+            container.style.bottom = (container.style.bottom === '-200px') ? '0px' : '-200px';
+        });
+
+        toggleBtn.style.bottom = (toggleBtn.style.bottom === '10px') ? '210px' : '10px';
+    });
+    containers.forEach(container => {
+        container.style.transform = 'translateY(0)';
+    });
+
+      var markerImage = {
+        url: "https://navermaps.github.io/maps.js/docs/img/example/pin_default.png",
+        size: new naver.maps.Size(50, 52),
+        origin: new naver.maps.Point(0, 0),
+        anchor: new naver.maps.Point(25, 52),
+      };
+
+      var markers = [];
+
+       // 마커 생성 및 이벤트 처리
+       function createMarker(position, title) {
+        var marker = new naver.maps.Marker({
+            position: position,
+            map: map,
+            icon: markerImage,
+            title: title
+        });
+
+        markers.push(marker);
+
+        var infowindow = new naver.maps.InfoWindow({
+            content: '<div style="width:150px;text-align:center;padding:10px;">' + title + '</div>'
+        });
+
+        naver.maps.Event.addListener(marker, 'click', function() {
+            infowindow.open(map, marker);
+        });
+    }
+
+    // 마커 생성
+    createMarker(new naver.maps.LatLng(36.624303, 127.449607), '명장국밥 개신점');
+    createMarker(new naver.maps.LatLng(36.626117, 127.452091), '보통의 국수집');
+    createMarker(new naver.maps.LatLng(36.625669, 127.463756), '구룡산 한식');
+    createMarker(new naver.maps.LatLng(36.624039, 127.450508), '현고 들깨칼국수');
+    createMarker(new naver.maps.LatLng(36.624639, 127.467022), '사나이 짬뽕');
+    
+    // Container 2의 링크 클릭 이벤트를 처리하는 함수
+    function handleContainer2LinkClick(event) {
+        event.preventDefault(); // 링크의 기본 동작을 막습니다.
+        
+        // 클릭된 링크의 텍스트를 가져옵니다.
+        var selectedRestaurant = event.target.innerText;
+
+        // 검색창에 해당 식당의 이름을 설정합니다.
+        document.getElementById('searchInput').value = selectedRestaurant;
+
+        // 검색 버튼을 클릭하여 해당 식당을 검색합니다.
+        document.getElementById('searchBtn').click();
+    }
+
+    var container2Links = document.querySelectorAll('#container2List a');
+    container2Links.forEach(function(link) {
+        link.addEventListener('click', handleContainer2LinkClick);
+    });
+    </script>
     
     <script>
-        var mapOptions = {
-            center: new naver.maps.LatLng(36.625316, 127.450883), // 초기 중심 설정
-            zoom: 15
-        };
-    
-        var map = new naver.maps.Map('map', mapOptions);
-    
-        const toggleBtn = document.getElementById('toggleBtn');
-        const containers = [document.getElementById('container1'), document.getElementById('container2'), document.getElementById('container3')];
-    
-        toggleBtn.addEventListener('click', function() {
-            containers.forEach(container => {
-                container.style.bottom = (container.style.bottom === '-200px') ? '0px' : '-200px';
-            });
-    
-            toggleBtn.style.bottom = (toggleBtn.style.bottom === '10px') ? '210px' : '10px';
-        });
-        containers.forEach(container => {
-            container.style.transform = 'translateY(0)';
-        });
-    
-        var markerImage = {
-            url: 'https://navermaps.github.io/maps.js/docs/img/example/pin_default.png',
-            size: new naver.maps.Size(50, 52),
-            origin: new naver.maps.Point(0, 0),
-            anchor: new naver.maps.Point(25, 52)
-        };
-    
-        var markers = [];
-    
-        // 마커 생성 및 이벤트 처리
-        function createMarker(position, title) {
-            var marker = new naver.maps.Marker({
-                position: position,
-                map: map,
-                icon: markerImage,
-                title: title
-            });
-    
-            markers.push(marker);
-    
-            var infowindow = new naver.maps.InfoWindow({
-                content: '<div style="width:150px;text-align:center;padding:10px;">' + title + '</div>'
-            });
-    
-            naver.maps.Event.addListener(marker, 'click', function() {
-                infowindow.open(map, marker);
-            });
+        function changeContainerContent(content) {
+            var container2List = document.getElementById('container2List');
+            container2List.innerHTML = content;
         }
     
-        // 마커 생성
-        createMarker(new naver.maps.LatLng(36.624303, 127.449607), '명장국밥 개신점');
-        createMarker(new naver.maps.LatLng(36.626117, 127.452091), '보통의 국수집');
-        createMarker(new naver.maps.LatLng(36.625669, 127.463756), '구룡산 한식');
-        createMarker(new naver.maps.LatLng(36.624039, 127.450508), '현고 들깨칼국수');
-        createMarker(new naver.maps.LatLng(36.624639, 127.467022), '사나이 짬뽕');
-        
-        // Container 2의 링크 클릭 이벤트를 처리하는 함수
-        function handleContainer2LinkClick(event) {
-            event.preventDefault(); // 링크의 기본 동작을 막습니다.
-            
-            // 클릭된 링크의 텍스트를 가져옵니다.
-            var selectedRestaurant = event.target.innerText;
+        function handleLinkClick(event) {
+            event.preventDefault(); 
+            var selectedFood = event.target.innerText;
     
-            // 검색창에 해당 식당의 이름을 설정합니다.
-            document.getElementById('searchInput').value = selectedRestaurant;
-    
-            // 검색 버튼을 클릭하여 해당 식당을 검색합니다.
-            document.getElementById('searchBtn').click();
-        }
-    
-        var container2Links = document.querySelectorAll('#container2List a');
-        container2Links.forEach(function(link) {
-            link.addEventListener('click', handleContainer2LinkClick);
-        });
-        </script>
-        
-        <script>
-            function changeContainerContent(content) {
-                var container2List = document.getElementById('container2List');
-                container2List.innerHTML = content;
-            }
-        
-            function handleLinkClick(event) {
-                event.preventDefault(); 
-                var selectedFood = event.target.innerText;
-        
-                switch (selectedFood) {
-                    case '한식':
-                        changeContainerContent(`
-                            <ul>
-                                <li><a href="#" id="link1">명장국밥</a></li>
-                                <li><a href="#" id="link2">구룡산 한식</a></li>
-                                <li><a href="#">항목 4</a></li>
-                            </ul>
-                        `);
-                        break;
-                    case '중식':
-                        changeContainerContent(`
-                            <ul>
-                                <li><a href="#" id="link3">보통의 국수집</a></li>
-                                <li><a href="#" id="link4">사나이 짬뽕</a></li>
-                                <li><a href="#">항목 3</a></li>
-                                <li><a href="#">항목 4</a></li>
-                            </ul>
-                        `);
-                        break;
-                    case '양식':
-                        changeContainerContent(`
+            switch (selectedFood) {
+                case '한식':
+                    changeContainerContent(`
                         <ul>
-                            <li><a href="#" id="link5">항목 1</a></li>
-                            <li><a href="#" id="link6">항목 2</a></li>
+                            <li><a href="#" id="link1">명장국밥</a></li>
+                            <li><a href="#" id="link2">구룡산 한식</a></li>
+                            <li><a href="#">항목 4</a></li>
+                        </ul>
+                    `);
+                    break;
+                case '중식':
+                    changeContainerContent(`
+                        <ul>
+                            <li><a href="#" id="link3">보통의 국수집</a></li>
+                            <li><a href="#" id="link4">사나이 짬뽕</a></li>
                             <li><a href="#">항목 3</a></li>
                             <li><a href="#">항목 4</a></li>
                         </ul>
-                        `);
-                        break;
-                    case '디저트':
-                        changeContainerContent(`
-                        <ul>
-                            <li><a href="#" id="link7">항목 1</a></li>
-                            <li><a href="#" id="link8">항목 2</a></li>
-                            <li><a href="#">항목 3</a></li>
-                            <li><a href="#">항목 4</a></li>
-                        </ul>   
-                        `);
-                        break;
+                    `);
+                    break;
+                case '양식':
+                    changeContainerContent(`
+                    <ul>
+                        <li><a href="#" id="link5">항목 1</a></li>
+                        <li><a href="#" id="link6">항목 2</a></li>
+                        <li><a href="#">항목 3</a></li>
+                        <li><a href="#">항목 4</a></li>
+                    </ul>
+                    `);
+                    break;
+                case '디저트':
+                    changeContainerContent(`
+                    <ul>
+                        <li><a href="#" id="link7">항목 1</a></li>
+                        <li><a href="#" id="link8">항목 2</a></li>
+                        <li><a href="#">항목 3</a></li>
+                        <li><a href="#">항목 4</a></li>
+                    </ul>   
+                    `);
+                    break;
+            }
+        }
+    
+        var links = document.querySelectorAll('#container1 a');
+        links.forEach(function(link) {
+            link.addEventListener('click', handleLinkClick);
+        });
+    </script>
+    <script>
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            var searchInput = document.getElementById('searchInput').value.trim();
+            var found = false;
+    
+            markers.forEach(marker => {
+                if (marker.getTitle().includes(searchInput)) {
+                    map.setCenter(marker.getPosition());
+                    map.setZoom(15);
+                    found = true;
                 }
+            });
+    
+            if (!found) {
+                alert('해당 핀을 찾을 수 없습니다.');
             }
+        });
+        function openPopup(content) {
+            document.getElementById('popupContent').innerHTML = content;
+            document.getElementById('popup').style.display = 'block';
+        }
+    
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+    
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            const searchInput = document.getElementById('searchInput').value;
+            openPopup(searchInput);
+        });
         
-            var links = document.querySelectorAll('#container1 a');
-            links.forEach(function(link) {
-                link.addEventListener('click', handleLinkClick);
-            });
-        </script>
-        <script>
-            document.getElementById('searchBtn').addEventListener('click', function() {
-                var searchInput = document.getElementById('searchInput').value.trim();
-                var found = false;
-        
-                markers.forEach(marker => {
-                    if (marker.getTitle().includes(searchInput)) {
-                        map.setCenter(marker.getPosition());
-                        map.setZoom(15);
-                        found = true;
-                    }
-                });
-        
-                if (!found) {
-                    alert('해당 핀을 찾을 수 없습니다.');
-                }
-            });
-            
-            function openPopup(content) {
-                document.getElementById('popupContent').innerHTML = content;
-                document.getElementById('popup').style.display = 'block';
-            }
-        
-            function closePopup() {
-                document.getElementById('popup').style.display = 'none';
-            }
-        
-            document.getElementById('searchBtn').addEventListener('click', function() {
-                const searchInput = document.getElementById('searchInput').value;
-                openPopup(searchInput);
-            });
-            
-            document.getElementById('feedbackForm').addEventListener('submit', function(event) {
-                event.preventDefault();
-                const feedback = document.getElementById('feedbackText').value;
-                alert('피드백이 제출되었습니다: ' + feedback);
-                document.getElementById('feedbackText').value = ''; 
-            });
-        </script>
-        </body>
-        </html>
+        document.getElementById('feedbackForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const feedback = document.getElementById('feedbackText').value;
+            alert('피드백이 제출되었습니다: ' + feedback);
+            document.getElementById('feedbackText').value = ''; 
+        });
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+      integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      let navOpen = false; // 상태 변수
+
+      function toggleNav() {
+        if (navOpen) {
+          closeNav();
+        } else {
+          openNav();
+        }
+        navOpen = !navOpen; // 상태 변경
+      }
+
+      function openNav() {
+        document.getElementById("mySidenav").style.width = "500px";
+        document.getElementById("mapContainer").style.marginLeft = "0px";
+      }
+
+      function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("mapContainer").style.marginLeft = "0";
+      }
+    </script>
+  </body>
+</html>
