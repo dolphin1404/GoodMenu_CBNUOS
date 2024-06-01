@@ -10,16 +10,16 @@
         #mapContainer {
             position: relative;
             width: 100%;
-            height: 100vh;
-            overflow: hidden;
+            height: 100vh; /* 전체 화면 높이로 설정 */
+            overflow: hidden; /* Keep overflow hidden to prevent containers from extending beyond viewport */
         }
 
         #searchBox {
             position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
+            top: 10px; /* 맵 상단에서 10px 아래에 위치 */
+            left: 50%; /* 가운데 정렬을 위해 왼쪽 여백 50% */
+            transform: translateX(-50%); /* 가운데 정렬 */
+            z-index: 1000; /* 검색창이 맵 위에 나타나도록 설정 */
             background-color: white;
             padding: 10px;
             border-radius: 5px;
@@ -28,7 +28,7 @@
 
         #map {
             width: 100%;
-            height: calc(100vh - 40px);
+            height: calc(100vh - 40px); /* 검색창 높이를 고려하여 맵의 높이 조정 */
         }
 
         #toggleBtn {
@@ -43,7 +43,7 @@
             position: fixed;
             bottom: 10px;
             left: calc(50% - 25px);
-            transition: background-color 0.3s ease, bottom 0.5s ease;
+            transition: background-color 0.3s ease, bottom 0.5s ease; /* bottom 속성에도 transition 효과 추가 */
         }
 
         #toggleBtn:hover {
@@ -58,7 +58,7 @@
             left: 0;
             transition: bottom 0.5s ease, transform 0.5s ease;
             text-align: center;
-            overflow: hidden;
+            overflow: hidden; /* Hide containers by default */
         }
 
         #container1 {
@@ -77,15 +77,15 @@
             left: 66.666%;
             z-index: 997;
         }
-
+        
         .popup-content {
             background-color: white;
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            width: 80%;
-            max-width: 600px;
-            text-align: left;
+            width: 80%; /* Width adjusted to 80% of the viewport width */
+            max-width: 600px; /* Maximum width */
+            text-align: left; /* Align text to the left */
         }
 
         .close-btn {
@@ -95,7 +95,7 @@
             padding: 5px 10px;
             border-radius: 3px;
             cursor: pointer;
-            float: right;
+            float: right; /* Align close button to the right */
         }
     </style>
 </head>
@@ -110,16 +110,14 @@
 <button id="toggleBtn">⇧⇧</button>
 <div id="container1" class="container-column">
     <ul>
-        <li><a href="#">한식</a></li>
-        <li><a href="#">중식</a></li>
-        <li><a href="#">양식</a></li>
-        <li><a href="#">디저트</a></li>
+        <li><a href="#" >한식</a></li>
+        <li><a href="#" >중식</a></li>
+        <li><a href="#" id="link3">양식</a></li>
+        <li><a href="#" id="link4">국수</a></li>
     </ul>
 </div>
 <div id="container2" class="container-column">
-    <ul id="container2List">
-        <!-- Dynamic content will be inserted here -->
-    </ul>
+    <p id="container2Content">This is the second sliding container.</p>
 </div>
 <div id="container3" class="container-column">
     <h3>피드백</h3>
@@ -128,80 +126,106 @@
         <br>
         <button type="submit">제출</button>
     </form>
-</div>
-<div id="popup" class="popup">
-    <div class="popup-content">
-        <button class="close-btn" onclick="closePopup()">Close</button>
-        <div id="popupContent">Popup Content</div>
-    </div>
+    <div id="container3" class="container-column">
+        <h3>피드백 및 조회</h3>
+        <form id="feedbackForm">
+            <textarea id="feedbackText" placeholder="의견을 남겨주세요" rows="4" cols="50"></textarea>
+            <br>
+            <button type="submit">제출</button>
+        </form>
+            <hr>
+        <h3>피드백 조회</h3>
+        <button id="viewFeedbackBtn">조회</button>
+        <div id="feedbackList"></div>
+</div>    
+
 </div>
 
 <script>
-    // 클릭 이벤트를 감지하여 container2의 내용을 변경하는 함수
-    function changeContainerContent(content) {
-        // container2의 내용을 변경합니다.
-        var container2List = document.getElementById('container2List');
-        container2List.innerHTML = content;
+    // 피드백 데이터를 저장할 배열
+var feedbackData = [];
+
+// 피드백 제출 이벤트 핸들러
+document.getElementById('feedbackForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const feedback = document.getElementById('feedbackText').value;
+    feedbackData.push(feedback); // 피드백을 배열에 추가
+    alert('피드백이 제출되었습니다: ' + feedback);
+    document.getElementById('feedbackText').value = ''; // 제출 후 텍스트 영역 초기화
+});
+
+// 피드백 조회 버튼 클릭 이벤트 핸들러
+document.getElementById('viewFeedbackBtn').addEventListener('click', function() {
+    var feedbackList = document.getElementById('feedbackList');
+    feedbackList.innerHTML = ''; // 이전에 표시된 피드백 목록을 초기화
+    if (feedbackData.length === 0) {
+        feedbackList.innerHTML = '피드백이 없습니다.';
+    } else {
+        feedbackData.forEach(function(feedback, index) {
+            var feedbackItem = document.createElement('div');
+            feedbackItem.textContent = (index + 1) + '. ' + feedback;
+            feedbackList.appendChild(feedbackItem);
+        });
     }
+});
 
-    // container1의 링크 클릭 이벤트를 처리하는 함수
-    function handleLinkClick(event) {
-        event.preventDefault(); // 링크의 기본 동작을 막습니다.
-        
-        // 클릭된 링크의 텍스트를 가져옵니다.
-        var selectedFood = event.target.innerText;
+// 클릭 이벤트를 감지하여 container3의 내용을 변경하는 함수
+function changeContainerContent(content) {
+    // container3의 내용을 변경합니다.
+    var container2 = document.getElementById('container2');
+    container2.innerHTML = content;
+}
 
-        // container2의 내용을 선택된 음식에 따라 변경합니다.
-        switch (selectedFood) {
-            case '한식':
-                changeContainerContent(`
+// container1의 링크 클릭 이벤트를 처리하는 함수
+function handleLinkClick(event) {
+    event.preventDefault(); // 링크의 기본 동작을 막습니다.
+    
+    // 클릭된 링크의 텍스트를 가져옵니다.
+    var selectedFood = event.target.innerText;
+
+    // container3의 내용을 선택된 음식에 따라 변경합니다.
+    switch (selectedFood) {
+        case '한식':
+            changeContainerContent(`
+                <ul>
                     <li><a href="#" id="link1">명장국밥</a></li>
                     <li><a href="#">항목 3</a></li>
                     <li><a href="#">항목 4</a></li>
                     <li><a href="#">항목 5</a></li>
-                `);
-                break;
-            case '중식':
-                changeContainerContent(`
-                    <li><a href="#" id="link2">사나이 짬뽕</a></li>
+                </ul>
+            `);
+            break;
+        case '국수':
+            changeContainerContent(`
+                <ul>
+                    <li><a href="#" id="link2">보통의 국수집</a></li>
                     <li><a href="#">항목 3</a></li>
                     <li><a href="#">항목 4</a></li>
                     <li><a href="#">항목 5</a></li>
-                `);
-                break;
-            case '양식':
-                changeContainerContent(`
-                    <li><a href="#">양식1</a></li>
-                    <li><a href="#">양식2</a></li>
-                    <li><a href="#">양식3</a></li>
-                    <li><a href="#">양식4</a></li>
-                `);
-                break;
-            case '디저트':
-                changeContainerContent(`
-                    <li><a href="#">디저트1</a></li>
-                    <li><a href="#">디저트2</a></li>
-                    <li><a href="#">디저트3</a></li>
-                    <li><a href="#">디저트4</a></li>
-                `);
-                break;
-            // 다른 음식 분류에 따라서도 case를 추가할 수 있습니다.
-        }
+                </ul>
+            `);
+            break;
+        // 다른 음식 분류에 따라서도 case를 추가할 수 있습니다.
     }
-    // container1의 링크에 클릭 이벤트 리스너를 추가합니다.
-    var links = document.querySelectorAll('#container1 a');
-    links.forEach(function(link) {
-        link.addEventListener('click', handleLinkClick);
-    });
+}
+// container1의 링크에 클릭 이벤트 리스너를 추가합니다.
+var links = document.querySelectorAll('#container1 a');
+links.forEach(function(link) {
+    link.addEventListener('click', handleLinkClick);
+});
+</script>
 
+
+<script>
     var mapOptions = {
-        center: new naver.maps.LatLng(36.625316, 127.450883),
+        center: new naver.maps.LatLng(36.625316, 127.450883), // 두 마커의 중간점으로 초기 중심 설정
         zoom: 15
     };
 
     var map = new naver.maps.Map('map', mapOptions);
 
     const toggleBtn = document.getElementById('toggleBtn');
+    const recommendBtn = document.getElementById('recommendBtn');
     const containers = [document.getElementById('container1'), document.getElementById('container2'), document.getElementById('container3')];
 
     toggleBtn.addEventListener('click', function() {
@@ -216,8 +240,10 @@
         // 버튼 위치 조정
         if (toggleBtn.style.bottom === '10px') {
             toggleBtn.style.bottom = '210px';
+            recommendBtn.style.bottom = '270px'; // 추천 버튼도 함께 아래로 이동
         } else {
             toggleBtn.style.bottom = '10px';
+            recommendBtn.style.bottom = '70px'; // 추천 버튼도 함께 아래로 이동
         }
     });
 
@@ -226,6 +252,86 @@
     });
 
     var markerImage = {
+        url: 'https://navermaps.github.io/maps.js/docs/img/example/pin_default.png', // 기본 마커 이미지 URL
+        size: new naver.maps.Size(50, 52), // 마커 이미지의 크기
+        origin: new naver.maps.Point(0, 0),
+        anchor: new naver.maps.Point(25, 52) // 마커의 앵커 지점 (이미지의 아래 중앙)
+    };
+
+    var markers = [
+        new naver.maps.Marker({
+            position: new naver.maps.LatLng(36.624303, 127.449607),
+            map: map,
+            title: '명장국밥 개신점',
+            icon: markerImage // 커스텀 마커 이미지 적용
+        }),
+        new naver.maps.Marker({
+            position: new naver.maps.LatLng(36.626117, 127.452091),
+            map: map,
+            title: '보통의 국수집',
+            icon: markerImage // 동일한 커스텀 마커 이미지 적용
+        }),
+        new naver.maps.Marker({
+            position: new naver.maps.LatLng(36.625669, 127.463756),
+            map: map,
+            title: '구룡산 한식',
+            icon: markerImage // 동일한 커스텀 마커 이미지 적용
+        }),
+        new naver.maps.Marker({
+            position: new naver.maps.LatLng(36.624039, 127.450508),
+            map: map,
+            title: '현고 들깨칼국수',
+            icon: markerImage // 동일한 커스텀 마커 이미지 적용
+        }),
+        new naver.maps.Marker({
+            position: new naver.maps.LatLng(36.624639, 127.467022),
+            map: map,
+            title: '사나이 짬뽕',
+            icon: markerImage // 동일한 커스텀 마커 이미지 적용
+        })
+    ];
+
+    document.getElementById('searchBtn').addEventListener('click', function() {
+        var searchInput = document.getElementById('searchInput').value.trim();
+        var found = false;
+
+        markers.forEach(marker => {
+            if (marker.getTitle().includes(searchInput)) {
+                map.setCenter(marker.getPosition());
+                map.setZoom(25);
+                found = true;
+            }
+        });
+
+        if (!found) {
+            alert('해당 핀을 찾을 수 없습니다.');
+        }
+    });
+    
+    var mapOptions = {
+        center: new naver.maps.LatLng(36.624325, 127.449550),
+        zoom: 15
+    };
+
+    var map = new naver.maps.Map('map', mapOptions);
+
+    const popup = document.getElementById('popup');
+    const popupContent = document.getElementById('popupContent');
+
+    toggleBtn.addEventListener('click', function() {
+        containers.forEach(container => {
+            if (container.style.bottom === '-200px') {
+                container.style.bottom = '0';
+            } else {
+                container.style.bottom = '-200px';
+            }
+        });
+    });
+
+    containers.forEach(container => {
+        container.style.transform = 'translateY(0)';
+    });
+    var markerImage = {
         url: 'https://navermaps.github.io/maps.js/docs/img/example/pin_default.png',
         size: new naver.maps.Size(50, 52),
         origin: new naver.maps.Point(0, 0),
@@ -233,27 +339,59 @@
     };
 
     var marker1 = new naver.maps.Marker({
-        position: new naver.maps.LatLng(36.625316, 127.450883),
+        position: new naver.maps.LatLng(36.624303, 127.449607),
         map: map,
         icon: markerImage,
-        title: '충북대학교'
+        title: '명장국밥 개신점'
     });
 
     var marker2 = new naver.maps.Marker({
-        position: new naver.maps.LatLng(36.627111, 127.452823),
+        position: new naver.maps.LatLng(36.626117, 127.452091),
         map: map,
         icon: markerImage,
-        title: '충북대학교병원'
+        title: '보통의 국수집'
     });
 
+    var marker3 = new naver.maps.Marker({
+        position: new naver.maps.LatLng(36.625669, 127.463756),
+        map: map,
+        icon: markerImage,
+        title: '구룡산 한식'
+    });
+
+    var marker4 = new naver.maps.Marker({
+        position: new naver.maps.LatLng(36.624039, 127.450508),
+        map: map,
+        icon: markerImage,
+        title: '현고 들깨칼국수'
+    });
+
+    var marker5 = new naver.maps.Marker({
+        position: new naver.maps.LatLng(36.624639, 127.467022),
+        map: map,
+        icon: markerImage,
+        title: '사나이 짬뽕'
+    });
+    
     var infowindow = new naver.maps.InfoWindow({
-        content: '<div style="width:150px;text-align:center;padding:10px;">충북대학교</div>'
+        content: '<div style="width:150px;text-align:center;padding:10px;">명장국밥 개신점</div>'
     });
 
     var infowindow2 = new naver.maps.InfoWindow({
-        content: '<div style="width:150px;text-align:center;padding:10px;">충북대학교병원</div>'
+        content: '<div style="width:150px;text-align:center;padding:10px;">보통의 국수집</div>'
     });
 
+    var infowindow3 = new naver.maps.InfoWindow({
+        content: '<div style="width:150px;text-align:center;padding:10px;">구룡산 한식</div>'
+    });
+
+    var infowindow4 = new naver.maps.InfoWindow({
+        content: '<div style="width:150px;text-align:center;padding:10px;">현고 들깨칼국수</div>'
+    });
+
+    var infowindow5 = new naver.maps.InfoWindow({
+        content: '<div style="width:150px;text-align:center;padding:10px;">사나이 짬뽕</div>'
+    });
     naver.maps.Event.addListener(marker1, 'click', function() {
         if (infowindow.getMap()) {
             infowindow.close();
@@ -283,15 +421,12 @@
         const searchInput = document.getElementById('searchInput').value;
         openPopup(searchInput);
     });
-
-    // 사용자 피드백 제출 처리
     document.getElementById('feedbackForm').addEventListener('submit', function(event) {
         event.preventDefault();
         const feedback = document.getElementById('feedbackText').value;
         alert('피드백이 제출되었습니다: ' + feedback);
         document.getElementById('feedbackText').value = ''; // 제출 후 텍스트 영역 초기화
     });
-
 </script>
 </body>
 </html>
