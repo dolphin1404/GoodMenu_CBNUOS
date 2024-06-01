@@ -336,30 +336,5 @@
                 document.getElementById('feedbackText').value = ''; 
             });
         </script>
-        <script>
-            document.getElementById('searchBtn').addEventListener('click', function() {
-                // 이전에 추가된 모든 마커들을 제거합니다.
-                markers.forEach(marker => {
-                    marker.setMap(null);
-                });
-                markers = []; // 마커 배열을 비웁니다.
-        
-                var searchInput = document.getElementById('searchInput').value.trim();
-                var found = false;
-        
-                markers.forEach(marker => {
-                    if (marker.getTitle().includes(searchInput)) {
-                        map.setCenter(marker.getPosition());
-                        map.setZoom(15);
-                        found = true;
-                    }
-                });
-        
-                if (!found) {
-                    alert('해당 핀을 찾을 수 없습니다.');
-                }
-            });
-        </script>
-        
         </body>
         </html>
