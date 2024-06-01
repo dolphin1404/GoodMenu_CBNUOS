@@ -314,5 +314,31 @@
                 document.getElementById('feedbackText').value = ''; 
             });
         </script>
+        <script>
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            // 검색 버튼을 클릭할 때마다 지도에 표시된 마커 초기화
+            markers.forEach(marker => {
+                marker.setMap(null);
+            });
+            markers = []; // 마커 배열 비우기
+        
+            var searchInput = document.getElementById('searchInput').value.trim();
+            var found = false;
+        
+            // 새로운 마커 생성
+            createMarker(new naver.maps.LatLng(새로운_위도, 새로운_경도), searchInput);
+        
+            // 기존 마커 삭제 후 새로운 마커 생성되었음을 알림
+            alert('새로운 마커가 생성되었습니다.');
+        
+            // 마커가 찾아진 경우, 지도 중심을 해당 마커 위치로 이동
+            if (found) {
+                map.setCenter(marker.getPosition());
+                map.setZoom(15);
+            } else {
+                alert('해당 핀을 찾을 수 없습니다.');
+            }
+        });
+    </script>
         </body>
         </html>
