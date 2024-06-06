@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메뉴 추천기</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9f9f9;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .container h1 {
+            margin-bottom: 20px;
+        }
+        .button-group {
+            margin-bottom: 20px;
+        }
+        .button-group div {
+            margin-bottom: 10px;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #e0e0e0;
+            cursor: pointer;
+        }
+        button.selected {
+            background-color: #e88a74;
+            color: #fff;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 20px;
+            color: #888;
+        }
+        .footer a {
+            color: #e88a74;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>오늘 뭐먹지? 메뉴 추천기가 정해드려요!</h1>
+        <div class="button-group">
+            <div>
+                <button class="category" data-category="전체">전체</button>
+                <button class="category selected" data-category="식사">식사</button>
+                <button class="category" data-category="요리">요리</button>
+                <button class="category" data-category="간식">간식</button>
+            </div>
+            <div>
+                <button class="type" data-type="전체">전체</button>
+                <button class="type" data-type="한식">한식</button>
+                <button class="type selected" data-type="중식">중식</button>
+                <button class="type" data-type="일식">일식</button>
+                <button class="type" data-type="양식">양식</button>
+                <button class="type" data-type="아시아">아시아</button>
+            </div>
+            <div>
+                <button class="situation" data-situation="전체">전체</button>
+                <button class="situation" data-situation="혼밥">혼밥</button>
+                <button class="situation" data-situation="친구">친구</button>
+                <button class="situation selected" data-situation="연인">연인</button>
+                <button class="situation" data-situation="가족">가족</button>
+                <button class="situation" data-situation="모임">모임</button>
+            </div>
+        </div>
+        <button id="recommendButton">메뉴를 추천해줘!</button>
+        <div id="result">오늘의 음식메뉴는?</div>
+        <div class="footer">
+            어떤 음식 드시고 싶으세요? <a href="#">충대 맛집로드 </a>
+        </div>
+    </div>
+
+    <script>
+        const categories = document.querySelectorAll('.category');
+        const types = document.querySelectorAll('.type');
+        const situations = document.querySelectorAll('.situation');
+        const recommendButton = document.getElementById('recommendButton');
+        const result = document.getElementById('result');
+
+        const menuOptions = {
+            '식사': {
+                '한식': ['김치찌개', '불고기', '비빔밥', '된장찌개', '삼겹살'],
+                '중식': ['짜장면', '짬뽕', '마파두부', '탕수육', '마라탕'],
+                '일식': ['초밥', '라멘', '돈부리', '텐동', '우동'],
+                '양식': ['스파게티', '피자', '햄버거', '스테이크', '샐러드'],
+                '아시아': ['쌀국수', '팟타이', '똠얌꿍', '카오 팟', '반미']
+            },
+            '요리': {
+                '한식': ['파전', '갈비찜', '닭볶음탕', '잡채', '김밥'],
+                '중식': ['깐풍기', '꿔바로우', '마라샹궈', '양장피', '토마토 계란 볶음'],
+                '일식': ['오코노미야키', '타코야키', '카레라이스', '낫토', '고로케'],
+                '양식': ['리조또', '라자냐', '퀘사디아', '타르트', '크로켓'],
+                '아시아': ['만두', '바삭한 새우 롤', '카레', '사테이', '김밥']
+            },
+            '간식': {
+                '한식': ['떡볶이', '호떡', '붕어빵', '군고구마', '경단'],
+                '중식': ['딤섬', '월병', '탕후루', '화과자', '바나나 튀김'],
+                '일식': ['다이후쿠', '모찌', '도라야끼', '센베이', '가스테라'],
+                '양식': ['크루아상', '머핀', '스콘', '마카롱', '타르트'],
+                '아시아': ['첸돌', '로띠', '나시 레막', '망고 스티키 라이스', '바나나 팬케이크']
+            }
+        };
+
+        function getRandomMenu(category, type) {
+            const options = menuOptions[category][type];
+            return options[Math.floor(Math.random() * options.length)];
+        }
+
+        recommendButton.addEventListener('click', () => {
+            const selectedCategory = document.querySelector('.category.selected').dataset.category;
+            const selectedType = document.querySelector('.type.selected').dataset.type;
+
+            if (selectedCategory === '전체' || selectedType === '전체') {
+                const allOptions = Object.values(menuOptions).flatMap(type => Object.values(type)).flat();
+                result.textContent = allOptions[Math.floor(Math.random() * allOptions.length)];
+            } else {
+                result.textContent = getRandomMenu(selectedCategory, selectedType);
+            }
+        });
+
+        categories.forEach(button => {
+            button.addEventListener('click', () => {
+                categories.forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+            });
+        });
+
+        types.forEach(button => {
+            button.addEventListener('click', () => {
+                types.forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+            });
+        });
+
+        situations.forEach(button => {
+            button.addEventListener('click', () => {
+                situations.forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>
