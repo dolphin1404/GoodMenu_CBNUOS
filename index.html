@@ -2,7 +2,11 @@
 <html>
   <head>
     <meta charset="UTF-8" />
+<<<<<<< Updated upstream
     <link rel = "icon" href = "./favicon.ico" />
+=======
+    <link rel="icon" href="./favicon.ico" />
+>>>>>>> Stashed changes
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta
       name="viewport"
@@ -151,11 +155,13 @@
         }
       }
     </style>
+<<<<<<< Updated upstream
     <!-- <link href="sidebars.css" rel="stylesheet" /> -->
+=======
+>>>>>>> Stashed changes
   </head>
   <body>
     <div class="b-example-divider b-example-vr"></div>
-    <!-- ? -->
     <div
       class="d-flex flex-column flex-shrink-0 bg-body-tertiary"
       style="width: 4.5rem"
@@ -207,7 +213,8 @@
             class="nav-link py-3 border-bottom rounded-0"
             title="Customers"
             data-bs-toggle="tooltip"
-            data-bs-placement="right"
+            data-bs-placement="add information"
+            onclick="toggleNav('add information')"
           >
             <i class="fa-solid fa-school-flag fa-lg"></i>
           </a>
@@ -257,7 +264,11 @@
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
+<<<<<<< Updated upstream
                   id = "searchInput"
+=======
+                  id="searchInput"
+>>>>>>> Stashed changes
                 />
                 <button class="btn btn-outline-success" id="searchBtn" type="button">
                   <i class="fa-solid fa-magnifying-glass fa-lg"></i>
@@ -268,6 +279,17 @@
         </div>
       </div>
     </div>
+    <!-- add information-->
+    <div id="add information" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="toggleNav('mySidenav')"
+        >&times;</a
+      >
+      <a href="#">About</a>
+      <a href="#">S</a>
+      <a href="#">Clients</a>
+      <a href="#">Contact</a>
+    </div>
+
     <!-- mySidenav -->
     <div id="mySidenav" class="sidenav">
       <a href="javascript:void(0)" class="closebtn" onclick="toggleNav('mySidenav')"
@@ -289,7 +311,10 @@
       };
 
       var map = new naver.maps.Map("map", mapOptions);
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     
       var markerImage = {
             url: 'https://navermaps.github.io/maps.js/docs/img/example/pin_default.png',
@@ -326,9 +351,20 @@
         createMarker(new naver.maps.LatLng(36.625669, 127.463756), '구룡산 한식');
         createMarker(new naver.maps.LatLng(36.624039, 127.450508), '현고 들깨칼국수');
         createMarker(new naver.maps.LatLng(36.624639, 127.467022), '사나이 짬뽕');
+<<<<<<< Updated upstream
 
         
         
+=======
+        createMarker(new naver.maps.Lating(36.627527, 127.452819), '양성재 CU 편의점');
+        createMarker(new naver.maps.Lating(36.627766, 127.458847), '제 1학생회관 이마트24 편의점');
+        createMarker(new naver.maps.Lating(36.630457, 127.456008), '대학본부 이마트24 편의점');
+        createMarker(new naver.maps.Lating(36.623980, 127.459104), '양진재 CU 편의점');
+        createMarker(new naver.maps.Lating(36.625097, 127.457317), '학연산 세븐일레븐 편의점');
+        createMarker(new naver.maps.Lating(36.628456, 127.457540), '중앙도서관');
+        createMarker(new naver.maps.Lating(36.628140, 127.459553), '서점');
+
+>>>>>>> Stashed changes
       var storeList = document.getElementById("storeList");
       var storeDetails = document.getElementById("storeDetails");
       
@@ -391,6 +427,7 @@
     });
     </script>
     <script>
+<<<<<<< Updated upstream
        let navOpen = false; // 상태 변수
 
 function toggleNav(navId) {
@@ -402,18 +439,48 @@ function toggleNav(navId) {
             openNav(nav);
         }
         navOpen = !navOpen; // 상태 변경
+=======
+        let navStates = {}; // 각 사이드 네비게이션의 상태를 저장할 객체
+
+function toggleNav(navId) {
+    const allNavs = document.querySelectorAll('.sidenav'); // 모든 사이드 네비게이션 선택
+
+    allNavs.forEach(nav => {
+        if (nav.id !== navId) {
+            closeNav(nav); // 다른 사이드 네비게이션 닫기
+            navStates[nav.id] = false; // 닫힌 상태로 설정
+        }
+    });
+
+    let nav = document.getElementById(navId);
+    if (nav) { // nav가 null이 아닌 경우에만 동작
+        if (navStates[navId]) {
+            closeNav(nav);
+            navStates[navId] = false; // 상태 변경
+        } else {
+            openNav(nav);
+            navStates[navId] = true; // 상태 변경
+        }
+>>>>>>> Stashed changes
     } else {
         console.error(`Element with ID ${navId} not found`);
     }
 }
 
 function openNav(nav) {
+<<<<<<< Updated upstream
     nav.style.width = "500px"; // width 값을 500px에서 250px로 변경
+=======
+    nav.style.width = "500px";
+>>>>>>> Stashed changes
 }
 
 function closeNav(nav) {
     nav.style.width = "0";
+<<<<<<< Updated upstream
     
+=======
+>>>>>>> Stashed changes
 }
       
     </script>
@@ -428,5 +495,9 @@ function closeNav(nav) {
       crossorigin="anonymous"
     ></script>
   </body>
+<<<<<<< Updated upstream
 </html>
 <!--- document.getElementById("mapContainer").style.marginLeft = "0"; --->
+=======
+</html>
+>>>>>>> Stashed changes
