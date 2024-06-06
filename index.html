@@ -2,20 +2,19 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <link rel = "icon" href = "./favicon.ico" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
     />
-    <title>충맛집 - 충대인의 밥 선택 해결</title>
+    <title>네이버 지도와 검색창</title>
 
     <script
       src="https://kit.fontawesome.com/b7507b22be.js"
       crossorigin="anonymous"
     ></script>
     <link
-      href="./bootstrap4/css/bootstrap.min.css"
+      href="./goodmenu-map/public/bootstrap4/css/bootstrap.min.css"
       rel="stylesheet"
       type="text/css"
     />
@@ -151,7 +150,7 @@
         }
       }
     </style>
-    <link href="sidebars.css" rel="stylesheet" />
+    <!-- <link href="sidebars.css" rel="stylesheet" /> -->
   </head>
   <body>
     <div class="b-example-divider b-example-vr"></div>
@@ -331,7 +330,8 @@
         
       var storeList = document.getElementById("storeList");
       var storeDetails = document.getElementById("storeDetails");
-
+      
+      // db 주소
       fetch("http://127.0.0.1:5500/stores/")
         .then((response) => response.json())
         .then((data) => {
