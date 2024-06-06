@@ -14,7 +14,7 @@
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
-  "homepage": "https://dolphin1404.github.io/goodmenu-map",
+  "homepage": "https://dolphin1404.github.io/GoodMenu_CBNUOS/goodmenu-map/public/#",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
