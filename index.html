@@ -191,7 +191,8 @@
             class="nav-link py-3 border-bottom rounded-0"
             title="Customers"
             data-bs-toggle="tooltip"
-            data-bs-placement="right"
+            data-bs-placement="add information"
+            onclick="toggleNav('add information')"
           >
             <i class="fa-solid fa-school-flag fa-lg"></i>
           </a>
@@ -256,6 +257,17 @@
         </div>
       </div>
     </div>
+    <!-- add information-->
+    <div id="add information" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="toggleNav('mySidenav')"
+        >&times;</a
+      >
+      <a href="#">About</a>
+      <a href="#">S</a>
+      <a href="#">Clients</a>
+      <a href="#">Contact</a>
+    </div>
+
     <!-- mySidenav -->
     <div id="mySidenav" class="sidenav">
       <a
@@ -332,4 +344,3 @@
     ></script>
   </body>
 </html>
-<!--- document.getElementById("mapContainer").style.marginLeft = "0"; --->
