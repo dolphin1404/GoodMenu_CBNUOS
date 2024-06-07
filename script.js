@@ -228,6 +228,7 @@ function searchMarkers() {
 
 document.addEventListener("DOMContentLoaded", function () {
   function handleSearch() {
+    console.log("Search button clicked or Enter pressed"); // 디버깅 로그 추가
     searchMarkers();
   }
 
@@ -235,6 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById("searchInput").addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
+      console.log("Enter key pressed"); // 디버깅 로그 추가
       handleSearch();
     }
   });
