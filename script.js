@@ -162,11 +162,8 @@ markers.forEach(function (store) {
   naverMarkers.push(marker);
 
   naver.maps.Event.addListener(marker, "click", function () {
-    if (
-      currentInfoWindow &&
-      currentInfoWindow.getMap() &&
-      currentInfoWindow.getAnchor() === marker
-    ) {
+    if (marker.getMap() && currentInfoWindow && currentInfoWindow.getAnchor() === marker) {
+      marker.setMap(null); // 마커를 맵에서 제거
       currentInfoWindow.close();
       currentInfoWindow = null;
     } else {
@@ -241,28 +238,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
-function showMarker(map, marker) {
 
+function showMarker(map, marker) {
   if (marker.setMap()) return;
   marker.setMap(map);
 }
 
 function hideMarker(map, marker) {
-
   if (!marker.setMap()) return;
   marker.setMap(null);
-}
-
-// 해당 마커의 인덱스를 seq라는 클로저 변수로 저장하는 이벤트 핸들러를 반환합니다.
-function getClickHandler(seq) {
-  return function(e) {
-      var marker = markers[seq],
-          infoWindow = infoWindows[seq];
-
-      if (infoWindow.getMap()) {
-          infoWindow.close();
-      } else {
-          infoWindow.open(map, marker);
-      }
-  }
 }
