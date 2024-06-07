@@ -162,12 +162,21 @@ markers.forEach(function (store) {
   naverMarkers.push(marker);
 
   naver.maps.Event.addListener(marker, "click", function () {
-    if (currentInfoWindow) {
+    if (
+      currentInfoWindow &&
+      currentInfoWindow.getMap() &&
+      currentInfoWindow.getAnchor() === marker
+    ) {
       currentInfoWindow.close();
-    }
+      currentInfoWindow = null;
+    } else {
+      if (currentInfoWindow) {
+        currentInfoWindow.close();
+      }
 
-    infowindow.open(map, marker);
-    currentInfoWindow = infowindow;
+      infowindow.open(map, marker);
+      currentInfoWindow = infowindow;
+    }
   });
 });
 
@@ -186,35 +195,45 @@ function filterMarkers(categoryType, category) {
   }
 }
 
+function searchMarkers() {
+  var searchInput = document.getElementById("searchInput").value.trim();
+  var found = false;
+
+  naverMarkers.forEach((marker) => {
+    if (marker.getTitle().includes(searchInput)) {
+      map.setCenter(marker.getPosition());
+      map.setZoom(18);
+      found = true;
+
+      if (currentInfoWindow) {
+        currentInfoWindow.close();
+      }
+
+      var infowindow = new naver.maps.InfoWindow({
+        content:
+          '<div style="width:150px;text-align:center;padding:10px;">' +
+          marker.getTitle() +
+          "</div>",
+      });
+
+      infowindow.open(map, marker);
+      currentInfoWindow = infowindow;
+    }
+  });
+
+  if (!found) {
+    alert("해당 핀을 찾을 수 없습니다.");
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("searchBtn").addEventListener("click", function () {
-    var searchInput = document.getElementById("searchInput").value.trim();
-    var found = false;
+    searchMarkers();
+  });
 
-    naverMarkers.forEach((marker) => {
-      if (marker.getTitle().includes(searchInput)) {
-        map.setCenter(marker.getPosition());
-        map.setZoom(18);
-        found = true;
-
-        if (currentInfoWindow) {
-          currentInfoWindow.close();
-        }
-
-        var infowindow = new naver.maps.InfoWindow({
-          content:
-            '<div style="width:150px;text-align:center;padding:10px;">' +
-            marker.getTitle() +
-            "</div>",
-        });
-
-        infowindow.open(map, marker);
-        currentInfoWindow = infowindow;
-      }
-    });
-
-    if (!found) {
-      alert("해당 핀을 찾을 수 없습니다.");
+  document.getElementById("searchInput").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      searchMarkers();
     }
   });
 });
