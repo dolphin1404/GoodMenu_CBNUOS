@@ -1,7 +1,14 @@
+@font-face {
+    font-family: 'CBNUJIKJI';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2202@1.0/CBNUJIKJI.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body{
   margin: 0;
   padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: CBNUJIKJI, Helvetica, sans-serif;
 }
 #category-filter {
     position: absolute;
@@ -27,4 +34,28 @@ body{
 
 #category-filter button:hover {
     background-color: #e0e0e0;
+}
+#storeList {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    list-style-type: none;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 90%;
+}
+
+#storeList li {
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+#storeList li:hover {
+    background-color: #f0f0f0;
 }

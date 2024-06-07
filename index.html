@@ -9,7 +9,7 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
     />
     <link rel="stylesheet" href="styles.css" />
-    <title>충맛집 - 충대인의 밥 선택 해결</title>
+    <title>충맛집 - 충대인의 밥 고민 해결</title>
 
     <script
       src="https://kit.fontawesome.com/b7507b22be.js"
@@ -33,6 +33,7 @@
       body {
         display: flex;
         margin: 0;
+        font-family: CBNUJIKJI;
       }
       #sidebar {
         width: 4.5rem;
@@ -325,10 +326,7 @@
         onclick="toggleNav('mySidenav')"
         >&times;</a
       >
-      <a href="#">About</a>
-      <a href="#">Services</a>
-      <a href="#">Clients</a>
-      <a href="#">Contact</a>
+      <ul id = "stroeList"></ul>
     </div>
     <!-- shuffle -->
 
@@ -342,7 +340,8 @@
       >
       <script src ="recommendMenu.js"></script>
       <div class="container">
-        <h1>오늘 뭐먹지? 메뉴 추천기가 정해드려요!</h1>
+        <h1>오늘 뭐먹지?</h1> 
+        <h3>메뉴 추천기가 정해드려요!</h3>
         <div class="button-group">
           <div>
             <button class="category" data-category="전체">전체</button>
@@ -368,9 +367,6 @@
         <button id="recommendBtn">추천 받기</button>
         <div id="result"></div>
         <div id="loading">오늘의 메뉴는...</div>
-        <div class="footer">
-          <p>Created by <a href="#">충대 맛있는 로드 </a></p>
-        </div>
       </div>
     </div>
     <!-- mapContainer -->

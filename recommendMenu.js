@@ -89,6 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
           const recommendedMenu = getRandomMenu(selectedCategory, selectedType, selectedSituation);
           loading.style.display = 'none';
           result.textContent = `추천 메뉴: ${recommendedMenu}`;
-      }, 2000);
+      }, 1000);
   });
 });

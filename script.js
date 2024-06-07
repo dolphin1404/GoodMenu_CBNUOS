@@ -1,7 +1,53 @@
-var map = new naver.maps.Map("map", {
-  center: new naver.maps.LatLng(36.62762, 127.454883),
-  zoom: 16,
-});
+var HOME_PATH = window.HOME_PATH || ".";
+
+var currentInfoWindow = null;
+var map;
+var userPosition;
+var naverMarkers = [];
+var userMarker;
+
+function initMap() {
+  map = new naver.maps.Map("map", {
+    center: new naver.maps.LatLng(36.62762, 127.454883),
+    zoom: 16,
+    scaleControl: false,
+    logoControl: false,
+    mapDataControl: false,
+    zoomControl: true,
+    minZoom: 14,
+    zoomControlOptions: {
+      position: naver.maps.Position.TOP_RIGHT,
+    },
+  });
+
+  navigator.geolocation.getCurrentPosition(
+    function (position) {
+      userPosition = new naver.maps.LatLng(
+        position.coords.latitude,
+        position.coords.longitude
+      );
+      map.setCenter(userPosition);
+
+      userMarker = new naver.maps.Marker({
+        position: userPosition,
+        map: map,
+        title: "현재 위치",
+        icon: {
+          url: HOME_PATH + "./goodmenu-map/public/favicon.ico",
+          scaledSize: new naver.maps.Size(48, 39),
+          origin: new naver.maps.Point(0, 0),
+          anchor: new naver.maps.Point(0, 0),
+        },
+      });
+
+      loadMarkers();
+    },
+    function (error) {
+      console.error("Geolocation error: ", error);
+      loadMarkers(); // 위치 정보를 얻지 못해도 마커를 로드
+    }
+  );
+}
 
 var markerImage = {
   url: "https://navermaps.github.io/maps.js/docs/img/example/pin_default.png",
@@ -10,13 +56,13 @@ var markerImage = {
   anchor: new naver.maps.Point(25, 52),
 };
 
-
 var markers = [
   {
     position: new naver.maps.LatLng(36.624303, 127.449607),
     category: "서문",
     category_1: "한식",
     name: "명장국밥 개신점",
+    menu: "국밥",
   },
   {
     position: new naver.maps.LatLng(36.626117, 127.452091),
@@ -141,52 +187,132 @@ var markers = [
 
 var naverMarkers = [];
 
-markers.forEach(function (store) {
+function loadMarkers() {
+  markers.forEach(function (store) {
     var marker = new naver.maps.Marker({
-        position: store.position,
-        map: map,
-        icon: markerImage,
-        title: store.name
+      position: store.position,
+      map: map,
+      icon: markerImage,
+      title: store.name,
     });
-    var infowindow = new naver.maps.InfoWindow({
-      content: '<div style="width:150px;text-align:center;padding:10px;">' + store.name + "</div>"
-  });
     marker.set("category", store.category);
     marker.set("category_1", store.category_1);
 
-    naverMarkers.push(marker);
-    
-    naver.maps.Event.addListener(marker, "click", function () {
-        infowindow.open(map, marker);
+    var infowindow = new naver.maps.InfoWindow({
+      content:
+        '<div style="width:150px;text-align:center;padding:10px;">' +
+        store.name +
+        "</div>",
     });
 
-});
+    naver.maps.Event.addListener(marker, "click", function () {
+      if (infowindow.getMap()) {
+        infowindow.close();
+    } else {
+        infowindow.open(map, marker);
+    }
+    });
+
+    naverMarkers.push({ marker: marker, store: store });
+  });
+
+  updateStoreList();
+}
 
 function filterMarkers(categoryType, category) {
-    naverMarkers.forEach(function (marker) {
-        if (category === "전체" || marker.get(categoryType) === category) {
-            marker.setMap(map);
-        } else {
-            marker.setMap(null);
-        }
+  naverMarkers.forEach(function (nMarker) {
+    if (category === "전체" || nMarker.store[categoryType] === category) {
+      nMarker.marker.setMap(map);
+    } else {
+      nMarker.marker.setMap(null);
+    }
+  });
+
+  updateStoreList(categoryType, category);
+}
+
+function updateStoreList(categoryType, category) {
+  var storeList = document.getElementById("storeList");
+  storeList.innerHTML = "";
+
+  var filteredMarkers = naverMarkers.filter(function (nMarker) {
+    return category === "전체" || nMarker.store[categoryType] === category;
+  });
+
+  if (userPosition) {
+    filteredMarkers.sort(function (a, b) {
+      var distanceA = naver.maps.geometry.spherical.computeDistanceBetween(
+        userPosition,
+        a.marker.getPosition()
+      );
+      var distanceB = naver.maps.geometry.spherical.computeDistanceBetween(
+        userPosition,
+        b.marker.getPosition()
+      );
+      return distanceA - distanceB;
     });
+  }
+
+  filteredMarkers.forEach(function (nMarker) {
+    var li = document.createElement("li");
+    li.textContent = nMarker.store.name;
+    li.addEventListener("click", function () {
+      map.setCenter(nMarker.marker.getPosition());
+      map.setZoom(18);
+      var infowindow = new naver.maps.InfoWindow({
+        content:
+          '<div style="width:150px;text-align:center;padding:10px;">' +
+          nMarker.store.name +
+          "</div>",
+      });
+      if (currentInfoWindow) {
+        currentInfoWindow.close();
+      }
+      infowindow.open(map, nMarker.marker);
+      currentInfoWindow = infowindow;
+    });
+    storeList.appendChild(li);
+  });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("searchBtn").addEventListener("click", function () {
-        var searchInput = document.getElementById("searchInput").value.trim();
-        var found = false;
+  initMap();
 
-        naverMarkers.forEach(marker => {
-            if (marker.getTitle().includes(searchInput)) {
-                map.setCenter(marker.getPosition());
-                map.setZoom(18);
-                found = true;
-            }
+  function searchHandler(event) {
+    event.preventDefault(); // 기본 동작 막기
+    var searchInput = document.getElementById("searchInput").value.trim();
+    var found = false;
+
+    naverMarkers.forEach((nMarker) => {
+      if (nMarker.marker.getTitle().includes(searchInput)) {
+        map.setCenter(nMarker.marker.getPosition());
+        map.setZoom(18);
+        var infowindow = new naver.maps.InfoWindow({
+          content:
+            '<div style="width:150px;text-align:center;padding:10px;">' +
+            nMarker.store.name +
+            "</div>",
         });
-
-        if (!found) {
-            alert("해당 핀을 찾을 수 없습니다.");
+        if (currentInfoWindow) {
+          currentInfoWindow.close();
         }
+        infowindow.open(map, nMarker.marker);
+        currentInfoWindow = infowindow;
+        found = true;
+      }
+    });
+
+    if (!found) {
+      alert("해당 핀을 찾을 수 없습니다.");
+    }
+  }
+
+  document.getElementById("searchBtn").addEventListener("click", searchHandler);
+  document
+    .getElementById("searchInput")
+    .addEventListener("keypress", function (event) {
+      if (event.key === "Enter") {
+        searchHandler(event);
+      }
     });
 });
