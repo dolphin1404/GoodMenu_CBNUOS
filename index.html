@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="./goodmenu-map/public/favicon.ico" />
+    <link rel="icon" href="/favicon.ico">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta
       name="viewport"
@@ -320,13 +320,33 @@
 
     <!-- mySidenav -->
     <div id="mySidenav" class="sidenav">
-      <a
-        href="javascript:void(0)"
-        class="closebtn"
-        onclick="toggleNav('mySidenav')"
-        >&times;</a
-      >
-      <ul id = "stroeList"></ul>
+      <a href="javascript:void(0)" class="closebtn" onclick="toggleNav('mySidenav')">&times;</a>
+      <h2>음식점 리스트</h2>
+      <script src ="lists.js"></script>
+      <ul>
+        <li><a href="javascript:moveToMarker('명장국밥 개신점');">명장국밥 개신점</a></li>
+        <li><a href="javascript:moveToMarker('보통의 국수집');">보통의 국수집</a></li>
+        <li><a href="javascript:moveToMarker('구룡산 한식');">구룡산 한식</a></li>
+        <li><a href="javascript:moveToMarker('현고 들깨칼국수');">현고 들깨칼국수</a></li>
+        <li><a href="javascript:moveToMarker('사나이 짬뽕');">사나이 짬뽕</a></li>
+        <li><a href="javascript:moveToMarker('양성재 CU 편의점');">양성재 CU 편의점</a></li>
+        <li><a href="javascript:moveToMarker('제 1학생회관 이마트24 편의점');">제 1학생회관 이마트24 편의점</a></li>
+        <li><a href="javascript:moveToMarker('대학본부 이마트24 편의점');">대학본부 이마트24 편의점</a></li>
+        <li><a href="javascript:moveToMarker('양진재 CU 편의점');">양진재 CU 편의점</a></li>
+        <li><a href="javascript:moveToMarker('학연산 세븐일레븐 편의점');">학연산 세븐일레븐 편의점</a></li>
+        <li><a href="javascript:moveToMarker('중앙도서관 쿠비앤유');">중앙도서관 쿠비앤유</a></li>
+        <li><a href="javascript:moveToMarker('개신문화관 서점');">개신문화관 서점</a></li>
+        <li><a href="javascript:moveToMarker('해리초밥');">해리초밥</a></li>
+        <li><a href="javascript:moveToMarker('햇살왕만두');">햇살왕만두</a></li>
+        <li><a href="javascript:moveToMarker('황금냄비');">황금냄비</a></li>
+        <li><a href="javascript:moveToMarker('너구리');">너구리</a></li>
+        <li><a href="javascript:moveToMarker('달빛양조장');">달빛양조장</a></li>
+        <li><a href="javascript:moveToMarker('한마음정육식당');">한마음정육식당</a></li>
+        <li><a href="javascript:moveToMarker('달랑주점');">달랑주점</a></li>
+        <li><a href="javascript:moveToMarker('가락우동');">가락우동</a></li>
+        <li><a href="javascript:moveToMarker('지리산');">지리산</a></li>
+        <li><a href="javascript:moveToMarker('추억에 포장마차');">추억에 포장마차</a></li>
+      </ul>
     </div>
     <!-- shuffle -->
 
@@ -375,7 +395,7 @@
     </div>
     <div id="category-filter">
       <button onclick="filterMarkers('category','전체')">전체</button>
-      <button onclick="filterMarkers('category','서문')">서문</button>
+      <button onclick="filterMarkers('category','서문')">↙서문</button>
       <button onclick="filterMarkers('category','중문')">중문</button>
       <button onclick="filterMarkers('category','정문')">정문</button>
       <button onclick="filterMarkers('category','후문')">후문</button>

@@ -183,6 +183,65 @@ var markers = [
     category_1: "술집",
     name: "추억에 포장마차",
   },
+  {
+    position: new naver.maps.LatLng(36.632817, 127.459185),
+    category: "중문",
+    category_1: "한식",
+    name: "소주신랑 보쌈부인",
+    menu: "보쌈",
+  },
+  {
+    position: new naver.maps.LatLng(36.631885, 127.459612),
+    category: "중문",
+    category_1: "한식",
+    name: "구석집",
+    menu: "돼지두부 두루치기",
+  },
+  {
+    position: new naver.maps.LatLng(36.626073, 127.466204),
+    category: "후문",
+    category_1: "한식",
+    name: "동읍리 개신점",
+    menu: "돼지구이",
+  },
+  {
+    position: new naver.maps.LatLng(36.632829, 127.454729),
+    category: "정문",
+    category_1: "한식",
+    name: "미송",
+    menu: "한식",
+  },
+  {
+    position: new naver.maps.LatLng(36.632764, 127.454485),
+    category: "정문",
+    category_1: "양식",
+    name: "흥부네 왕돈까스",
+    menu: "돈까스",
+  },
+  {
+    position: new naver.maps.LatLng(36.632304, 127.457072),
+    category: "중문",
+    category_1: "한식",
+    name: "일미리금계찜닭",
+    menu: "찜닭",
+  },
+  {
+    position: new naver.maps.LatLng(36.631972, 127.459542),
+    category: "중문",
+    category_1: "일식",
+    name: "하마루",
+    menu: "우동",
+  },
+  {
+    position: new naver.maps.LatLng(36.628920, 127.452269),
+    category: "교내시설",
+    name: "이마트24 농생대점, 쿠비앤유",
+  },
+  {
+    position: new naver.maps.LatLng(36.627229, 127.460627),
+    category: "교내시설",
+    name: "카페쿠비엔유 5호점",
+  }
 ];
 
 var naverMarkers = [];
@@ -209,9 +268,9 @@ function loadMarkers() {
     naver.maps.Event.addListener(marker, "click", function () {
       if (infowindow.getMap()) {
         infowindow.close();
-    } else {
+      } else {
         infowindow.open(map, marker);
-    }
+      }
     });
 
     naverMarkers.push({ marker: marker, store: store });
@@ -317,3 +376,32 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 });
+
+function moveToMarker(markerTitle) {
+  var found = false;
+  naverMarkers.forEach(function (marker) {
+    if (marker.getTitle() === markerTitle) {
+      map.setCenter(marker.getPosition());
+      map.setZoom(18);
+      found = true;
+
+      if (currentInfoWindow) {
+        currentInfoWindow.close();
+      }
+
+      var infowindow = new naver.maps.InfoWindow({
+        content:
+          '<div style="width:150px;text-align:center;padding:10px;">' +
+          marker.getTitle() +
+          "</div>",
+      });
+
+      infowindow.open(map, marker);
+      currentInfoWindow = infowindow;
+    }
+  });
+
+  if (!found) {
+    alert("해당 핀을 찾을 수 없습니다.");
+  }
+}
