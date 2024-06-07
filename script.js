@@ -186,6 +186,7 @@ var markers = [
 ];
 
 var naverMarkers = [];
+var currentInfoWindow = null; // 현재 열려 있는 인포 윈도우를 추적하는 변수
 
 function loadMarkers() {
   markers.forEach(function (store) {
