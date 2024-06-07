@@ -162,8 +162,11 @@ markers.forEach(function (store) {
   naverMarkers.push(marker);
 
   naver.maps.Event.addListener(marker, "click", function () {
-    if (marker.getMap() && currentInfoWindow && currentInfoWindow.getAnchor() === marker) {
-      marker.setMap(null); // 마커를 맵에서 제거
+    if (
+      currentInfoWindow &&
+      currentInfoWindow.getMap() &&
+      currentInfoWindow.getAnchor() === marker
+    ) {
       currentInfoWindow.close();
       currentInfoWindow = null;
     } else {
@@ -238,13 +241,3 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
-
-function showMarker(map, marker) {
-  if (marker.setMap()) return;
-  marker.setMap(map);
-}
-
-function hideMarker(map, marker) {
-  if (!marker.setMap()) return;
-  marker.setMap(null);
-}
