@@ -10,7 +10,6 @@ var markerImage = {
   anchor: new naver.maps.Point(25, 52),
 };
 
-
 var markers = [
   {
     position: new naver.maps.LatLng(36.624303, 127.449607),
@@ -140,53 +139,82 @@ var markers = [
 ];
 
 var naverMarkers = [];
+var currentInfoWindow = null; // 현재 열려 있는 인포 윈도우를 추적하는 변수
 
 markers.forEach(function (store) {
-    var marker = new naver.maps.Marker({
-        position: store.position,
-        map: map,
-        icon: markerImage,
-        title: store.name
-    });
-    var infowindow = new naver.maps.InfoWindow({
-      content: '<div style="width:150px;text-align:center;padding:10px;">' + store.name + "</div>"
+  var marker = new naver.maps.Marker({
+    position: store.position,
+    map: map,
+    icon: markerImage,
+    title: store.name,
   });
-    marker.set("category", store.category);
-    marker.set("category_1", store.category_1);
 
-    naverMarkers.push(marker);
-    
-    naver.maps.Event.addListener(marker, "click", function () {
-        infowindow.open(map, marker);
-    });
+  var infowindow = new naver.maps.InfoWindow({
+    content:
+      '<div style="width:150px;text-align:center;padding:10px;">' +
+      store.name +
+      "</div>",
+  });
 
+  marker.set("category", store.category);
+  marker.set("category_1", store.category_1);
+
+  naverMarkers.push(marker);
+
+  naver.maps.Event.addListener(marker, "click", function () {
+    if (currentInfoWindow) {
+      currentInfoWindow.close();
+    }
+
+    infowindow.open(map, marker);
+    currentInfoWindow = infowindow;
+  });
 });
 
 function filterMarkers(categoryType, category) {
-    naverMarkers.forEach(function (marker) {
-        if (category === "전체" || marker.get(categoryType) === category) {
-            marker.setMap(map);
-        } else {
-            marker.setMap(null);
-        }
-    });
+  naverMarkers.forEach(function (marker) {
+    if (category === "전체" || marker.get(categoryType) === category) {
+      marker.setMap(map);
+    } else {
+      marker.setMap(null);
+    }
+  });
+
+  if (currentInfoWindow) {
+    currentInfoWindow.close(); // 필터링 시 인포 윈도우 닫기
+    currentInfoWindow = null;
+  }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("searchBtn").addEventListener("click", function () {
-        var searchInput = document.getElementById("searchInput").value.trim();
-        var found = false;
+  document.getElementById("searchBtn").addEventListener("click", function () {
+    var searchInput = document.getElementById("searchInput").value.trim();
+    var found = false;
 
-        naverMarkers.forEach(marker => {
-            if (marker.getTitle().includes(searchInput)) {
-                map.setCenter(marker.getPosition());
-                map.setZoom(18);
-                found = true;
-            }
+    naverMarkers.forEach((marker) => {
+      if (marker.getTitle().includes(searchInput)) {
+        map.setCenter(marker.getPosition());
+        map.setZoom(18);
+        found = true;
+
+        if (currentInfoWindow) {
+          currentInfoWindow.close();
+        }
+
+        var infowindow = new naver.maps.InfoWindow({
+          content:
+            '<div style="width:150px;text-align:center;padding:10px;">' +
+            marker.getTitle() +
+            "</div>",
         });
 
-        if (!found) {
-            alert("해당 핀을 찾을 수 없습니다.");
-        }
+        infowindow.open(map, marker);
+        currentInfoWindow = infowindow;
+      }
     });
+
+    if (!found) {
+      alert("해당 핀을 찾을 수 없습니다.");
+    }
+  });
 });
