@@ -11,42 +11,58 @@ body{
   font-family: CBNUJIKJI, Helvetica, sans-serif;
 }
 #category-filter {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    background-color: rgba(255, 255, 255, 0);
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    bottom: 50px;
+    right: 10px;
     display: flex;
+    flex-direction: column;
     gap: 10px;
+    z-index: 1000;
 }
 
 #category-filter button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
     padding: 10px;
+    background-color: white;
     border: none;
     border-radius: 5px;
-    background-color: #f0f0f0;
     cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-#category-filter button:hover {
-    background-color: #e0e0e0;
+#category-filter button i {
+    font-size: 20px;
+}
+
+#category-filter button .button-text {
+    display: inline;
+}
+
+@media (max-width: 768px) {
+    #category-filter button .button-text {
+        display: none;
+    }
+
+    #category-filter {
+        flex-direction: row;
+        gap: 5px;
+    }
 }
 #storeList {
     position: absolute;
-    bottom: 10px;
+    height: 100%; /* Take full height */
+    top: 110px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     list-style-type: none;
-    max-height: 200px;
+    max-height: 600px;
     overflow-y: auto;
     width: 90%;
 }

@@ -10,7 +10,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
     <title>충맛집 - 충대인의 밥 고민 해결</title>
-
+  
     <script
       src="https://kit.fontawesome.com/b7507b22be.js"
       crossorigin="anonymous"
@@ -20,14 +20,7 @@
       rel="stylesheet"
       type="text/css"
     />
-    <script
-      type="text/javascript"
-      src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=93gqruosnz"
-    ></script>
-    <script
-      type="text/javascript"
-      src="/goodmenu-map/src/MarkerClustering.js"
-    ></script>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=93gqruosnz&submodules=geocoder,geometry,drawing,visualization"></script>
 
     <style>
       body {
@@ -233,12 +226,12 @@
         <!--- school information --->
         <li>
           <a
-            href="./"
+            href="#"
             class="nav-link py-3 border-bottom rounded-0"
             title="Customers"
             data-bs-toggle="tooltip"
-            data-bs-placement="add information"
-            onclick="toggleNav('add information')"
+            data-bs-target="store-container"
+            onclick="toggleNav('store-container')"
           >
             <i class="fa-solid fa-school-flag fa-lg"></i>
           </a>
@@ -304,18 +297,16 @@
         </div>
       </div>
     </div>
-    <!-- add information-->
-    <div id="add information" class="sidenav">
+    <!-- closer store info -->
+    <div id="store-container" class="sidenav">
+      <h2>학교 정보</h2>
       <a
         href="javascript:void(0)"
         class="closebtn"
-        onclick="toggleNav('mySidenav')"
+        onclick="toggleNav('store-container')"
         >&times;</a
       >
-      <a href="#">About</a>
-      <a href="#">S</a>
-      <a href="#">Clients</a>
-      <a href="#">Contact</a>
+      <ul id="storeList"></ul>
     </div>
 
     <!-- mySidenav -->
@@ -394,13 +385,25 @@
       <div id="map"></div>
     </div>
     <div id="category-filter">
-      <button onclick="filterMarkers('category','전체')">전체</button>
-      <button onclick="filterMarkers('category','서문')">↙서문</button>
-      <button onclick="filterMarkers('category','중문')">중문</button>
-      <button onclick="filterMarkers('category','정문')">정문</button>
-      <button onclick="filterMarkers('category','후문')">후문</button>
-      <button onclick="filterMarkers('category','교내시설')">교내시설</button>
-    </div>
+      <button onclick="filterMarkers('category','전체')">
+          <i class="fa-solid fa-globe"></i> <span class="button-text">전체</span>
+      </button>
+      <button onclick="filterMarkers('category','서문')">
+        <i class="fa-solid fa-tree"></i></i> <span class="button-text">서문</span>
+      </button>
+      <button onclick="filterMarkers('category','중문')">
+        <i class="fa-solid fa-square-up-right"></i> <span class="button-text">중문</span>
+      </button>
+      <button onclick="filterMarkers('category','정문')">
+        <i class="fa-solid fa-dungeon"></i> <span class="button-text">정문</span>
+      </button>
+      <button onclick="filterMarkers('category','후문')">
+          <i class="fa-solid fa-arrow-right"></i> <span class="button-text">후문</span>
+      </button>
+      <button onclick="filterMarkers('category','교내시설')">
+          <i class="fa-solid fa-school"></i> <span class="button-text">교내시설</span>
+      </button>
+  </div>
     <script src="script.js"></script>
     <script src="navbar.js"></script>
     <script

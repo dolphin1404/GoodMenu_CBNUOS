@@ -233,7 +233,7 @@ var markers = [
     menu: "우동",
   },
   {
-    position: new naver.maps.LatLng(36.628920, 127.452269),
+    position: new naver.maps.LatLng(36.62892, 127.452269),
     category: "교내시설",
     name: "이마트24 농생대점, 쿠비앤유",
   },
@@ -241,7 +241,7 @@ var markers = [
     position: new naver.maps.LatLng(36.627229, 127.460627),
     category: "교내시설",
     name: "카페쿠비엔유 5호점",
-  }
+  },
 ];
 
 var naverMarkers = [];
@@ -272,11 +272,23 @@ function loadMarkers() {
         infowindow.open(map, marker);
       }
     });
-
+    var link = document.createElement("a");
+    link.href = `#${store.position.lat()},${store.position.lng()}`;
+    link.textContent = store.name;
+    link.onclick = function () {
+      map.setCenter(store.position);
+      map.setZoom(18);
+      if (currentInfoWindow) {
+        currentInfoWindow.close();
+      }
+      infowindow.open(map, marker);
+      currentInfoWindow = infowindow;
+      currentMarker = marker;
+    };
     naverMarkers.push({ marker: marker, store: store });
   });
 
-  updateStoreList();
+  updateStoreList("category", "전체");
 }
 
 function filterMarkers(categoryType, category) {
@@ -287,8 +299,26 @@ function filterMarkers(categoryType, category) {
       nMarker.marker.setMap(null);
     }
   });
-
   updateStoreList(categoryType, category);
+}
+
+function getDistance(lat1, lon1, lat2, lon2) {
+  function toRad(value) {
+    return (value * Math.PI) / 180;
+  }
+
+  var R = 6371; // km
+  var dLat = toRad(lat2 - lat1);
+  var dLon = toRad(lon2 - lon1);
+  var lat1 = toRad(lat1);
+  var lat2 = toRad(lat2);
+
+  var a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c;
+  return d * 1000; // meters
 }
 
 function updateStoreList(categoryType, category) {
@@ -301,38 +331,41 @@ function updateStoreList(categoryType, category) {
 
   if (userPosition) {
     filteredMarkers.sort(function (a, b) {
-      var distanceA = naver.maps.geometry.spherical.computeDistanceBetween(
-        userPosition,
-        a.marker.getPosition()
+      var distanceA = getDistance(
+        userPosition.lat(),
+        userPosition.lng(),
+        a.marker.getPosition().lat(),
+        a.marker.getPosition().lng()
       );
-      var distanceB = naver.maps.geometry.spherical.computeDistanceBetween(
-        userPosition,
-        b.marker.getPosition()
+      var distanceB = getDistance(
+        userPosition.lat(),
+        userPosition.lng(),
+        b.marker.getPosition().lat(),
+        b.marker.getPosition().lng()
       );
       return distanceA - distanceB;
     });
   }
 
   filteredMarkers.forEach(function (nMarker) {
+    var distance = userPosition ? getDistance(userPosition.lat(), userPosition.lng(), nMarker.marker.getPosition().lat(), nMarker.marker.getPosition().lng()) : 0;
     var li = document.createElement("li");
-    li.textContent = nMarker.store.name;
+    li.textContent = `${nMarker.store.name} (${distance.toFixed(2)}m)`;
     li.addEventListener("click", function () {
-      map.setCenter(nMarker.marker.getPosition());
-      map.setZoom(18);
-      var infowindow = new naver.maps.InfoWindow({
-        content:
-          '<div style="width:150px;text-align:center;padding:10px;">' +
-          nMarker.store.name +
-          "</div>",
-      });
-      if (currentInfoWindow) {
-        currentInfoWindow.close();
-      }
-      infowindow.open(map, nMarker.marker);
-      currentInfoWindow = infowindow;
+        map.setCenter(nMarker.marker.getPosition());
+        map.setZoom(18);
+        var infowindow = new naver.maps.InfoWindow({
+            content: '<div style="width:150px;text-align:center;padding:10px;">' + nMarker.store.name + "</div>",
+        });
+        if (currentInfoWindow) {
+            currentInfoWindow.close();
+        }
+        infowindow.open(map, nMarker.marker);
+        currentInfoWindow = infowindow;
+        currentMarker = nMarker.marker;
     });
     storeList.appendChild(li);
-  });
+});
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -354,10 +387,18 @@ document.addEventListener("DOMContentLoaded", function () {
             "</div>",
         });
         if (currentInfoWindow) {
-          currentInfoWindow.close();
+          if (currentMarker === nMarker.marker) {
+            currentInfoWindow.close();
+            currentInfoWindow = null;
+            currentMarker = null;
+            return;
+          } else {
+            currentInfoWindow.close();
+          }
         }
         infowindow.open(map, nMarker.marker);
         currentInfoWindow = infowindow;
+        currentMarker = nMarker.marker;
         found = true;
       }
     });
@@ -366,7 +407,7 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("해당 핀을 찾을 수 없습니다.");
     }
   }
-
+  // 검색기능
   document.getElementById("searchBtn").addEventListener("click", searchHandler);
   document
     .getElementById("searchInput")
@@ -375,33 +416,19 @@ document.addEventListener("DOMContentLoaded", function () {
         searchHandler(event);
       }
     });
-});
 
-function moveToMarker(markerTitle) {
-  var found = false;
-  naverMarkers.forEach(function (marker) {
-    if (marker.getTitle() === markerTitle) {
-      map.setCenter(marker.getPosition());
-      map.setZoom(18);
-      found = true;
-
-      if (currentInfoWindow) {
-        currentInfoWindow.close();
+  // Check if URL has coordinates and update the map
+  var hash = window.location.hash;
+  if (hash) {
+    var coords = hash.substring(1).split(",");
+    if (coords.length === 2) {
+      var lat = parseFloat(coords[0]);
+      var lng = parseFloat(coords[1]);
+      if (!isNaN(lat) && !isNaN(lng)) {
+        var position = new naver.maps.LatLng(lat, lng);
+        map.setCenter(position);
+        map.setZoom(18);
       }
-
-      var infowindow = new naver.maps.InfoWindow({
-        content:
-          '<div style="width:150px;text-align:center;padding:10px;">' +
-          marker.getTitle() +
-          "</div>",
-      });
-
-      infowindow.open(map, marker);
-      currentInfoWindow = infowindow;
     }
-  });
-
-  if (!found) {
-    alert("해당 핀을 찾을 수 없습니다.");
   }
-}
+});
