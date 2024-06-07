@@ -227,13 +227,15 @@ function searchMarkers() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("searchBtn").addEventListener("click", function () {
+  function handleSearch() {
     searchMarkers();
-  });
+  }
+
+  document.getElementById("searchBtn").addEventListener("click", handleSearch);
 
   document.getElementById("searchInput").addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
-      searchMarkers();
+      handleSearch();
     }
   });
 });
