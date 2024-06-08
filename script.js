@@ -16,7 +16,7 @@ function initMap() {
     zoomControl: true,
     minZoom: 14,
     zoomControlOptions: {
-      position: naver.maps.Position.TOP_RIGHT,
+      position: naver.maps.Position.LEFT_TOP,
     },
   });
 
@@ -33,7 +33,7 @@ function initMap() {
         map: map,
         title: "현재 위치",
         icon: {
-          url: HOME_PATH + "./goodmenu-map/public/favicon.ico",
+          url: HOME_PATH + "/goodmenu-map/public/favicon.ico",
           scaledSize: new naver.maps.Size(48, 39),
           origin: new naver.maps.Point(0, 0),
           anchor: new naver.maps.Point(0, 0),
@@ -302,6 +302,7 @@ function filterMarkers(categoryType, category) {
   updateStoreList(categoryType, category);
 }
 
+// 상점 거리 gps 기준 계산
 function getDistance(lat1, lon1, lat2, lon2) {
   function toRad(value) {
     return (value * Math.PI) / 180;
@@ -320,7 +321,7 @@ function getDistance(lat1, lon1, lat2, lon2) {
   var d = R * c;
   return d * 1000; // meters
 }
-
+// 가까운 상점 위치 나타내기
 function updateStoreList(categoryType, category) {
   var storeList = document.getElementById("storeList");
   storeList.innerHTML = "";

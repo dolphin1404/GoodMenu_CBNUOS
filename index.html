@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="/favicon.ico" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta
       name="viewport"
@@ -10,7 +10,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
     <title>충맛집 - 충대인의 밥 고민 해결</title>
-  
+
     <script
       src="https://kit.fontawesome.com/b7507b22be.js"
       crossorigin="anonymous"
@@ -20,27 +20,29 @@
       rel="stylesheet"
       type="text/css"
     />
-    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=93gqruosnz&submodules=geocoder,geometry,drawing,visualization"></script>
+    <script
+      type="text/javascript"
+      src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=93gqruosnz&submodules=geocoder,geometry,drawing,visualization"
+    ></script>
 
     <style>
       body {
         display: flex;
         margin: 0;
         font-family: CBNUJIKJI;
-      }
-      #sidebar {
-        width: 4.5rem;
         height: 100vh;
-        background-color: #f8f9fa;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+      }
+      h1 {
+        text-align: center;
+      }
+      h2 {
+        text-align: center;
       }
 
       #mapContainer {
         position: relative;
         width: 100%;
-        height: 100vh;
+        flex-grow: 1;
         overflow: hidden;
       }
 
@@ -90,14 +92,13 @@
         text-align: center;
         overflow: auto;
       }
-
       .sidenav {
-        height: 100%;
         width: 0;
+        height: 100%;
         position: fixed;
-        z-index: 1;
+        z-index: 2;
         top: 0;
-        left: 4.5rem; /* Adjusted to appear next to the sidebar */
+        left: 4.5rem;
         background-color: #f5f8f5f1;
         overflow-x: hidden;
         transition: 0.5s;
@@ -124,53 +125,27 @@
         font-size: 36px;
         margin-left: 50px;
       }
-      .container {
-        text-align: center;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
-      .container h1 {
-        margin-bottom: 20px;
-      }
-      .button-group {
-        margin-bottom: 20px;
-      }
-      .button-group div {
-        margin-bottom: 10px;
-      }
-      button {
-        margin: 5px;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        background-color: #e0e0e0;
-        cursor: pointer;
-      }
-      button.selected {
-        background-color: #e88a74;
-        color: #fff;
-      }
-      #result {
-        margin-top: 20px;
-        font-size: 1.5em;
-        font-weight: bold;
-      }
-      .footer {
-        margin-top: 20px;
-        color: #888;
-      }
-      .footer a {
-        color: #e88a74;
-        text-decoration: none;
-      }
-      @media screen and (max-height: 450px) {
+      /* Hide left sidebar on mobile and show bottom navbar */
+      @media screen and (max-width: 768px) {
         .sidenav {
-          padding-top: 15px;
+          left: 0rem;
+          width: 100%;
+          height: 0;
+          bottom: 3rem;
+          top: auto;
+          padding-top: 0;
         }
         .sidenav a {
-          font-size: 18px;
+          padding: 8px 8px 8px 32px;
+          text-decoration: none;
+          font-size: 25px;
+          color: #000000;
+          display: block;
+          transition: 0.3s;
+        }
+
+        .sidenav a:hover {
+          color: #3c8fb9;
         }
       }
     </style>
@@ -179,10 +154,8 @@
   <body>
     <div class="b-example-divider b-example-vr"></div>
     <!-- ? -->
-    <div
-      class="d-flex flex-column flex-shrink-0 bg-body-tertiary"
-      style="width: 4.5rem"
-    >
+    <!-- 0608 edit id plus -->
+    <div id="sidebar">
       <a
         href="#"
         class="d-block p-3 link-body-emphasis text-decoration-none"
@@ -299,45 +272,28 @@
     </div>
     <!-- closer store info -->
     <div id="store-container" class="sidenav">
-      <h2>학교 정보</h2>
       <a
         href="javascript:void(0)"
         class="closebtn"
         onclick="toggleNav('store-container')"
         >&times;</a
       >
-      <ul id="storeList"></ul>
+      <div class="container">
+        <div class="button-group">
+          <h2>내 주변 맛집</h2>
+          <ul id="storeList"></ul>
+        </div>
+      </div>
     </div>
 
     <!-- mySidenav -->
     <div id="mySidenav" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" onclick="toggleNav('mySidenav')">&times;</a>
-      <h2>음식점 리스트</h2>
-      <script src ="lists.js"></script>
-      <ul>
-        <li><a href="javascript:moveToMarker('명장국밥 개신점');">명장국밥 개신점</a></li>
-        <li><a href="javascript:moveToMarker('보통의 국수집');">보통의 국수집</a></li>
-        <li><a href="javascript:moveToMarker('구룡산 한식');">구룡산 한식</a></li>
-        <li><a href="javascript:moveToMarker('현고 들깨칼국수');">현고 들깨칼국수</a></li>
-        <li><a href="javascript:moveToMarker('사나이 짬뽕');">사나이 짬뽕</a></li>
-        <li><a href="javascript:moveToMarker('양성재 CU 편의점');">양성재 CU 편의점</a></li>
-        <li><a href="javascript:moveToMarker('제 1학생회관 이마트24 편의점');">제 1학생회관 이마트24 편의점</a></li>
-        <li><a href="javascript:moveToMarker('대학본부 이마트24 편의점');">대학본부 이마트24 편의점</a></li>
-        <li><a href="javascript:moveToMarker('양진재 CU 편의점');">양진재 CU 편의점</a></li>
-        <li><a href="javascript:moveToMarker('학연산 세븐일레븐 편의점');">학연산 세븐일레븐 편의점</a></li>
-        <li><a href="javascript:moveToMarker('중앙도서관 쿠비앤유');">중앙도서관 쿠비앤유</a></li>
-        <li><a href="javascript:moveToMarker('개신문화관 서점');">개신문화관 서점</a></li>
-        <li><a href="javascript:moveToMarker('해리초밥');">해리초밥</a></li>
-        <li><a href="javascript:moveToMarker('햇살왕만두');">햇살왕만두</a></li>
-        <li><a href="javascript:moveToMarker('황금냄비');">황금냄비</a></li>
-        <li><a href="javascript:moveToMarker('너구리');">너구리</a></li>
-        <li><a href="javascript:moveToMarker('달빛양조장');">달빛양조장</a></li>
-        <li><a href="javascript:moveToMarker('한마음정육식당');">한마음정육식당</a></li>
-        <li><a href="javascript:moveToMarker('달랑주점');">달랑주점</a></li>
-        <li><a href="javascript:moveToMarker('가락우동');">가락우동</a></li>
-        <li><a href="javascript:moveToMarker('지리산');">지리산</a></li>
-        <li><a href="javascript:moveToMarker('추억에 포장마차');">추억에 포장마차</a></li>
-      </ul>
+      <a
+        href="javascript:void(0)"
+        class="closebtn"
+        onclick="toggleNav('mySidenav')"
+        >&times;</a
+      >
     </div>
     <!-- shuffle -->
 
@@ -349,10 +305,9 @@
         onclick="toggleNav('ranSidenav')"
         >&times;</a
       >
-      <script src ="recommendMenu.js"></script>
+      <script src="recommendMenu.js"></script>
       <div class="container">
-        <h1>오늘 뭐먹지?</h1> 
-        <h3>메뉴 추천기가 정해드려요!</h3>
+        <h1>오늘 뭐먹지?</h1>
         <div class="button-group">
           <div>
             <button class="category" data-category="전체">전체</button>
@@ -386,24 +341,84 @@
     </div>
     <div id="category-filter">
       <button onclick="filterMarkers('category','전체')">
-          <i class="fa-solid fa-globe"></i> <span class="button-text">전체</span>
+        <i class="fa-solid fa-globe"></i> <span class="button-text">전체</span>
       </button>
       <button onclick="filterMarkers('category','서문')">
-        <i class="fa-solid fa-tree"></i></i> <span class="button-text">서문</span>
+        <i class="fa-solid fa-tree"></i> <span class="button-text">서문</span>
       </button>
       <button onclick="filterMarkers('category','중문')">
-        <i class="fa-solid fa-square-up-right"></i> <span class="button-text">중문</span>
+        <i class="fa-solid fa-square-up-right"></i>
+        <span class="button-text">중문</span>
       </button>
       <button onclick="filterMarkers('category','정문')">
-        <i class="fa-solid fa-dungeon"></i> <span class="button-text">정문</span>
+        <i class="fa-solid fa-dungeon"></i>
+        <span class="button-text">정문</span>
       </button>
       <button onclick="filterMarkers('category','후문')">
-          <i class="fa-solid fa-arrow-right"></i> <span class="button-text">후문</span>
+        <i class="fa-solid fa-arrow-right"></i>
+        <span class="button-text">후문</span>
       </button>
       <button onclick="filterMarkers('category','교내시설')">
-          <i class="fa-solid fa-school"></i> <span class="button-text">교내시설</span>
+        <i class="fa-solid fa-school"></i>
+        <span class="button-text">교내시설</span>
       </button>
-  </div>
+    </div>
+    <!-- Navbar for mobile -->
+    <div class="bottom-navbar">
+      <ul class="nav nav-pills nav-flush flex-row mb-auto text-center">
+        <li class="nav-item">
+          <a
+            href="./index.html"
+            class="nav-link active py-3 border-bottom rounded-0"
+            aria-current="page"
+            title="Home"
+          >
+            <i class="fa-solid fa-house fa-xl"></i>
+          </a>
+        </li>
+        <li>
+          <a
+            href="#"
+            class="nav-link py-3 border-bottom rounded-0"
+            title="search"
+            data-bs-toggle="modal"
+            data-bs-target="#searchModal"
+          >
+            <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+          </a>
+        </li>
+        <li>
+          <a
+            href="#"
+            class="nav-link py-3 border-bottom rounded-0"
+            title="Customers"
+            onclick="toggleNav('store-container')"
+          >
+            <i class="fa-solid fa-school-flag fa-lg"></i>
+          </a>
+        </li>
+        <li>
+          <a
+            href="#"
+            class="nav-link py-3 border-bottom rounded-0"
+            title="Stars"
+            onclick="toggleNav('mySidenav')"
+          >
+            <i class="fa-solid fa-star fa-lg"></i>
+          </a>
+        </li>
+        <li>
+          <a
+            href="#"
+            class="nav-link py-3 border-bottom rounded-0"
+            title="Products"
+            onclick="toggleNav('ranSidenav')"
+          >
+            <i class="fa-solid fa-shuffle fa-lg"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
     <script src="script.js"></script>
     <script src="navbar.js"></script>
     <script
