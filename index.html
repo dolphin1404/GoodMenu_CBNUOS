@@ -125,13 +125,21 @@
         font-size: 36px;
         margin-left: 50px;
       }
+      #Titlebox {
+        position: absolute;
+        top: 1rem;
+        left: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
       /* Hide left sidebar on mobile and show bottom navbar */
       @media screen and (max-width: 768px) {
         .sidenav {
           left: 0rem;
           width: 100%;
           height: 0;
-          bottom: 3rem;
+          bottom: 3.3rem;
           top: auto;
           padding-top: 0;
         }
@@ -146,6 +154,14 @@
 
         .sidenav a:hover {
           color: #3c8fb9;
+        }
+        #Titlebox {
+          position: unset;
+          top: 1rem;
+          left: 0;
+          width: 100%;
+          box-sizing: border-box;
+          padding-top: 1rem;
         }
       }
     </style>
@@ -272,18 +288,16 @@
     </div>
     <!-- closer store info -->
     <div id="store-container" class="sidenav">
+      <div id="Titlebox">
+        <h2>내 주변 맛집</h2>
+      </div>
       <a
         href="javascript:void(0)"
         class="closebtn"
         onclick="toggleNav('store-container')"
         >&times;</a
       >
-      <div class="container">
-        <div class="button-group">
-          <h2>내 주변 맛집</h2>
-          <ul id="storeList"></ul>
-        </div>
-      </div>
+      <ul id="storeList"></ul>
     </div>
 
     <!-- mySidenav -->
@@ -361,6 +375,10 @@
       <button onclick="filterMarkers('category','교내시설')">
         <i class="fa-solid fa-school"></i>
         <span class="button-text">교내시설</span>
+      </button>
+      <button id="schoolLocationBtn">
+        <i class="fa-solid fa-location-crosshairs"></i>
+        <span class="button-text">학교위치</span>
       </button>
     </div>
     <!-- Navbar for mobile -->

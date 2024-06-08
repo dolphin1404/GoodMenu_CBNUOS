@@ -16,7 +16,7 @@ function initMap() {
     zoomControl: true,
     minZoom: 14,
     zoomControlOptions: {
-      position: naver.maps.Position.LEFT_TOP,
+      position: naver.maps.Position.TOP_RIGHT,
     },
   });
 
@@ -349,24 +349,34 @@ function updateStoreList(categoryType, category) {
   }
 
   filteredMarkers.forEach(function (nMarker) {
-    var distance = userPosition ? getDistance(userPosition.lat(), userPosition.lng(), nMarker.marker.getPosition().lat(), nMarker.marker.getPosition().lng()) : 0;
+    var distance = userPosition
+      ? getDistance(
+          userPosition.lat(),
+          userPosition.lng(),
+          nMarker.marker.getPosition().lat(),
+          nMarker.marker.getPosition().lng()
+        )
+      : 0;
     var li = document.createElement("li");
     li.textContent = `${nMarker.store.name} (${distance.toFixed(2)}m)`;
     li.addEventListener("click", function () {
-        map.setCenter(nMarker.marker.getPosition());
-        map.setZoom(18);
-        var infowindow = new naver.maps.InfoWindow({
-            content: '<div style="width:150px;text-align:center;padding:10px;">' + nMarker.store.name + "</div>",
-        });
-        if (currentInfoWindow) {
-            currentInfoWindow.close();
-        }
-        infowindow.open(map, nMarker.marker);
-        currentInfoWindow = infowindow;
-        currentMarker = nMarker.marker;
+      map.setCenter(nMarker.marker.getPosition());
+      map.setZoom(18);
+      var infowindow = new naver.maps.InfoWindow({
+        content:
+          '<div style="width:150px;text-align:center;padding:10px;">' +
+          nMarker.store.name +
+          "</div>",
+      });
+      if (currentInfoWindow) {
+        currentInfoWindow.close();
+      }
+      infowindow.open(map, nMarker.marker);
+      currentInfoWindow = infowindow;
+      currentMarker = nMarker.marker;
     });
     storeList.appendChild(li);
-});
+  });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -433,3 +443,36 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 });
+
+// Default school coordinates
+var schoolLocation = new naver.maps.LatLng(36.628, 127.459); // Replace with your school's coordinates
+function moveToCurrentLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function (position) {
+        var currentLocation = new naver.maps.LatLng(
+          position.coords.latitude,
+          position.coords.longitude
+        );
+        map.setCenter(currentLocation);
+        map.setZoom(16); // Adjust zoom level as needed
+      },
+      function () {
+        // If user denies geolocation, move to the default school location
+        map.setCenter(schoolLocation);
+        map.setZoom(16); // Default zoom level
+      }
+    );
+  } else {
+    // If browser doesn't support geolocation, move to the default school location
+    map.setCenter(schoolLocation);
+    map.setZoom(16); // Default zoom level
+  }
+}
+
+// Add the event listener for the button
+document
+  .getElementById("schoolLocationBtn")
+  .addEventListener("click", function () {
+    moveToCurrentLocation();
+  });

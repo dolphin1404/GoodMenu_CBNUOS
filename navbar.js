@@ -27,7 +27,7 @@ function toggleNav(navId) {
 
 function openNav(nav) {
     if (window.innerWidth <= 768) {
-        nav.style.height = "50%";
+        nav.style.height = "40%";
     } else {
         nav.style.width = "400px";
     }
