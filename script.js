@@ -131,7 +131,7 @@ var markers = [
   },
   {
     position: new naver.maps.LatLng(36.6324919, 127.4561638),
-    category: "중문",
+    category: "정문",
     category_1: "한식",
     name: "햇살왕만두",
   },
@@ -161,7 +161,7 @@ var markers = [
   },
   {
     position: new naver.maps.LatLng(36.631785, 127.460717),
-    category: "중문",
+    category: "정문",
     category_1: "술집",
     name: "달랑주점",
   },
@@ -291,7 +291,6 @@ function loadMarkers() {
   updateStoreList("category", "전체");
 }
 
-// 카테고리 기능
 function filterMarkers(categoryType, category) {
   naverMarkers.forEach(function (nMarker) {
     if (category === "전체" || nMarker.store[categoryType] === category) {
@@ -445,18 +444,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// Default coordinates
+// Default school coordinates
 var schoolLocation = new naver.maps.LatLng(36.628, 127.459); // Replace with your school's coordinates
-var westLocation = new naver.maps.LatLng(36.626117, 127.452091); // 서문
-var mainloadLocation = new naver.maps.LatLng(36.6324919, 127.4526122); // 정문
-var backloadLocation = new naver.maps.LatLng(36.625669, 127.463756); // 후문
-var middleLocation = new naver.maps.LatLng(36.632358, 127.458485); // 중문
-
-function moveToLocation(location) {
-  map.setCenter(location);
-  map.setZoom(17); // Adjust zoom level as needed
-}
-
 function moveToCurrentLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
@@ -465,68 +454,25 @@ function moveToCurrentLocation() {
           position.coords.latitude,
           position.coords.longitude
         );
-        moveToLocation(currentLocation);
+        map.setCenter(currentLocation);
+        map.setZoom(16); // Adjust zoom level as needed
       },
       function () {
         // If user denies geolocation, move to the default school location
-        moveToLocation(schoolLocation);
+        map.setCenter(schoolLocation);
+        map.setZoom(16); // Default zoom level
       }
     );
   } else {
     // If browser doesn't support geolocation, move to the default school location
-    moveToLocation(schoolLocation);
+    map.setCenter(schoolLocation);
+    map.setZoom(16); // Default zoom level
   }
 }
 
-// Add the event listener for the school location button
+// Add the event listener for the button
 document
   .getElementById("schoolLocationBtn")
   .addEventListener("click", function () {
     moveToCurrentLocation();
   });
-
-// Add event listeners for other location buttons
-document.getElementById("mainBtn").addEventListener("click", function () {
-  moveToLocation(schoolLocation);
-  map.setZoom(16);
-});
-document.getElementById("mainBtn1").addEventListener("click", function () {
-  moveToLocation(schoolLocation);
-});
-document
-  .getElementById("westLocationBtn")
-  .addEventListener("click", function () {
-    moveToLocation(westLocation);
-  });
-
-document
-  .getElementById("mainloadLocationBtn")
-  .addEventListener("click", function () {
-    moveToLocation(mainloadLocation);
-  });
-
-document
-  .getElementById("backloadLocationBtn")
-  .addEventListener("click", function () {
-    moveToLocation(backloadLocation);
-  });
-
-document
-  .getElementById("middleLocationBtn")
-  .addEventListener("click", function () {
-    moveToLocation(middleLocation);
-  });
-
-
-// 처음 사용자용 가이드
-
-document.addEventListener("DOMContentLoaded", function () {
-  if (!localStorage.getItem("hasVisited")) {
-    document.getElementById("userGuideModal").style.display = "block";
-  }
-});
-
-function closeGuide() {
-  document.getElementById("userGuideModal").style.display = "none";
-  localStorage.setItem("hasVisited", "true");
-}
