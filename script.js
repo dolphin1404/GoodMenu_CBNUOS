@@ -83,7 +83,7 @@ var markers = [
     name: "현고 들깨칼국수",
   },
   {
-    position: new naver.maps.LatLng(36.624639, 127.467022)점
+    position: new naver.maps.LatLng(36.624639, 127.467022),
     category: "후문",
     category_1: "한식",
     name: "사나이 짬뽕",
