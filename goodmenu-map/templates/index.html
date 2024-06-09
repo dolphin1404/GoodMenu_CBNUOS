@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>Store List and Map</title>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/stores')
+                .then(response => response.json())
+                .then(data => {
+                    const storeList = document.getElementById('storeList');
+                    data.forEach(store => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = store.name;
+                        storeList.appendChild(listItem);
+                    });
+                })
+                .catch(error => console.error('Error loading store data:', error));
+        });
+    </script>
+    <style>
+        #storeList {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #storeList li {
+            padding: 8px;
+            background: #ffffff;
+            margin-bottom: 4px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Store List</h1>
+        <ul id="storeList"></ul>
+    </div>
+</body>
+</html>

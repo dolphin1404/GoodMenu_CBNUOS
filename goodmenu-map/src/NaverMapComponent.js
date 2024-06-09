@@ -7,29 +7,43 @@ const containerStyle = {
 };
 
 function NaverMapComponent() {
-  const [restaurants, setRestaurants] = useState([]);
+  const [stores, setStores] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/restaurants')
+    axios.get('http://localhost:3000/stores')
       .then(response => {
-        setRestaurants(response.data);
+        setStores(response.data);
         const mapOptions = {
           center: new window.naver.maps.LatLng(37.5665, 126.9780),
           zoom: 15
         };
         const map = new window.naver.maps.Map('map', mapOptions);
 
-        response.data.forEach(restaurant => {
+        response.data.forEach(store => {
           new window.naver.maps.Marker({
-            position: new window.naver.maps.LatLng(restaurant.latitude, restaurant.longitude),
+            position: new window.naver.maps.LatLng(store.latitude, store.longitude),
             map: map,
-            title: restaurant.name
+            title: store.name
           });
         });
       });
   }, []);
 
-  return <div id="map" style={containerStyle} />;
+  return (
+    <div>
+      <div id="map" style={containerStyle} />
+      <div>
+        {stores.map(store => (
+          <div key={store.id} className="store">
+            <h2>{store.name}</h2>
+            <p>Phone: {store.phone}</p>
+            <p>Menu: {store.menu}</p>
+            <a href={store.link} target="_blank" rel="noopener noreferrer">Link</a>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default NaverMapComponent;
