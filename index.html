@@ -354,33 +354,40 @@
       <div id="map"></div>
     </div>
     <div id="category-filter">
-      <button onclick="filterMarkers('category','전체')">
+      <button id="mainBtn" onclick="filterMarkers('category','전체')">
         <i class="fa-solid fa-globe"></i> <span class="button-text">전체</span>
       </button>
-      <button onclick="filterMarkers('category','서문')">
+      <button id="westLocationBtn" onclick="filterMarkers('category','서문')">
         <i class="fa-solid fa-tree"></i> <span class="button-text">서문</span>
       </button>
-      <button onclick="filterMarkers('category','중문')">
+      <button id="middleLocationBtn" onclick="filterMarkers('category','중문')">
         <i class="fa-solid fa-square-up-right"></i>
         <span class="button-text">중문</span>
       </button>
-      <button onclick="filterMarkers('category','정문')">
+      <button
+        id="mainloadLocationBtn"
+        onclick="filterMarkers('category','정문')"
+      >
         <i class="fa-solid fa-dungeon"></i>
         <span class="button-text">정문</span>
       </button>
-      <button onclick="filterMarkers('category','후문')">
+      <button
+        id="backloadLocationBtn"
+        onclick="filterMarkers('category','후문')"
+      >
         <i class="fa-solid fa-arrow-right"></i>
         <span class="button-text">후문</span>
       </button>
-      <button onclick="filterMarkers('category','교내시설')">
+      <button id="mainBtn1" onclick="filterMarkers('category','교내시설')">
         <i class="fa-solid fa-school"></i>
         <span class="button-text">교내시설</span>
       </button>
       <button id="schoolLocationBtn">
         <i class="fa-solid fa-location-crosshairs"></i>
-        <span class="button-text">학교위치</span>
+        <span class="button-text">내 위치</span>
       </button>
     </div>
+
     <!-- Navbar for mobile -->
     <div class="bottom-navbar">
       <ul class="nav nav-pills nav-flush flex-row mb-auto text-center">
@@ -436,6 +443,49 @@
           </a>
         </li>
       </ul>
+    </div>
+    <div id="userGuideModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeGuide()">&times;</span>
+        <h2>환⭐ 충맛집 ⭐영</h2>
+        <p>어서오세요!</p>
+        <p>
+          충맛집은 충대생이라면 꼭 가봐야 하는 충북대 맛집 리스트를 정리했어요.
+        </p>
+        <ul>
+          <li>
+            <i class="fa-solid fa-house fa-lg"></i> 메인: 메인으로 돌아가요
+          </li>
+          <li>
+            <i class="fa-solid fa-magnifying-glass fa-lg"></i> 검색: 장소를
+            검색해요
+          </li>
+          <li>
+            <i class="fa-solid fa-school-flag fa-lg"></i> 교내 정보: 교내 정보를
+            알려드려요
+          </li>
+          <li>
+            <i class="fa-solid fa-star fa-lg"></i> 즐겨찾기 : 나만의 즐겨찾기를
+            제공해요
+          </li>
+          <li>
+            <i class="fa-solid fa-shuffle fa-lg"></i> 메뉴 추천: 충맛집이 오늘
+            메뉴를 추천해드려요
+          </li>
+          <li>
+            <i class="fa-solid fa-circle-info" fa-lg></i> 정보 : 충맛집의 정보를
+            알려드려요
+          </li>
+        </ul>
+        <p>카테고리</p>
+        <ul>
+          <li>
+            <i class="fa-solid fa-globe"></i> 전체 : 모든 리스트를 보여드려요
+          </li>
+          <li></li>
+        </ul>
+        <button onclick="closeGuide()">Got it!</button>
+      </div>
     </div>
     <script src="script.js"></script>
     <script src="navbar.js"></script>
