@@ -2,45 +2,47 @@
 <html>
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
     />
-    <title>네이버 지도와 검색창</title>
+    <link rel="stylesheet" href="styles.css" />
+    <title>충맛집 - 충대인의 밥 고민 해결</title>
 
     <script
       src="https://kit.fontawesome.com/b7507b22be.js"
       crossorigin="anonymous"
     ></script>
     <link
-      href="./bootstrap4/css/bootstrap.min.css"
+      href="./goodmenu-map/public/bootstrap4/css/bootstrap.min.css"
       rel="stylesheet"
       type="text/css"
     />
     <script
       type="text/javascript"
-      src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=93gqruosnz"
+      src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=93gqruosnz&submodules=geocoder,geometry,drawing,visualization"
     ></script>
 
     <style>
       body {
         display: flex;
         margin: 0;
-      }
-      #sidebar {
-        width: 4.5rem;
+        font-family: CBNUJIKJI;
         height: 100vh;
-        background-color: #f8f9fa;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+      }
+      h1 {
+        text-align: center;
+      }
+      h2 {
+        text-align: center;
       }
 
       #mapContainer {
         position: relative;
         width: 100%;
-        height: 100vh;
+        flex-grow: 1;
         overflow: hidden;
       }
 
@@ -90,32 +92,14 @@
         text-align: center;
         overflow: auto;
       }
-
-      #container1 {
-        bottom: -200px;
-        z-index: 999;
-      }
-
-      #container2 {
-        bottom: -200px;
-        left: 33.333%;
-        z-index: 998;
-      }
-
-      #container3 {
-        bottom: -200px;
-        left: 66.666%;
-        z-index: 997;
-        background-color: lightyellow;
-      }
       .sidenav {
-        height: 100%;
         width: 0;
+        height: 100%;
         position: fixed;
-        z-index: 1;
+        z-index: 2;
         top: 0;
-        left: 4.5rem; /* Adjusted to appear next to the sidebar */
-        background-color: #fcedaa;
+        left: 4.5rem;
+        background-color: #f5f8f5f1;
         overflow-x: hidden;
         transition: 0.5s;
         padding-top: 60px;
@@ -125,13 +109,13 @@
         padding: 8px 8px 8px 32px;
         text-decoration: none;
         font-size: 25px;
-        color: #363636;
+        color: #000000;
         display: block;
         transition: 0.3s;
       }
 
       .sidenav a:hover {
-        color: #a9cfe2;
+        color: #3c8fb9;
       }
 
       .sidenav .closebtn {
@@ -141,24 +125,53 @@
         font-size: 36px;
         margin-left: 50px;
       }
-      @media screen and (max-height: 450px) {
+      #Titlebox {
+        position: absolute;
+        top: 1rem;
+        left: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      /* Hide left sidebar on mobile and show bottom navbar */
+      @media screen and (max-width: 768px) {
         .sidenav {
-          padding-top: 15px;
+          left: 0rem;
+          width: 100%;
+          height: 0;
+          bottom: 3.3rem;
+          top: auto;
+          padding-top: 0;
         }
         .sidenav a {
-          font-size: 18px;
+          padding: 8px 8px 8px 32px;
+          text-decoration: none;
+          font-size: 25px;
+          color: #000000;
+          display: block;
+          transition: 0.3s;
+        }
+
+        .sidenav a:hover {
+          color: #3c8fb9;
+        }
+        #Titlebox {
+          position: unset;
+          top: 1rem;
+          left: 0;
+          width: 100%;
+          box-sizing: border-box;
+          padding-top: 1rem;
         }
       }
     </style>
-    <link href="sidebars.css" rel="stylesheet" />
+    <!-- <link href="sidebars.css" rel="stylesheet" /> -->
   </head>
   <body>
     <div class="b-example-divider b-example-vr"></div>
     <!-- ? -->
-    <div
-      class="d-flex flex-column flex-shrink-0 bg-body-tertiary"
-      style="width: 4.5rem"
-    >
+    <!-- 0608 edit id plus -->
+    <div id="sidebar">
       <a
         href="#"
         class="d-block p-3 link-body-emphasis text-decoration-none"
@@ -177,7 +190,7 @@
       <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
         <li class="nav-item">
           <a
-            href="/"
+            href="./index.html"
             class="nav-link active py-3 border-bottom rounded-0"
             aria-current="page"
             title="Home"
@@ -206,7 +219,8 @@
             class="nav-link py-3 border-bottom rounded-0"
             title="Customers"
             data-bs-toggle="tooltip"
-            data-bs-placement="right"
+            data-bs-target="store-container"
+            onclick="toggleNav('store-container')"
           >
             <i class="fa-solid fa-school-flag fa-lg"></i>
           </a>
@@ -231,7 +245,8 @@
             class="nav-link py-3 border-bottom rounded-0"
             title="Products"
             data-bs-toggle="tooltip"
-            data-bs-placement="right"
+            data-bs-target="ranSidenav"
+            onclick="toggleNav('ranSidenav')"
           >
             <i class="fa-solid fa-shuffle fa-lg"></i>
           </a>
@@ -256,9 +271,13 @@
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
-                  id = "searchInput"
+                  id="searchInput"
                 />
-                <button class="btn btn-outline-success" id="searchBtn" type="button">
+                <button
+                  class="btn btn-outline-success"
+                  id="searchBtn"
+                  type="button"
+                >
                   <i class="fa-solid fa-magnifying-glass fa-lg"></i>
                 </button>
               </form>
@@ -267,154 +286,213 @@
         </div>
       </div>
     </div>
-    <!-- mySidenav -->
-    <div id="mySidenav" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" onclick="toggleNav('mySidenav')"
+    <!-- closer store info -->
+    <div id="store-container" class="sidenav">
+      <div id="Titlebox">
+        <h2>내 주변 맛집</h2>
+      </div>
+      <a
+        href="javascript:void(0)"
+        class="closebtn"
+        onclick="toggleNav('store-container')"
         >&times;</a
       >
-      <a href="#">About</a>
-      <a href="#">Services</a>
-      <a href="#">Clients</a>
-      <a href="#">Contact</a>
+      <ul id="storeList"></ul>
+    </div>
+
+    <!-- mySidenav -->
+    <div id="mySidenav" class="sidenav">
+      <a
+        href="javascript:void(0)"
+        class="closebtn"
+        onclick="toggleNav('mySidenav')"
+        >&times;</a
+      >
+    </div>
+    <!-- shuffle -->
+
+    <!-- Random Sidenav -->
+    <div id="ranSidenav" class="sidenav">
+      <a
+        href="javascript:void(0)"
+        class="closebtn"
+        onclick="toggleNav('ranSidenav')"
+        >&times;</a
+      >
+      <script src="recommendMenu.js"></script>
+      <div class="container">
+        <h1>오늘 뭐먹지?</h1>
+        <div class="button-group">
+          <div>
+            <button class="category" data-category="전체">전체</button>
+            <button class="category selected" data-category="식사">식사</button>
+            <button class="category" data-category="요리">요리</button>
+            <button class="category" data-category="간식">간식</button>
+          </div>
+          <div>
+            <button class="type" data-type="전체">전체</button>
+            <button class="type selected" data-type="한식">한식</button>
+            <button class="type" data-type="중식">중식</button>
+            <button class="type" data-type="양식">양식</button>
+          </div>
+          <div>
+            <button class="situation" data-situation="전체">전체</button>
+            <button class="situation selected" data-situation="혼밥">
+              혼밥
+            </button>
+            <button class="situation" data-situation="단체">단체</button>
+            <button class="situation" data-situation="데이트">데이트</button>
+          </div>
+        </div>
+        <button id="recommendBtn">추천 받기</button>
+        <div id="result"></div>
+        <div id="loading">오늘의 메뉴는...</div>
+      </div>
     </div>
     <!-- mapContainer -->
     <div id="mapContainer">
       <div id="map"></div>
     </div>
-    <script>
-      var mapOptions = {
-        center: new naver.maps.LatLng(36.627620, 127.454883),
-        zoom: 16,
-      };
+    <div id="category-filter">
+      <button id="mainBtn" onclick="filterMarkers('category','전체')">
+        <i class="fa-solid fa-globe"></i> <span class="button-text">전체</span>
+      </button>
+      <button id="westLocationBtn" onclick="filterMarkers('category','서문')">
+        <i class="fa-solid fa-tree"></i> <span class="button-text">서문</span>
+      </button>
+      <button id="middleLocationBtn" onclick="filterMarkers('category','중문')">
+        <i class="fa-solid fa-square-up-right"></i>
+        <span class="button-text">중문</span>
+      </button>
+      <button
+        id="mainloadLocationBtn"
+        onclick="filterMarkers('category','정문')"
+      >
+        <i class="fa-solid fa-dungeon"></i>
+        <span class="button-text">정문</span>
+      </button>
+      <button
+        id="backloadLocationBtn"
+        onclick="filterMarkers('category','후문')"
+      >
+        <i class="fa-solid fa-arrow-right"></i>
+        <span class="button-text">후문</span>
+      </button>
+      <button id="mainBtn1" onclick="filterMarkers('category','교내시설')">
+        <i class="fa-solid fa-school"></i>
+        <span class="button-text">교내시설</span>
+      </button>
+      <button id="marketLocationBtn" onclick="filterMarkers('category','편의점')">
+        <i class="fa-solid fa-store"></i>
+        <span class="button-text">편의점</span>
+      </button> 
+      <button id="schoolLocationBtn">
+        <i class="fa-solid fa-location-crosshairs"></i>
+        <span class="button-text">내 위치</span>
+      </button>
+    </div>
 
-      var map = new naver.maps.Map("map", mapOptions);
-
-    
-      var markerImage = {
-            url: 'https://navermaps.github.io/maps.js/docs/img/example/pin_default.png',
-            size: new naver.maps.Size(50, 52),
-            origin: new naver.maps.Point(0, 0),
-            anchor: new naver.maps.Point(25, 52)
-        };
-    
-        var markers = [];
-    
-        // 마커 생성 및 이벤트 처리
-        function createMarker(position, title) {
-            var marker = new naver.maps.Marker({
-                position: position,
-                map: map,
-                icon: markerImage,
-                title: title
-            });
-    
-            markers.push(marker);
-    
-            var infowindow = new naver.maps.InfoWindow({
-                content: '<div style="width:150px;text-align:center;padding:10px;">' + title + '</div>'
-            });
-    
-            naver.maps.Event.addListener(marker, 'click', function() {
-                infowindow.open(map, marker);
-            });
-        }
-    
-        // 마커 생성
-        createMarker(new naver.maps.LatLng(36.624303, 127.449607), '명장국밥 개신점');
-        createMarker(new naver.maps.LatLng(36.626117, 127.452091), '보통의 국수집');
-        createMarker(new naver.maps.LatLng(36.625669, 127.463756), '구룡산 한식');
-        createMarker(new naver.maps.LatLng(36.624039, 127.450508), '현고 들깨칼국수');
-        createMarker(new naver.maps.LatLng(36.624639, 127.467022), '사나이 짬뽕');
-
-        
-        
-      var storeList = document.getElementById("storeList");
-      var storeDetails = document.getElementById("storeDetails");
-
-      fetch("http://127.0.0.1:5500/stores/")
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Data Loaded:", data);
-          data.forEach((store) => {
-            let marker = new naver.maps.Marker({
-              position: new naver.maps.LatLng(store.latitude, store.longitude),
-              map: map,
-              title: store.name,
-              icon: markerImage,
-            });
-            markers.push(marker);
-
-            let li = document.createElement("li");
-            li.textContent = store.name;
-            li.addEventListener("click", () => {
-              map.setCenter(marker.getPosition());
-              map.setZoom(25);
-              showDetails(store);
-            });
-            storeList.appendChild(li);
-          });
-        })
-        .catch((error) => {
-          console.error("Error loading data:", error);
-        });
-
-      function showDetails(store) {
-        storeDetails.innerHTML = `
-            <h2>${store.name}</h2>
-            <p>전화번호: ${store.phone}</p>
-            <p>메뉴: ${store.menu}</p>
-            <p>링크: <a href="${store.link}" target="_blank">${store.link}</a></p>
-            <p>위도: ${store.latitude}</p>
-            <p>경도: ${store.longitude}</p>
-        `;
-      }
-
-      document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('searchBtn').addEventListener('click', function() {
-            var searchInput = document.getElementById('searchInput').value.trim();
-            var found = false;
-    
-            markers.forEach(marker => {
-                if (marker.getTitle().includes(searchInput)) {
-                    map.setCenter(marker.getPosition());
-                    map.setZoom(18);
-                    found = true;
-                }
-            });
-    
-            if (!found) {
-                alert('해당 핀을 찾을 수 없습니다.');
-            }
-        });
-    });
-    </script>
-    <script>
-       let navOpen = false; // 상태 변수
-
-function toggleNav(navId) {
-    let nav = document.getElementById(navId);
-    if (nav) { // nav가 null이 아닌 경우에만 동작
-        if (navOpen) {
-            closeNav(nav);
-        } else {
-            openNav(nav);
-        }
-        navOpen = !navOpen; // 상태 변경
-    } else {
-        console.error(`Element with ID ${navId} not found`);
-    }
-}
-
-function openNav(nav) {
-    nav.style.width = "500px"; // width 값을 500px에서 250px로 변경
-}
-
-function closeNav(nav) {
-    nav.style.width = "0";
-    
-}
-      
-    </script>
+    <!-- Navbar for mobile -->
+    <div class="bottom-navbar">
+      <ul class="nav nav-pills nav-flush flex-row mb-auto text-center">
+        <li class="nav-item">
+          <a
+            href="./index.html"
+            class="nav-link active py-3 border-bottom rounded-0"
+            aria-current="page"
+            title="Home"
+          >
+            <i class="fa-solid fa-house fa-xl"></i>
+          </a>
+        </li>
+        <li>
+          <a
+            href="#"
+            class="nav-link py-3 border-bottom rounded-0"
+            title="search"
+            data-bs-toggle="modal"
+            data-bs-target="#searchModal"
+          >
+            <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+          </a>
+        </li>
+        <li>
+          <a
+            href="#"
+            class="nav-link py-3 border-bottom rounded-0"
+            title="Customers"
+            onclick="toggleNav('store-container')"
+          >
+            <i class="fa-solid fa-school-flag fa-lg"></i>
+          </a>
+        </li>
+        <li>
+          <a
+            href="#"
+            class="nav-link py-3 border-bottom rounded-0"
+            title="Stars"
+            onclick="toggleNav('mySidenav')"
+          >
+            <i class="fa-solid fa-star fa-lg"></i>
+          </a>
+        </li>
+        <li>
+          <a
+            href="#"
+            class="nav-link py-3 border-bottom rounded-0"
+            title="Products"
+            onclick="toggleNav('ranSidenav')"
+          >
+            <i class="fa-solid fa-shuffle fa-lg"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div id="userGuideModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeGuide()">&times;</span>
+        <h2>환⭐ 충맛집 ⭐영</h2>
+        <p>어서오세요!</p>
+        <p>
+          충맛집은 충대생이라면 꼭 가봐야 하는 충북대 맛집 리스트를 정리했어요.
+        </p>
+        <ul>
+          <li>
+            <i class="fa-solid fa-house fa-lg"></i> 메인: 메인으로 돌아가요
+          </li>
+          <li>
+            <i class="fa-solid fa-magnifying-glass fa-lg"></i> 검색: 장소를
+            검색해요
+          </li>
+          <li>
+            <i class="fa-solid fa-school-flag fa-lg"></i> 교내 정보: 교내 정보를
+            알려드려요
+          </li>
+          <li>
+            <i class="fa-solid fa-star fa-lg"></i> 즐겨찾기 : 나만의 즐겨찾기를
+            제공해요
+          </li>
+          <li>
+            <i class="fa-solid fa-shuffle fa-lg"></i> 메뉴 추천: 충맛집이 오늘
+            메뉴를 추천해드려요
+          </li>
+          <li>
+            <i class="fa-solid fa-circle-info" fa-lg></i> 정보 : 충맛집의 정보를
+            알려드려요
+          </li>
+        </ul>
+        <p>카테고리</p>
+        <ul>
+          <li>
+            <i class="fa-solid fa-globe"></i> 전체 : 모든 리스트를 보여드려요
+          </li>
+          <li></li>
+        </ul>
+        <button onclick="closeGuide()">Got it!</button>
+      </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="navbar.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
       integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -427,4 +505,3 @@ function closeNav(nav) {
     ></script>
   </body>
 </html>
-<!--- document.getElementById("mapContainer").style.marginLeft = "0"; --->
