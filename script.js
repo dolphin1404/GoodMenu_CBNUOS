@@ -83,34 +83,34 @@ var markers = [
     name: "현고 들깨칼국수",
   },
   {
-    position: new naver.maps.LatLng(36.624639, 127.467022),
+    position: new naver.maps.LatLng(36.624639, 127.467022)점
     category: "후문",
     category_1: "한식",
     name: "사나이 짬뽕",
   },
   {
     position: new naver.maps.LatLng(36.627527, 127.452819),
-    category: "교내시설",
+    category: "편의점",
     name: "양성재 CU 편의점",
   },
   {
     position: new naver.maps.LatLng(36.627766, 127.458847),
-    category: "교내시설",
+    category: "편의점",
     name: "제 1학생회관 이마트24 편의점",
   },
   {
     position: new naver.maps.LatLng(36.630457, 127.456008),
-    category: "교내시설",
+    category: "편의점",
     name: "대학본부 이마트24 편의점",
   },
   {
     position: new naver.maps.LatLng(36.62398, 127.459104),
-    category: "교내시설",
+    category: "편의점",
     name: "양진재 CU 편의점",
   },
   {
     position: new naver.maps.LatLng(36.625097, 127.457317),
-    category: "교내시설",
+    category: "편의점",
     name: "학연산 세븐일레븐 편의점",
   },
   {
@@ -234,13 +234,28 @@ var markers = [
   },
   {
     position: new naver.maps.LatLng(36.62892, 127.452269),
-    category: "교내시설",
+    category: "편의점",
     name: "이마트24 농생대점, 쿠비앤유",
   },
   {
     position: new naver.maps.LatLng(36.627229, 127.460627),
     category: "교내시설",
     name: "카페쿠비엔유 5호점",
+  },
+  {
+    position: new naver.maps.LatLng(36.631415, 127.457137),
+    category: "교내시설",
+    name: "중문 ATM",
+  },
+  {
+    position: new naver.maps.LatLng(36.627741, 127.452633),
+    category: "교내시설",
+    name: "양성재 ATM",
+  },
+  {
+    position: new naver.maps.LatLng(36.627100, 127.459023),
+    category: "교내시설",
+    name: "학생회관 ATM",
   },
 ];
 

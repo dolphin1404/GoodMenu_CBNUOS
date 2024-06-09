@@ -1,206 +1,206 @@
 @font-face {
-  font-family: "CBNUJIKJI";
-  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2202@1.0/CBNUJIKJI.woff")
-    format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: CBNUJIKJI, Helvetica, sans-serif;
-}
-
-#category-filter button i {
-  font-size: 20px;
-}
-
-#category-filter button .button-text {
-  display: inline;
-}
-
-#storeList {
-    position: absolute;
-    top: 70px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    background-color: rgb(255, 255, 255);
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    list-style-type: none;
-    max-height: 85%;
-    overflow-y: auto;
-    width: 90%;
+    font-family: "CBNUJIKJI";
+    src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2202@1.0/CBNUJIKJI.woff")
+      format("woff");
+    font-weight: normal;
+    font-style: normal;
   }
   
-  #storeList li {
-    padding: 5px;
-    border-bottom: 1px solid #ddd;
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: CBNUJIKJI, Helvetica, sans-serif;
   }
   
-  #storeList li:hover {
-    background-color: #f0f0f0;
+  #category-filter button i {
+    font-size: 20px;
   }
   
-
-/* Hide left sidebar on mobile and show bottom navbar */
-@media screen and (max-width: 768px) {
-  #sidebar {
-    display: none; /* Hide left sidebar on mobile */
-  }
-
-  .bottom-navbar {
-    display: flex; /* Show bottom navbar on mobile */
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: #f5f8f5f1;
-    z-index: 1; /* Ensure this is below the sidenav */
-  }
-  .bottom-navbar .nav-pills {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    width: 100%;
-  }
-
-  .bottom-navbar .nav-item {
-    flex: 1;
-  }
-  
-  #category-filter {
-    position: absolute;
-    top: 5%;
-    left: 15%;
-    margin: -25px 0 0 -25px;
-    display: flex;
-    gap: 10px;
-    z-index: 1000;
-    flex-direction: row;
-  }
-
-  #category-filter button {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 10px;
-    background-color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
   #category-filter button .button-text {
-    display: none;
-  }
-  #storeList{
-    max-height: 78%;
-  }
-}
-
-/* For desktop view */
-@media screen and (min-width: 769px) {
-  .bottom-navbar {
-    display: none; /* Hide bottom navbar on desktop */
-  }
-
-  #category-filter {
-    position: fixed;
-    bottom: 50px;
-    right: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    z-index: 1000;
-  }
-
-  #category-filter button {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 10px;
-    background-color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: inline;
   }
   
-}
-
-/* 메뉴 추천 */
-.container {
-  text-align: center;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.container h1 {
-  margin-bottom: 20px;
-}
-.button-group {
-  margin-bottom: 20px;
-}
-.button-group div {
-  margin-bottom: 10px;
-}
-button {
-  margin: 5px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: #e0e0e0;
-  cursor: pointer;
-}
-button.selected {
-  background-color: #e88a74;
-  color: #fff;
-}
-#result {
-  margin-top: 20px;
-  font-size: 1.5em;
-  font-weight: bold;
-}
-
-/* Modal styles */
-/* 처음 온 사람을 위해*/
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 3;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-    padding-top: 60px;
-}
-
-.modal-content {
-    background-color: #fefefe;
-    margin: 5% auto;
+  #storeList {
+      position: absolute;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      background-color: rgb(255, 255, 255);
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      list-style-type: none;
+      max-height: 85%;
+      overflow-y: auto;
+      width: 90%;
+    }
+    
+    #storeList li {
+      padding: 5px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    #storeList li:hover {
+      background-color: #f0f0f0;
+    }
+    
+  
+  /* Hide left sidebar on mobile and show bottom navbar */
+  @media screen and (max-width: 768px) {
+    #sidebar {
+      display: none; /* Hide left sidebar on mobile */
+    }
+  
+    .bottom-navbar {
+      display: flex; /* Show bottom navbar on mobile */
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #f5f8f5f1;
+      z-index: 1; /* Ensure this is below the sidenav */
+    }
+    .bottom-navbar .nav-pills {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      width: 100%;
+    }
+  
+    .bottom-navbar .nav-item {
+      flex: 1;
+    }
+    
+    #category-filter {
+      position: absolute;
+      top: 5%;
+      left: 15%;
+      margin: -25px 0 0 -25px;
+      display: flex;
+      gap: 10px;
+      z-index: 1000;
+      flex-direction: row;
+    }
+  
+    #category-filter button {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 10px;
+      background-color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  
+    #category-filter button .button-text {
+      display: none;
+    }
+    #storeList{
+      max-height: 78%;
+    }
+  }
+  
+  /* For desktop view */
+  @media screen and (min-width: 769px) {
+    .bottom-navbar {
+      display: none; /* Hide bottom navbar on desktop */
+    }
+  
+    #category-filter {
+      position: fixed;
+      bottom: 50px;
+      right: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 1000;
+    }
+  
+    #category-filter button {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 10px;
+      background-color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+  }
+  
+  /* 메뉴 추천 */
+  .container {
+    text-align: center;
+    background-color: #fff;
     padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 400px; /* Add this line to restrict the width */
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .container h1 {
+    margin-bottom: 20px;
+  }
+  .button-group {
+    margin-bottom: 20px;
+  }
+  .button-group div {
+    margin-bottom: 10px;
+  }
+  button {
+    margin: 5px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #e0e0e0;
     cursor: pointer;
-}
+  }
+  button.selected {
+    background-color: #e88a74;
+    color: #fff;
+  }
+  #result {
+    margin-top: 20px;
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+  
+  /* Modal styles */
+  /* 처음 온 사람을 위해*/
+  .modal {
+      display: none;
+      position: fixed;
+      z-index: 3;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding-top: 60px;
+  }
+  
+  .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 400px; /* Add this line to restrict the width */
+  }
+  
+  .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+  }
