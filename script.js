@@ -16,7 +16,8 @@ function initMap() {
     zoomControl: true,
     minZoom: 14,
     zoomControlOptions: {
-      position: naver.maps.Position.TOP_RIGHT,
+      style: naver.maps.ZoomControlStyle.SMALL,
+      position: naver.maps.Position.RIGHT_TOP,
     },
   });
 
@@ -247,6 +248,69 @@ var markers = [
 var naverMarkers = [];
 var currentInfoWindow = null; // 현재 열려 있는 인포 윈도우를 추적하는 변수
 
+function fetchRoute(start, end) {
+  var startCoords = `${start.lng()},${start.lat()}`;
+  var endCoords = `${end.lng()},${end.lat()}`;
+  var directionsUrl = `http://127.0.0.1:5000/route?start=${startCoords}&goal=${endCoords}`;
+
+  fetch(directionsUrl)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok " + response.statusText);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (data.code === 0) {
+        var route = data.route.trafast[0].path;
+        drawPolyline(route);
+        drawDashedLine(route[route.length - 1], end);
+      } else {
+        console.error("Error fetching directions:", data.message);
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+}
+
+var currentPolyline = null;
+var currentDashedLine = null;
+
+function drawPolyline(route) {
+  var path = route.map(function (point) {
+    return new naver.maps.LatLng(point[1], point[0]);
+  });
+
+  if (currentPolyline) {
+    currentPolyline.setMap(null);
+  }
+
+  currentPolyline = new naver.maps.Polyline({
+    path: path,
+    strokeColor: "#FF0000",
+    strokeOpacity: 0.8,
+    strokeWeight: 6,
+    map: map,
+  });
+}
+
+function drawDashedLine(start, end) {
+  var path = [new naver.maps.LatLng(start[1], start[0]), end];
+
+  if (currentDashedLine) {
+    currentDashedLine.setMap(null);
+  }
+
+  currentDashedLine = new naver.maps.Polyline({
+    path: path,
+    strokeColor: "#0000FF",
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    strokeStyle: "shortdash",
+    map: map,
+  });
+}
+
+// infowindow 생성
 function loadMarkers() {
   markers.forEach(function (store) {
     var marker = new naver.maps.Marker({
@@ -258,41 +322,28 @@ function loadMarkers() {
     marker.set("category", store.category);
     marker.set("category_1", store.category_1);
 
-    var infowindow = new naver.maps.InfoWindow({
-      content:
-        '<div style="width:150px;text-align:center;padding:10px;">' +
-        store.name +
-        "</div>",
+    naver.maps.Event.addListener(marker, "click", function () {
+      openInfoWindow({ marker: marker, store: store });
     });
 
-    naver.maps.Event.addListener(marker, "click", function () {
-      if (infowindow.getMap()) {
-        infowindow.close();
-      } else {
-        infowindow.open(map, marker);
-      }
-    });
     var link = document.createElement("a");
     link.href = `#${store.position.lat()},${store.position.lng()}`;
     link.textContent = store.name;
     link.onclick = function () {
-      map.setCenter(store.position);
-      map.setZoom(18);
-      if (currentInfoWindow) {
-        currentInfoWindow.close();
-      }
-      infowindow.open(map, marker);
-      currentInfoWindow = infowindow;
-      currentMarker = marker;
+      openInfoWindow({ marker: marker, store: store });
     };
+
     naverMarkers.push({ marker: marker, store: store });
   });
-
   updateStoreList("category", "전체");
 }
 
 // 카테고리 기능
 function filterMarkers(categoryType, category) {
+  if (currentInfoWindow) {
+    currentInfoWindow.close();
+    currentInfoWindow = null;
+  }
   naverMarkers.forEach(function (nMarker) {
     if (category === "전체" || nMarker.store[categoryType] === category) {
       nMarker.marker.setMap(map);
@@ -322,7 +373,82 @@ function getDistance(lat1, lon1, lat2, lon2) {
   var d = R * c;
   return d * 1000; // meters
 }
-// 가까운 상점 위치 나타내기
+
+function openInfoWindow(nMarker) {
+  var infowindowContent =
+    '<div style="width:150px;text-align:center;padding:10px;">' +
+    nMarker.store.name +
+    (nMarker.store.menu ? " - " + nMarker.store.menu : "") +
+    "</div>";
+
+  if (currentInfoWindow) {
+    if (
+      currentInfoWindow.getMap() &&
+      currentInfoWindow.getContent() === infowindowContent
+    ) {
+      currentInfoWindow.close();
+      currentInfoWindow = null;
+      return;
+    } else {
+      currentInfoWindow.close();
+    }
+  }
+
+  var infowindow = new naver.maps.InfoWindow({
+    content: infowindowContent,
+  });
+
+  infowindow.open(map, nMarker.marker);
+  currentInfoWindow = infowindow;
+
+  // Fetch route from current location to the store
+  if (userPosition) {
+    fetchRoute(userPosition, nMarker.marker.getPosition());
+  }
+}
+
+function loadMarkers() {
+  markers.forEach(function (store) {
+    var marker = new naver.maps.Marker({
+      position: store.position,
+      map: map,
+      icon: markerImage,
+      title: store.name,
+    });
+    marker.set("category", store.category);
+    marker.set("category_1", store.category_1);
+
+    naver.maps.Event.addListener(marker, "click", function () {
+      openInfoWindow({ marker: marker, store: store });
+    });
+
+    var link = document.createElement("a");
+    link.href = `#${store.position.lat()},${store.position.lng()}`;
+    link.textContent = store.name;
+    link.onclick = function () {
+      openInfoWindow({ marker: marker, store: store });
+    };
+
+    naverMarkers.push({ marker: marker, store: store });
+  });
+  updateStoreList("category", "전체");
+}
+
+function filterMarkers(categoryType, category) {
+  if (currentInfoWindow) {
+    currentInfoWindow.close();
+    currentInfoWindow = null;
+  }
+  naverMarkers.forEach(function (nMarker) {
+    if (category === "전체" || nMarker.store[categoryType] === category) {
+      nMarker.marker.setMap(map);
+    } else {
+      nMarker.marker.setMap(null);
+    }
+  });
+  updateStoreList(categoryType, category);
+}
+
 function updateStoreList(categoryType, category) {
   var storeList = document.getElementById("storeList");
   storeList.innerHTML = "";
@@ -358,78 +484,64 @@ function updateStoreList(categoryType, category) {
           nMarker.marker.getPosition().lng()
         )
       : 0;
+
     var li = document.createElement("li");
     li.textContent = `${nMarker.store.name} (${distance.toFixed(2)}m)`;
     li.addEventListener("click", function () {
       map.setCenter(nMarker.marker.getPosition());
       map.setZoom(18);
-      var infowindow = new naver.maps.InfoWindow({
-        content:
-          '<div style="width:150px;text-align:center;padding:10px;">' +
-          nMarker.store.name +
-          "</div>",
-      });
-      if (currentInfoWindow) {
-        currentInfoWindow.close();
-      }
-      infowindow.open(map, nMarker.marker);
-      currentInfoWindow = infowindow;
-      currentMarker = nMarker.marker;
+      openInfoWindow(nMarker);
     });
+
     storeList.appendChild(li);
   });
 }
 
+// 검색 기능
 document.addEventListener("DOMContentLoaded", function () {
   initMap();
 
   function searchHandler(event) {
-    event.preventDefault(); // 기본 동작 막기
+    event.preventDefault();
     var searchInput = document.getElementById("searchInput").value.trim();
     var found = false;
 
     naverMarkers.forEach((nMarker) => {
       if (nMarker.marker.getTitle().includes(searchInput)) {
-        map.setCenter(nMarker.marker.getPosition());
+        openInfoWindow(nMarker);
+        map.setCenter(nMarker.marker.getPosition()); // Center the map on the searched marker
         map.setZoom(18);
-        var infowindow = new naver.maps.InfoWindow({
-          content:
-            '<div style="width:150px;text-align:center;padding:10px;">' +
-            nMarker.store.name +
-            "</div>",
-        });
-        if (currentInfoWindow) {
-          if (currentMarker === nMarker.marker) {
-            currentInfoWindow.close();
-            currentInfoWindow = null;
-            currentMarker = null;
-            return;
-          } else {
-            currentInfoWindow.close();
-          }
-        }
-        infowindow.open(map, nMarker.marker);
-        currentInfoWindow = infowindow;
-        currentMarker = nMarker.marker;
         found = true;
+        if (userPosition) {
+          fetchRoute(userPosition, nMarker.marker.getPosition());
+        }
       }
     });
 
     if (!found) {
       alert("해당 핀을 찾을 수 없습니다.");
+    } else {
+      // Close the search modal
+      var searchModal = document.getElementById("searchModal");
+      var modalBackdrop = document.getElementsByClassName("modal-backdrop")[0];
+      searchModal.classList.remove("show");
+      searchModal.style.display = "none";
+      modalBackdrop.remove();
+      document.body.classList.remove("modal-open");
+      document.body.style.paddingRight = "";
     }
   }
-  // 검색기능
   document.getElementById("searchBtn").addEventListener("click", searchHandler);
   document
     .getElementById("searchInput")
     .addEventListener("keypress", function (event) {
       if (event.key === "Enter") {
+        event.preventDefault(); // 기본 동작 막기
         searchHandler(event);
       }
     });
 
-  // Check if URL has coordinates and update the map
+
   var hash = window.location.hash;
   if (hash) {
     var coords = hash.substring(1).split(",");
@@ -438,13 +550,18 @@ document.addEventListener("DOMContentLoaded", function () {
       var lng = parseFloat(coords[1]);
       if (!isNaN(lat) && !isNaN(lng)) {
         var position = new naver.maps.LatLng(lat, lng);
-        map.setCenter(position);
-        map.setZoom(18);
+        var nMarker = naverMarkers.find((marker) =>
+          marker.marker.getPosition().equals(position)
+        );
+        if (nMarker) {
+          openInfoWindow(nMarker);
+          map.setCenter(nMarker.marker.getPosition());
+          map.setZoom(18);
+        }
       }
     }
   }
 });
-
 // Default coordinates
 var schoolLocation = new naver.maps.LatLng(36.628, 127.459); // Replace with your school's coordinates
 var westLocation = new naver.maps.LatLng(36.626117, 127.452091); // 서문
@@ -452,6 +569,7 @@ var mainloadLocation = new naver.maps.LatLng(36.6324919, 127.4526122); // 정문
 var backloadLocation = new naver.maps.LatLng(36.625669, 127.463756); // 후문
 var middleLocation = new naver.maps.LatLng(36.632358, 127.458485); // 중문
 
+// 카테고리 눌렀을 때 해당 위치로 이동
 function moveToLocation(location) {
   map.setCenter(location);
   map.setZoom(17); // Adjust zoom level as needed
@@ -488,7 +606,7 @@ document
 // Add event listeners for other location buttons
 document.getElementById("mainBtn").addEventListener("click", function () {
   moveToLocation(schoolLocation);
-  map.setZoom(16);
+  map.setZoom(16); // 메인 화면에서는 zoom level을 16으로 설정
 });
 document.getElementById("mainBtn1").addEventListener("click", function () {
   moveToLocation(schoolLocation);
@@ -517,7 +635,6 @@ document
     moveToLocation(middleLocation);
   });
 
-
 // 처음 사용자용 가이드
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -530,3 +647,56 @@ function closeGuide() {
   document.getElementById("userGuideModal").style.display = "none";
   localStorage.setItem("hasVisited", "true");
 }
+
+function showDropdown() {
+  var searchInput = document.getElementById("searchInput").value.trim();
+  var searchDropdown = document.getElementById("searchDropdown");
+  var searchModal = document.getElementById("searchModal");
+  var modalBackdrop = document.getElementsByClassName("modal-backdrop")[0];
+
+  if (!searchInput) {
+    searchDropdown.style.display = "none";
+    return;
+  }
+
+  var matchedStores = naverMarkers.filter(function (nMarker) {
+    return nMarker.marker.getTitle().includes(searchInput);
+  });
+
+  if (matchedStores.length > 0) {
+    searchDropdown.innerHTML = "";
+    matchedStores.forEach(function (nMarker) {
+      var item = document.createElement("div");
+      item.className = "dropdown-item";
+      item.textContent = nMarker.store.name;
+      item.onclick = function () {
+        // 검색 모달 닫기
+        searchModal.classList.remove("show");
+        searchModal.style.display = "none";
+        modalBackdrop.remove();
+        document.body.classList.remove("modal-open");
+        document.body.style.paddingRight = "";
+
+        map.setCenter(nMarker.marker.getPosition());
+        map.setZoom(18);
+        fetchRoute(userPosition, nMarker.marker.getPosition());
+        openInfoWindow(nMarker);
+        searchDropdown.style.display = "none";
+      };
+      searchDropdown.appendChild(item);
+    });
+    searchDropdown.style.display = "block";
+  } else {
+    searchDropdown.style.display = "none";
+  }
+}
+// 검색 기능 초기화
+document.getElementById("searchInput").addEventListener("input", showDropdown);
+
+// 검색창에 포커스가 벗어났을 때 드롭다운을 숨기는 기능 추가
+document.getElementById("searchInput").addEventListener("blur", function () {
+  setTimeout(function () {
+    document.getElementById("searchDropdown").style.display = "none";
+  }, 200); // 클릭 이벤트 후 드롭다운이 사라지도록 약간의 지연 시간 추가
+});
+document.getElementById("searchInput").addEventListener("focus", showDropdown);
