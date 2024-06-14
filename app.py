@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
 CLIENT_ID = '93gqruosnz'
-CLIENT_SECRET = 'wwhL7ZSwyGFCz8dXySeQt2fPAmNosUMhdNODxOp8'
+CLIENT_SECRET = 'wwhL7ZSwyGFCz8dXySeQt2fPAmNosUMhdNODxOp8' # 이미 바뀐 키
 
 @app.route('/')
 def index():
