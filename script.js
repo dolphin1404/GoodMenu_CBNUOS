@@ -803,3 +803,4 @@ document.getElementById("searchInput").addEventListener("blur", function () {
   }, 200); // 클릭 이벤트 후 드롭다운이 사라지도록 약간의 지연 시간 추가
 });
 document.getElementById("searchInput").addEventListener("focus", showDropdown);
+document.getElementById("searchInput").addEventListener("focus", showDropdown);
