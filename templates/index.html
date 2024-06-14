@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>충맛집 - 충대인의 밥 고민 해결</title>
+</head>
+<body>
+    <h1>Today's Menu</h1>
+    {% if menu_data %}
+        <ul>
+            {% for time, corners in menu_data.items() %}
+                <li>
+                    <h2>{{ time }}</h2>
+                    <ul>
+                        {% for corner, items in corners.items() %}
+                            <li>
+                                <h3>{{ corner }}</h3>
+                                <ul>
+                                    {% for item in items %}
+                                        <li>{{ item }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No menu available</p>
+    {% endif %}
+</body>
+</html>
