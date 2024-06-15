@@ -1,28 +1,41 @@
 import requests
 from bs4 import BeautifulSoup
-import json
-import time
 
-def crawl_menu():
-    url = 'https://www.cbnucoop.com/service/restaurant/'  # 실제 학식 메뉴 URL로 변경
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, 'html.parser')
+# 웹페이지의 URL
+url = 'URL_OF_THE_PAGE'
 
-    # 예시: 학식 메뉴 데이터 추출
-    menu_data = {
-        'Breakfast': ['EEEEE', 'Bacon', 'Toast'],
-        'Lunch': ['Chicken Sandwich', 'Salad'],
-        'Dinner': ['Spaghetti', 'Meatballs']
-    }
+# 웹페이지에 GET 요청 보내기
+response = requests.get(url)
 
-    # 크롤링된 데이터를 파일에 저장
-    with open('menu_data.json', 'w') as file:
-        json.dump(menu_data, file)
+# 페이지의 HTML 내용 파싱
+soup = BeautifulSoup(response.text, 'html.parser')
 
-    # Flask 서버에 데이터 업데이트 요청
-    requests.post('http://127.0.0.1:5000/update_menu')
+# 점심 메뉴 추출 함수
+def extract_lunch_menu(soup):
+    # 모든 메뉴 항목 찾기
+    menu_items = soup.find_all('div', class_='card menu-body')
+    
+    lunch_menu = []
+    for item in menu_items:
+        menu = {}
+        # 메뉴 제목 가져오기
+        menu['title'] = item.find('h6', class_='card-header').text.strip()
+        
+        # 반찬 목록 가져오기
+        sides = item.find_all('li', class_='side')
+        menu['sides'] = [side.text.strip() for side in sides]
+        
+        # 가격 가져오기
+        prices = item.find_all('span', class_='add commas')
+        menu['price'] = prices[0].text.strip()
+        menu['discounted_price'] = prices[1].text.strip() if len(prices) > 1 else None
+        
+        lunch_menu.append(menu)
+    
+    return lunch_menu
 
-if __name__ == "__main__":
-    while True:
-        crawl_menu()
-        time.sleep(3600)  # 1시간마다 크롤링
+# 점심 메뉴 추출
+lunch_menu = extract_lunch_menu(soup)
+for menu in lunch_menu:
+    print(menu)
+
