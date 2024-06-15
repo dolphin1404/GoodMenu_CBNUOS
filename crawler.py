@@ -1,8 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
+import json
 
 # 웹페이지의 URL
-url = 'URL_OF_THE_PAGE'
+url = 'https://www.cbnucoop.com/service/restaurant/'
 
 # 웹페이지에 GET 요청 보내기
 response = requests.get(url)
@@ -36,6 +37,9 @@ def extract_lunch_menu(soup):
 
 # 점심 메뉴 추출
 lunch_menu = extract_lunch_menu(soup)
-for menu in lunch_menu:
-    print(menu)
 
+# JSON 파일로 저장
+with open('menu_data.json', 'w', encoding='utf-8') as json_file:
+    json.dump(lunch_menu, json_file, ensure_ascii=False, indent=4)
+
+print("메뉴 데이터가 menu_data.json 파일에 저장되었습니다.")
