@@ -121,7 +121,7 @@ var markers = [
   {
     position: new naver.maps.LatLng(36.62814, 127.459553),
     category: "교내시설",
-    name: "개신문화관 서점, 쿠비엔유",
+    name: "개신문화관 서점",
   },
   {
     position: new naver.maps.LatLng(36.6324919, 127.4526122),
@@ -224,7 +224,6 @@ var markers = [
     category_1: "한식",
     name: "일미리금계찜닭",
     menu: "찜닭",
-    council : "자연대"
   },
   {
     position: new naver.maps.LatLng(36.631972, 127.459542),
@@ -241,109 +240,22 @@ var markers = [
   {
     position: new naver.maps.LatLng(36.627229, 127.460627),
     category: "교내시설",
-    name: "스포츠센터 쿠비엔유",
+    name: "카페쿠비엔유 5호점",
   },
   {
     position: new naver.maps.LatLng(36.631415, 127.457137),
-    category: "교내시설",
+    category: "ATM",
     name: "중문 ATM",
   },
   {
     position: new naver.maps.LatLng(36.627741, 127.452633),
-    category: "교내시설",
+    category: "ATM",
     name: "양성재 ATM",
   },
   {
     position: new naver.maps.LatLng(36.627100, 127.459023),
-    category: "교내시설",
+    category: "ATM",
     name: "학생회관 ATM",
-  },
-  {
-    position: new naver.maps.LatLng(36.632080, 127.457827),
-    category: "중문",
-    category_1: "한식",
-    name: "꼬불꼬불",
-    menu: "닭갈비",
-    council : "자연대"
-  },
-  {
-    position: new naver.maps.LatLng(36.632080, 127.457827),
-    category: "중문",
-    category_1: "한식",
-    name: "꼬불꼬불",
-    menu: "닭갈비",
-    council : "자연대"
-  },
-  {
-    position: new naver.maps.LatLng(36.633389, 127.459119),
-    category: "중문",
-    category_1: "한식",
-    name: "보승회관",
-    menu: "국밥",
-    council : "자연대"
-  },{
-    position: new naver.maps.LatLng(36.632406, 127.457388),
-    category: "중문",
-    category_1: "중식",
-    name: "한가네짜뽕",
-    menu: "짬뽕",
-    council : "자연대"
-  },
-  {
-    position: new naver.maps.LatLng(36.632184, 127.457369),
-    category: "중문",
-    category_1: "양식",
-    name: "자연을담은돈까스",
-    menu: "돈까스",
-    council : "자연대"
-  },
-  {
-    position: new naver.maps.LatLng(36.632129, 127.459295),
-    category: "중문",
-    category_1: "중식",
-    name: "이런이궈",
-    menu: "마라탕",
-    council : "자연대"
-  },
-  {
-    position: new naver.maps.LatLng(36.633255, 127.459757),
-    category: "중문",
-    category_1: "일식",
-    name: "짚신스시엔롤",
-    menu: "초밥",
-    council : "자연대"
-  },
-  {
-    position: new naver.maps.LatLng(36.631749, 127.456678),
-    category: "중문",
-    category_1: "일식",
-    name: "멘야마쯔리",
-    menu: "라멘",
-    council : "자연대"
-  },
-  {
-    position: new naver.maps.LatLng(36.633413, 127.460129),
-    category: "중문",
-    category_1: "양식",
-    name: "에그문",
-    menu: "오믈렛",
-    council : "자연대"
-  },
-  {
-    position: new naver.maps.LatLng(36.632952, 127.458827),
-    category: "중문",
-    category_1: "한식",
-    name: "도니스토리",
-    menu: "돼지구이",
-    council : "자연대"
-  },
-  {
-    position: new naver.maps.LatLng(36.632242, 127.458260),
-    category: "중문",
-    category_1: "일식",
-    name: "면식당",
-    menu: "라멘",
-    council : "자연대"
   },
 ];
 
@@ -360,7 +272,7 @@ function loadMarkers() {
     });
     marker.set("category", store.category);
     marker.set("category_1", store.category_1);
-    marker.set("council", store.council);
+
     var infowindow = new naver.maps.InfoWindow({
       content:
         '<div style="width:150px;text-align:center;padding:10px;">' +
