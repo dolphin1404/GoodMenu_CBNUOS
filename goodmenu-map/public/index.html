@@ -199,6 +199,19 @@
             <i class="fa-solid fa-house fa-xl"></i>
           </a>
         </li>
+        <!-- infor -->
+        <li>
+          <a
+            href="#"
+            class="nav-link py-3 border-bottom rounded-0"
+            title="Information"
+            data-bs-toggle="tooltip"
+            data-bs-target="information"
+            onclick="toggleNav('information')"
+          >
+          <i class="fa-solid fa-circle-info fa-lg"></i>
+          </a>
+        </li>
         <!-- search -->
         <li>
           <a
@@ -252,20 +265,6 @@
         </li>
       </ul>
     </div>
-    <!-- infor -->
-  <li>
-    <a
-    href="#"
-    class="nav-link py-3 border-bottom rounded-0"
-    title="Information"
-    data-bs-toggle="tooltip"
-    data-bs-target="information"
-    onclick="toggleNav('information')"
-    >
-    <i class="fa-solid fa-circle-info fa-lg"></i>
-    </a>
-  </li>
-
     <!-- Modal -->
     <div
       class="modal fade"
@@ -468,6 +467,10 @@
       <button id="marketLocationBtn" onclick="filterMarkers('category','편의점')">
         <i class="fa-solid fa-store"></i>
         <span class="button-text">편의점</span>
+      </button> 
+      <button id="atmLocationBtn" onclick="filterMarkers('category','ATM')">
+        <i class="fa-solid fa-money-check-dollar"></i>
+        <span class="button-text">ATM</span>
       </button> 
       <button id="schoolLocationBtn">
         <i class="fa-solid fa-location-crosshairs"></i>
