@@ -244,17 +244,17 @@ var markers = [
   },
   {
     position: new naver.maps.LatLng(36.631415, 127.457137),
-    category: "교내시설",
+    category: "ATM",
     name: "중문 ATM",
   },
   {
     position: new naver.maps.LatLng(36.627741, 127.452633),
-    category: "교내시설",
+    category: "ATM",
     name: "양성재 ATM",
   },
   {
     position: new naver.maps.LatLng(36.627100, 127.459023),
-    category: "교내시설",
+    category: "ATM",
     name: "학생회관 ATM",
   },
 ];
