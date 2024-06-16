@@ -219,7 +219,7 @@ var markers = [
     category: "정문",
     category_1: "한식",
     name: "미송",
-    menu: "한식",
+    menu: "백반",
   },
   {
     position: new naver.maps.LatLng(36.632764, 127.454485),
