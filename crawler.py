@@ -40,8 +40,8 @@ def extract_lunch_menu(soup):
 lunch_menu = extract_lunch_menu(soup)
 
 # 점심 메뉴 출력
-for menu in lunch_menu:
-    print(menu)
+# for menu in lunch_menu:
+#     print(menu)
 
 # JSON 파일로 저장
 with open('menu_data.json', 'w', encoding='utf-8') as json_file:

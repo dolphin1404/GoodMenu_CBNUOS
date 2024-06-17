@@ -56,34 +56,6 @@
         border-radius: 5px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
-      #searchDropdown {
-        position: absolute;
-        top: 80px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 1000;
-        background-color: rgb(255, 255, 255);
-        padding: 10px;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        max-height: 300px; /* 목록의 최대 높이 설정 */
-        overflow-y: auto; /* 스크롤 설정 */
-        width: 70%;
-      }
-
-      #searchDropdown .dropdown-item {
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-        cursor: pointer;
-      }
-
-      #searchDropdown .dropdown-item:last-child {
-        border-bottom: none;
-      }
-
-      #searchDropdown .dropdown-item:hover {
-        background-color: #f0f0f0;
-      }
 
       #map {
         width: 100%;
@@ -192,7 +164,6 @@
         }
       }
     </style>
-    <!-- <link href="sidebars.css" rel="stylesheet" /> -->
   </head>
   <body>
     <div class="b-example-divider b-example-vr"></div>
@@ -225,19 +196,6 @@
             data-bs-placement="right"
           >
             <i class="fa-solid fa-house fa-xl"></i>
-          </a>
-        </li>
-        <!-- infor -->
-        <li>
-          <a
-            href="#"
-            class="nav-link py-3 border-bottom rounded-0"
-            title="Information"
-            data-bs-toggle="tooltip"
-            data-bs-target="information"
-            onclick="toggleNav('information')"
-          >
-          <i class="fa-solid fa-circle-info fa-lg"></i>
           </a>
         </li>
         <!-- search -->
@@ -291,6 +249,21 @@
             <i class="fa-solid fa-shuffle fa-lg"></i>
           </a>
         </li>
+         <!-- Today's Menu (newly added) -->
+        <li>
+          <a
+            href="#"
+            class="nav-link py-3 border-bottom rounded-0"
+            title="Today's Menu"
+            data-bs-toggle="tooltip"
+            data-bs-target="menuSidenav"
+            onclick="toggleNav('menuSidenav')"
+          >
+            <i class="fa-solid fa-utensils fa-lg"></i>
+          </a>
+        </li>
+        <!-- Newly added end -->
+        
       </ul>
     </div>
     <!-- Modal -->
@@ -309,10 +282,9 @@
                 <input
                   class="form-control me-2"
                   type="search"
-                  placeholder="찾으시는 장소를 입력해주세요."
+                  placeholder="Search"
                   aria-label="Search"
                   id="searchInput"
-                  oninput="showDropdown()"
                 />
                 <button
                   class="btn btn-outline-success"
@@ -324,7 +296,6 @@
               </form>
             </div>
           </div>
-          <div id="searchDropdown"></div>
         </div>
       </div>
     </div>
@@ -344,20 +315,6 @@
 
     <!-- mySidenav -->
     <div id="mySidenav" class="sidenav">
-      <div class="content">
-        <h2>교내시설 영업시간(학기중)</h2>
-        <ul>
-          <li>농생대, 제1학생회관 이마트24 - 24시간운영</li>
-          <br>
-          <li>대학본부 이마트24 - 평일:08:30 ~ 18:00<br>주말,공휴일:10:00 ~ 17:00</li>
-          <br>
-          <li>농생대, 개신문화관, 스포츠센터 쿠비엔유 - 08:00 ~ 19:00<br>주말,공휴일:휴무</li>
-          <br>
-          <li>중앙도서관 쿠비엔유 - 08:30 ~ 19:00<br>주말,공휴일:휴무</li>
-          <br>
-          <li>서점 - 08:30 ~ 18:00<br>주말,공휴일:휴무</li>
-        </ul>
-      </div>
       <a
         href="javascript:void(0)"
         class="closebtn"
@@ -405,121 +362,61 @@
         <div id="loading">오늘의 메뉴는...</div>
       </div>
     </div>
-    <!-- info -->
-    <div id="information" class="sidenav">
-      <div class="content">
-        <h2>도움말</h2>
-        <ul>
-          <li>
-            <i class="fa-solid fa-house fa-lg"></i> 메인: 메인으로 돌아가요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-magnifying-glass fa-lg"></i> 검색: 장소를
-            검색해요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-school-flag fa-lg"></i> 교내 정보: 교내 정보를
-            알려드려요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-star fa-lg"></i> 교내시설 영업시간 안내 : 교내시설의 영업시간을 알려줘요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-shuffle fa-lg"></i> 메뉴 추천: 충맛집이 오늘의
-            메뉴를 추천해드려요
-          </li>
-          <br />
-          <br />
-          <li>
-            <i class="fa-solid fa-globe"></i> 전체: 충맛집의 모든 맛집들을 표시해줘요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-tree"></i> 서문: 서문에 있는 충맛집의 맛집들을 표시해줘요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-square-up-right"></i> 중문: 중문에 있는 충맛집의 맛집들을 표시해줘요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-dungeon"></i>정문: 정문에 있는 충맛집의 맛집들을 표시해줘요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-arrow-right"></i>후문: 후문에 있는 충맛집의 맛집들을 표시해줘요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-school"></i>교내시설: 학교안에 있는 다양한 시설들을 표시해줘요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-store"></i>편의점: 학교안에 있는 편의점들을 표시해줘요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-location-crosshairs"></i>내 위치: 현재 이용자님의 위치를 표시해줘요
-          </li>
-        </ul>
-      </div>
-      <a
-        href="javascript:void(0)"
-        class="closebtn"
-        onclick="toggleNav('information')"
-        >&times;</a
-      >
-    </div>
     <!-- mapContainer -->
     <div id="mapContainer">
       <div id="map"></div>
     </div>
     <div id="category-filter">
-      <button id="mainBtn" onclick="filterMarkers('category','전체')">
+      <button onclick="filterMarkers('category','전체')">
         <i class="fa-solid fa-globe"></i> <span class="button-text">전체</span>
       </button>
-      <button id="westLocationBtn" onclick="filterMarkers('category','서문')">
+      <button onclick="filterMarkers('category','서문')">
         <i class="fa-solid fa-tree"></i> <span class="button-text">서문</span>
       </button>
-      <button id="middleLocationBtn" onclick="filterMarkers('category','중문')">
+      <button onclick="filterMarkers('category','중문')">
         <i class="fa-solid fa-square-up-right"></i>
         <span class="button-text">중문</span>
       </button>
-      <button
-        id="mainloadLocationBtn"
-        onclick="filterMarkers('category','정문')"
-      >
+      <button onclick="filterMarkers('category','정문')">
         <i class="fa-solid fa-dungeon"></i>
         <span class="button-text">정문</span>
       </button>
-      <button
-        id="backloadLocationBtn"
-        onclick="filterMarkers('category','후문')"
-      >
+      <button onclick="filterMarkers('category','후문')">
         <i class="fa-solid fa-arrow-right"></i>
         <span class="button-text">후문</span>
       </button>
-      <button id="mainBtn1" onclick="filterMarkers('category','교내시설')">
+      <button onclick="filterMarkers('category','교내시설')">
         <i class="fa-solid fa-school"></i>
         <span class="button-text">교내시설</span>
       </button>
-      <button id="marketLocationBtn" onclick="filterMarkers('category','편의점')">
-        <i class="fa-solid fa-store"></i>
-        <span class="button-text">편의점</span>
-      </button> 
-      <button id="atmLocationBtn" onclick="filterMarkers('category','ATM')">
-        <i class="fa-solid fa-money-check-dollar"></i>
-        <span class="button-text">ATM</span>
-      </button> 
       <button id="schoolLocationBtn">
         <i class="fa-solid fa-location-crosshairs"></i>
-        <span class="button-text">내 위치</span>
-      </button> 
+        <span class="button-text">학교위치</span>
+      </button>
     </div>
+
+
+
+
+
+
+
+                  <!-- Today's Menu Sidenav (newly added) -->
+                  <div id="menuSidenav" class="sidenav">
+                    <a
+                      href="javascript:void(0)"
+                      class="closebtn"
+                      onclick="toggleNav('menuSidenav')"
+                      >&times;</a
+                    >
+                    <div class="container">
+                      <h1>오늘의 학식 메뉴</h1>
+                      <div id="menuContent"></div>
+                    </div>
+                  </div>
+                  <!-- Newly added end -->
+        
+
 
     <!-- Navbar for mobile -->
     <div class="bottom-navbar">
@@ -575,86 +472,34 @@
             <i class="fa-solid fa-shuffle fa-lg"></i>
           </a>
         </li>
-        <li>
-          <a
-            href="#"
-            class="nav-link py-3 border-bottom rounded-0"
-            title="Information"
-            data-bs-toggle="tooltip"
-            data-bs-target="information"
-            onclick="toggleNav('information')"
-          >
-            <i class="fa-solid fa-circle-info fa-lg"></i>
-          </a>
-        </li>
+
       </ul>
     </div>
-    <div id="userGuideModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeGuide()">&times;</span>
-        <h2>환⭐ 충맛집 ⭐영</h2>
-        <p>어서오세요!</p>
-        <p>
-          충맛집은 충대생이라면 꼭 가봐야 하는 충북대 맛집 리스트를 정리했어요.
-        </p>
-        <ul>
-          <li>
-            <i class="fa-solid fa-house fa-lg"></i> 메인: 메인으로 돌아가요
-          </li>
-          <li>
-            <i class="fa-solid fa-magnifying-glass fa-lg"></i> 검색: 장소를
-            검색해요
-          </li>
-          <li>
-            <i class="fa-solid fa-school-flag fa-lg"></i> 교내 정보: 교내 정보를
-            알려드려요
-          </li>
-          <li>
-            <i class="fa-solid fa-star fa-lg"></i> 교내시설 영업시간 안내 : 교내시설의 영업시간을 알려줘요
-          </li>
-          <li>
-            <i class="fa-solid fa-shuffle fa-lg"></i> 메뉴 추천: 충맛집이 오늘
-            메뉴를 추천해드려요
-          </li>
-          <li>
-            <i class="fa-solid fa-circle-info" fa-lg></i> 정보 : 충맛집의 정보를
-            알려드려요
-          </li>
-        </ul>
-        <p>카테고리</p>
-        <ul>
-          <li>
-            <i class="fa-solid fa-globe"></i> 전체 : 모든 리스트를 보여드려요
-          </li>
-          <li>
-            <i class="fa-solid fa-globe"></i> 전체: 충맛집의 모든 맛집들을 표시해줘요
-          </li>
-          <li>
-            <i class="fa-solid fa-tree"></i> 서문: 서문에 있는 충맛집의 맛집들을 표시해줘요
-          </li>
-          <li>
-            <i class="fa-solid fa-square-up-right"></i> 중문: 중문에 있는 충맛집의 맛집들을 표시해줘요
-          </li>
-          <li>
-            <i class="fa-solid fa-dungeon"></i>정문: 정문에 있는 충맛집의 맛집들을 표시해줘요
-          </li>
-          <li>
-            <i class="fa-solid fa-arrow-right"></i>후문: 후문에 있는 충맛집의 맛집들을 표시해줘요
-          </li>
-          <li>
-            <i class="fa-solid fa-school"></i>교내시설: 학교안에 있는 다양한 시설들을 표시해줘요
-          </li>
-          <li>
-            <i class="fa-solid fa-store"></i>편의점: 학교안에 있는 편의점들을 표시해줘요
-          </li>
-          <li>
-            <i class="fa-solid fa-location-crosshairs"></i>내 위치: 현재 이용자님의 위치를 표시해줘요
-          </li>
-          <li></li>
-        </ul>
-        <button onclick="closeGuide()">Got it!</button>
-      </div>
-    </div>
+
+    <script>
+      // Add this script to fetch and display the menu data
+      document.addEventListener('DOMContentLoaded', function() {
+        fetch('menu_data.json')
+          .then(response => response.json())
+          .then(data => {
+            const menuContent = document.getElementById('menuContent');
+            const lastMenu = data[data.length - 1];  // Get the last menu item
+            const menuElement = document.createElement('div');
+            menuElement.classList.add('menu-item');
+            menuElement.innerHTML = `
+              <h2>${lastMenu.title}</h2>
+              <p>가격: ${lastMenu.price}원</p>
+              <p>할인가: ${lastMenu.discounted_price}원</p>
+              <h3>사이드 메뉴</h3>
+              <ul>
+                ${lastMenu.sides.map(side => `<li>${side}</li>`).join('')}
+              </ul>
+            `;
+            menuContent.appendChild(menuElement);
+          })
+          .catch(error => console.error('Error fetching menu data:', error));
+      });
+    </script>
     <script src="script.js"></script>
     <script src="navbar.js"></script>
     <script
