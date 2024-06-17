@@ -262,7 +262,7 @@
             data-bs-target="store-container"
             onclick="toggleNav('store-container')"
           >
-            <i class="fa-solid fa-school-flag fa-lg"></i>
+            <i class="fa-solid fa-star fa-lg"></i>
           </a>
         </li>
         <!-- stars -->
@@ -275,9 +275,65 @@
             data-bs-target="mySidenav"
             onclick="toggleNav('mySidenav')"
           >
-            <i class="fa-solid fa-star fa-lg"></i>
+            <i class="fa-solid fa-school-flag fa-lg"></i>
           </a>
         </li>
+         
+<!-- Today's Menu (newly added) -->
+<li>
+  <a
+    href="#"
+    class="nav-link py-3 border-bottom rounded-0"
+    title="Today's Menu"
+    data-bs-toggle="tooltip"
+    data-bs-target="menuSidenav"
+    onclick="toggleNav('menuSidenav')"
+  >
+    <i class="fa-solid fa-utensils fa-lg"></i>
+  </a>
+</li>
+<!-- Newly added end -->
+
+
+<!-- Today's Menu Sidenav (newly added) -->
+          <div id="menuSidenav" class="sidenav">
+            <a
+              href="javascript:void(0)"
+              class="closebtn"
+              onclick="toggleNav('menuSidenav')"
+              >&times;</a
+            >
+            <div class="container">
+              <h1>오늘의 메뉴</h1>
+              <div id="menuContent"></div>
+            </div>
+          </div>
+          <!-- Newly added end -->
+<script>
+// Add this script to fetch and display the menu data
+document.addEventListener('DOMContentLoaded', function() {
+fetch('menu_data.json')
+  .then(response => response.json())
+  .then(data => {
+    const menuContent = document.getElementById('menuContent');
+    data.forEach(menu => {
+      const menuElement = document.createElement('div');
+      menuElement.classList.add('menu-item');
+      menuElement.innerHTML = `
+        <h2>${menu.title}</h2>
+        <p>가격: ${menu.price}원</p>
+        <p>할인가: ${menu.discounted_price}원</p>
+        <h3>사이드 메뉴</h3>
+        <ul>
+          ${menu.sides.map(side => `<li>${side}</li>`).join('')}
+        </ul>
+      `;
+      menuContent.appendChild(menuElement);
+    });
+  })
+  .catch(error => console.error('Error fetching menu data:', error));
+});
+</script>
         <!--- random --->
         <li>
           <a
@@ -356,6 +412,11 @@
           <li>중앙도서관 쿠비엔유 - 08:30 ~ 19:00<br>주말,공휴일:휴무</li>
           <br>
           <li>서점 - 08:30 ~ 18:00<br>주말,공휴일:휴무</li>
+          <br>
+          <li>도서관 열람실 - 평일:09:00 ~ 18:00<br>주말:휴무</li>
+  </div>
+  <a href="javascript:void(0)" class="closebtn" onclick="toggleNav('mySidenav')">&times;</a>
+</div>
         </ul>
       </div>
       <a
@@ -406,73 +467,86 @@
       </div>
     </div>
     <!-- info -->
-    <div id="information" class="sidenav">
-      <div class="content">
-        <h2>도움말</h2>
-        <ul>
-          <li>
-            <i class="fa-solid fa-house fa-lg"></i> 메인: 메인으로 돌아가요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-magnifying-glass fa-lg"></i> 검색: 장소를
-            검색해요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-school-flag fa-lg"></i> 교내 정보: 교내 정보를
-            알려드려요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-star fa-lg"></i> 교내시설 영업시간 안내 : 교내시설의 영업시간을 알려줘요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-shuffle fa-lg"></i> 메뉴 추천: 충맛집이 오늘의
-            메뉴를 추천해드려요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-globe"></i> 전체: 충맛집의 모든 맛집들을 표시해줘요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-tree"></i> 서문: 서문에 있는 충맛집의 맛집들을 표시해줘요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-square-up-right"></i> 중문: 중문에 있는 충맛집의 맛집들을 표시해줘요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-dungeon"></i>정문: 정문에 있는 충맛집의 맛집들을 표시해줘요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-arrow-right"></i>후문: 후문에 있는 충맛집의 맛집들을 표시해줘요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-school"></i>교내시설: 학교안에 있는 다양한 시설들을 표시해줘요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-store"></i>편의점: 학교안에 있는 편의점들을 표시해줘요
-          </li>
-          <br>
-          <li>
-            <i class="fa-solid fa-location-crosshairs"></i>내 위치: 현재 이용자님의 위치를 표시해줘요
-          </li>
-        </ul>
-      </div>
-      <a
-        href="javascript:void(0)"
-        class="closebtn"
-        onclick="toggleNav('information')"
-        >&times;</a
-      >
-    </div>
+<div id="information" class="sidenav">
+  <div class="content">
+    <h2>도움말</h2>
+    <ul>
+      <li>
+        <i class="fa-solid fa-house fa-lg"></i> 메인: 메인으로 돌아가요
+      </li>
+      <br>
+      <li>
+        <i class="fa-solid fa-magnifying-glass fa-lg"></i> 검색: 장소를 검색해요
+      </li>
+      <br>
+      <li>
+        <i class="fa-solid fa-star fa-lg"></i> 사용자 주변 맛집: 사용자와 맛집 사이의 거리를 알려줘요
+      </li>
+      <br>
+      <li>
+        <i class="fa-solid fa-school-flag fa-lg"></i> 교내 정보: 교내 정보를 알려드려요
+      </li>
+      <br>
+      <li>
+        <i class="fa-solid fa-shuffle fa-lg"></i> 메뉴 추천: 충맛집이 오늘의 메뉴를 추천해드려요
+      </li>
+      <br>
+      <li>
+        <i class="fa-solid fa-globe"></i> 전체: 충맛집의 모든 맛집들을 표시해줘요
+      </li>
+      <br>
+      <li>
+        <i class="fa-solid fa-tree"></i> 서문: 서문에 있는 충맛집의 맛집들을 표시해줘요
+      </li>
+      <br>
+      <li>
+        <i class="fa-solid fa-square-up-right"></i> 중문: 중문에 있는 충맛집의 맛집들을 표시해줘요
+      </li>
+      <br>
+      <li>
+        <i class="fa-solid fa-dungeon"></i>정문: 정문에 있는 충맛집의 맛집들을 표시해줘요
+      </li>
+      <br>
+      <li>
+        <i class="fa-solid fa-arrow-right"></i>후문: 후문에 있는 충맛집의 맛집들을 표시해줘요
+      </li>
+      <br>
+      <li>
+        <i class="fa-solid fa-school"></i>교내시설: 학교 안에 있는 다양한 시설들을 표시해줘요
+      </li>
+      <br>
+      <li>
+        <i class="fa-solid fa-store"></i>편의점: 학교 안에 있는 편의점들을 표시해줘요
+      </li>
+      <br>
+      <li>
+        <i class="fa-solid fa-location-crosshairs"></i>내 위치: 현재 이용자님의 위치를 표시해줘요
+      </li>
+      <br>
+      <button id="mainBtn1" onclick="filterMarkers('category','교내시설')">
+        <i class="fa-solid fa-school"></i>
+        <span class="button-text">교내시설</span>
+      </button>
+      <button id="marketLocationBtn" onclick="filterMarkers('category','편의점')">
+        <i class="fa-solid fa-store"></i>
+        <span class="button-text">편의점</span>
+      </button> 
+      <button id="atmLocationBtn" onclick="filterMarkers('category','ATM')">
+        <i class="fa-solid fa-money-check-dollar"></i>
+        <span class="button-text">ATM</span>
+      </button> 
+      <button id="schoolLocationBtn">
+        <i class="fa-solid fa-location-crosshairs"></i>
+        <span class="button-text">내 위치</span>
+      </button>
+      <br>
+      <br>
+      <img src="img/340235435-92b234b8-e3f0-4f19-93de-aa2517be6ab4.png" alt="QR Code">
+    </ul>
+  </div>
+  <a href="javascript:void(0)" class="closebtn" onclick="toggleNav('information')">&times;</a>
+</div>
+
     <!-- mapContainer -->
     <div id="mapContainer">
       <div id="map"></div>
@@ -501,22 +575,6 @@
       >
         <i class="fa-solid fa-arrow-right"></i>
         <span class="button-text">후문</span>
-      </button>
-      <button id="mainBtn1" onclick="filterMarkers('category','교내시설')">
-        <i class="fa-solid fa-school"></i>
-        <span class="button-text">교내시설</span>
-      </button>
-      <button id="marketLocationBtn" onclick="filterMarkers('category','편의점')">
-        <i class="fa-solid fa-store"></i>
-        <span class="button-text">편의점</span>
-      </button> 
-      <button id="atmLocationBtn" onclick="filterMarkers('category','ATM')">
-        <i class="fa-solid fa-money-check-dollar"></i>
-        <span class="button-text">ATM</span>
-      </button> 
-      <button id="schoolLocationBtn">
-        <i class="fa-solid fa-location-crosshairs"></i>
-        <span class="button-text">내 위치</span>
       </button> 
     </div>
 
@@ -593,11 +651,10 @@
             검색해요
           </li>
           <li>
-            <i class="fa-solid fa-school-flag fa-lg"></i> 교내 정보: 교내 정보를
-            알려드려요
+            <i class="fa-solid fa-school-flag fa-lg"></i> 교내 정보: 교내 정보를 알려드려요
           </li>
           <li>
-            <i class="fa-solid fa-star fa-lg"></i> 교내시설 영업시간 안내 : 교내시설의 영업시간을 알려줘요
+            <i class="fa-solid fa-star fa-lg"></i> 사용자 주변 맛집: 사용자와 맛집 사이의 거리를 알려줘요
           </li>
           <li>
             <i class="fa-solid fa-shuffle fa-lg"></i> 메뉴 추천: 충맛집이 오늘
