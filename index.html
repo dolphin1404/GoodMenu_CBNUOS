@@ -608,9 +608,6 @@
         <p>카테고리</p>
         <ul>
           <li>
-            <i class="fa-solid fa-globe"></i> 전체 : 모든 리스트를 보여드려요
-          </li>
-          <li>
             <i class="fa-solid fa-globe"></i> 전체: 충맛집의 모든 맛집들을 표시해줘요
           </li>
           <li>
@@ -625,16 +622,6 @@
           <li>
             <i class="fa-solid fa-arrow-right"></i>후문: 후문에 있는 충맛집의 맛집들을 표시해줘요
           </li>
-          <li>
-            <i class="fa-solid fa-school"></i>교내시설: 학교안에 있는 다양한 시설들을 표시해줘요
-          </li>
-          <li>
-            <i class="fa-solid fa-store"></i>편의점: 학교안에 있는 편의점들을 표시해줘요
-          </li>
-          <li>
-            <i class="fa-solid fa-location-crosshairs"></i>내 위치: 현재 이용자님의 위치를 표시해줘요
-          </li>
-          <li></li>
         </ul>
         <button onclick="closeGuide()">Got it!</button>
       </div>
@@ -651,5 +638,32 @@
       integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
       crossorigin="anonymous"
     ></script>
+    <script>
+      // Add this script to fetch and display the menu data
+      document.addEventListener("DOMContentLoaded", function () {
+        if (!localStorage.getItem("hasVisited")) {
+          document.getElementById("userGuideModal").style.display = "block";
+        }
+        fetch("menu_data.json")
+          .then((response) => response.json())
+          .then((data) => {
+            const menuContent = document.getElementById("menuContent");
+            const lastMenu = data[data.length - 1]; // Get the last menu item
+            const menuElement = document.createElement("div");
+            menuElement.classList.add("menu-item");
+            menuElement.innerHTML = `
+              <h2>${lastMenu.title}</h2>
+              <p>가격: ${lastMenu.price}원</p>
+              <p>할인가: ${lastMenu.discounted_price}원</p>
+              <h3>사이드 메뉴</h3>
+              <ul>
+                ${lastMenu.sides.map((side) => `<li>${side}</li>`).join("")}
+              </ul>
+            `;
+            menuContent.appendChild(menuElement);
+          })
+          .catch((error) => console.error("Error fetching menu data:", error));
+      });
+    </script>
   </body>
 </html>
