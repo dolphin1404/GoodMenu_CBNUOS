@@ -267,31 +267,6 @@
             </div>
           </div>
           <!-- Newly added end -->
-<script>
-// Add this script to fetch and display the menu data
-document.addEventListener('DOMContentLoaded', function() {
-fetch('menu_data.json')
-  .then(response => response.json())
-  .then(data => {
-    const menuContent = document.getElementById('menuContent');
-    data.forEach(menu => {
-      const menuElement = document.createElement('div');
-      menuElement.classList.add('menu-item');
-      menuElement.innerHTML = `
-        <h2>${menu.title}</h2>
-        <p>가격: ${menu.price}원</p>
-        <p>할인가: ${menu.discounted_price}원</p>
-        <h3>사이드 메뉴</h3>
-        <ul>
-          ${menu.sides.map(side => `<li>${side}</li>`).join('')}
-        </ul>
-      `;
-      menuContent.appendChild(menuElement);
-    });
-  })
-  .catch(error => console.error('Error fetching menu data:', error));
-});
-</script>
         <!--- random --->
         <li>
           <a
