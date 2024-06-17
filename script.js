@@ -70,24 +70,28 @@ var markers = [
     category: "서문",
     category_1: "한식",
     name: "보통의 국수집",
+    menu: "칼국수"
   },
   {
     position: new naver.maps.LatLng(36.625669, 127.463756),
     category: "후문",
     category_1: "한식",
     name: "구룡산 한식",
+    menu: "찌개"
   },
   {
     position: new naver.maps.LatLng(36.624039, 127.450508),
     category: "서문",
     category_1: "한식",
     name: "현고 들깨칼국수",
+    menu: "칼국수"
   },
   {
     position: new naver.maps.LatLng(36.624639, 127.467022),
     category: "후문",
     category_1: "한식",
     name: "사나이 짬뽕",
+    menu: "짬뽕"
   },
   {
     position: new naver.maps.LatLng(36.627527, 127.452819),
@@ -129,18 +133,21 @@ var markers = [
     category: "정문",
     category_1: "일식",
     name: "해리초밥",
+    menu: "초밥"
   },
   {
     position: new naver.maps.LatLng(36.6324919, 127.4561638),
     category: "중문",
     category_1: "한식",
     name: "햇살왕만두",
+    menu: "만두전골"
   },
   {
     position: new naver.maps.LatLng(36.6330112, 127.4554684),
     category: "정문",
     category_1: "한식",
     name: "황금냄비",
+    menu: "라면"
   },
   {
     position: new naver.maps.LatLng(36.63264, 127.457677),
@@ -159,6 +166,7 @@ var markers = [
     category: "중문",
     category_1: "한식",
     name: "한마음정육식당",
+    menu: "돼지구이"
   },
   {
     position: new naver.maps.LatLng(36.631785, 127.460717),
@@ -171,6 +179,7 @@ var markers = [
     category: "정문",
     category_1: "일식",
     name: "가락우동",
+    menu: "우동",
   },
   {
     position: new naver.maps.LatLng(36.631529, 127.451488),
@@ -210,7 +219,7 @@ var markers = [
     category: "정문",
     category_1: "한식",
     name: "미송",
-    menu: "한식",
+    menu: "백반",
   },
   {
     position: new naver.maps.LatLng(36.632764, 127.454485),

@@ -7,16 +7,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const loading = document.getElementById("loading");
 
   const menuDatabase = {
-    전체: ["불고기", "비빔밥", "파스타", "짜장면", "김치찌개"],
-    식사: ["불고기", "비빔밥", "김치찌개", "된장찌개"],
-    요리: ["파스타", "스테이크", "탕수육", "깐풍기"],
+    전체: ["불고기", "비빔밥", "김치찌개", "된장찌개", "짜장면", "짬뽕", "탕수육", "깐풍기", "파스타", "스테이크", "피자", "햄버거","떡볶이", "핫도그", "붕어빵", "순대", "팔보채"],
+    식사: ["불고기", "비빔밥", "김치찌개", "된장찌개", "짜장면", "짬뽕", "탕수육", "깐풍기", "파스타", "스테이크", "피자", "햄버거", "팔보채"],
+    요리: ["불고기", "비빔밥", "김치찌개", "된장찌개", "짜장면", "짬뽕", "탕수육", "깐풍기", "파스타", "스테이크", "피자", "햄버거", "떡볶이", "팔보채"],
     간식: ["떡볶이", "핫도그", "붕어빵", "순대"],
     한식: ["불고기", "비빔밥", "김치찌개", "된장찌개"],
-    중식: ["짜장면", "짬뽕", "탕수육", "깐풍기"],
+    중식: ["짜장면", "짬뽕", "탕수육", "깐풍기", "팔보채"],
     양식: ["파스타", "스테이크", "피자", "햄버거"],
-    혼밥: ["김치찌개", "비빔밥", "짜장면", "떡볶이"],
+    혼밥: ["불고기", "비빔밥", "김치찌개", "된장찌개", "짜장면", "짬뽕", "탕수육", "깐풍기", "파스타", "스테이크", "피자", "햄버거", "떡볶이", "팔보채"],
     단체: ["탕수육", "파스타", "피자", "삼겹살"],
-    데이트: ["스테이크", "파스타", "초밥", "피자"],
+    데이트: ["스테이크", "파스타", "초밥", "피자", "팔보채"],
   };
 
   function toggleButtonSelection(buttons, target) {
@@ -36,27 +36,32 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function getRandomMenu(selectedCategory, selectedType, selectedSituation) {
-    let possibleMenus = [];
+    let possibleMenus = menuDatabase["전체"].slice(); // 전체 메뉴 초기화
 
+    // 카테고리에 따른 필터링
     if (selectedCategory !== "전체") {
-      possibleMenus.push(...menuDatabase[selectedCategory]);
+      possibleMenus = possibleMenus.filter(menu => menuDatabase[selectedCategory].includes(menu));
     }
 
+    // 타입에 따른 필터링
     if (selectedType !== "전체") {
-      possibleMenus.push(...menuDatabase[selectedType]);
+      possibleMenus = possibleMenus.filter(menu => menuDatabase[selectedType].includes(menu));
     }
 
+    // 상황에 따른 필터링
     if (selectedSituation !== "전체") {
-      possibleMenus.push(...menuDatabase[selectedSituation]);
+      possibleMenus = possibleMenus.filter(menu => menuDatabase[selectedSituation].includes(menu));
     }
 
     // 중복 제거
     possibleMenus = [...new Set(possibleMenus)];
 
+    // 가능한 메뉴가 없는 경우 에러 메시지 출력
     if (possibleMenus.length === 0) {
-      possibleMenus.push(...menuDatabase["전체"]);
+      return "조건에 맞는 메뉴가 없습니다.";
     }
 
+    // 랜덤 메뉴 선택
     const randomIndex = Math.floor(Math.random() * possibleMenus.length);
     return possibleMenus[randomIndex];
   }
