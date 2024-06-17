@@ -659,14 +659,6 @@ document
     moveToLocation(middleLocation);
   });
 
-// 처음 사용자용 가이드
-
-document.addEventListener("DOMContentLoaded", function () {
-  if (!localStorage.getItem("hasVisited")) {
-    document.getElementById("userGuideModal").style.display = "block";
-  }
-});
-
 function closeGuide() {
   document.getElementById("userGuideModal").style.display = "none";
   localStorage.setItem("hasVisited", "true");
@@ -723,5 +715,4 @@ document.getElementById("searchInput").addEventListener("blur", function () {
     document.getElementById("searchDropdown").style.display = "none";
   }, 200); // 클릭 이벤트 후 드롭다운이 사라지도록 약간의 지연 시간 추가
 });
-document.getElementById("searchInput").addEventListener("focus", showDropdown);
 document.getElementById("searchInput").addEventListener("focus", showDropdown);
