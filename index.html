@@ -56,34 +56,6 @@
         border-radius: 5px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
-      #searchDropdown {
-        position: absolute;
-        top: 80px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 1000;
-        background-color: rgb(255, 255, 255);
-        padding: 10px;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        max-height: 300px; /* 목록의 최대 높이 설정 */
-        overflow-y: auto; /* 스크롤 설정 */
-        width: 70%;
-      }
-
-      #searchDropdown .dropdown-item {
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-        cursor: pointer;
-      }
-
-      #searchDropdown .dropdown-item:last-child {
-        border-bottom: none;
-      }
-
-      #searchDropdown .dropdown-item:hover {
-        background-color: #f0f0f0;
-      }
 
       #map {
         width: 100%;
@@ -192,7 +164,6 @@
         }
       }
     </style>
-    <!-- <link href="sidebars.css" rel="stylesheet" /> -->
   </head>
   <body>
     <div class="b-example-divider b-example-vr"></div>
@@ -225,19 +196,6 @@
             data-bs-placement="right"
           >
             <i class="fa-solid fa-house fa-xl"></i>
-          </a>
-        </li>
-        <!-- infor -->
-        <li>
-          <a
-            href="#"
-            class="nav-link py-3 border-bottom rounded-0"
-            title="Information"
-            data-bs-toggle="tooltip"
-            data-bs-target="information"
-            onclick="toggleNav('information')"
-          >
-          <i class="fa-solid fa-circle-info fa-lg"></i>
           </a>
         </li>
         <!-- search -->
@@ -347,6 +305,21 @@ fetch('menu_data.json')
             <i class="fa-solid fa-shuffle fa-lg"></i>
           </a>
         </li>
+         <!-- Today's Menu (newly added) -->
+        <li>
+          <a
+            href="#"
+            class="nav-link py-3 border-bottom rounded-0"
+            title="Today's Menu"
+            data-bs-toggle="tooltip"
+            data-bs-target="menuSidenav"
+            onclick="toggleNav('menuSidenav')"
+          >
+            <i class="fa-solid fa-utensils fa-lg"></i>
+          </a>
+        </li>
+        <!-- Newly added end -->
+        
       </ul>
     </div>
     <!-- Modal -->
@@ -365,10 +338,9 @@ fetch('menu_data.json')
                 <input
                   class="form-control me-2"
                   type="search"
-                  placeholder="찾으시는 장소를 입력해주세요."
+                  placeholder="Search"
                   aria-label="Search"
                   id="searchInput"
-                  oninput="showDropdown()"
                 />
                 <button
                   class="btn btn-outline-success"
@@ -380,7 +352,6 @@ fetch('menu_data.json')
               </form>
             </div>
           </div>
-          <div id="searchDropdown"></div>
         </div>
       </div>
     </div>
@@ -400,6 +371,12 @@ fetch('menu_data.json')
 
     <!-- mySidenav -->
     <div id="mySidenav" class="sidenav">
+      <a
+        href="javascript:void(0)"
+        class="closebtn"
+        onclick="toggleNav('mySidenav')"
+        >&times;</a
+      >
       <div class="content">
         <h2>교내정보 학기중</h2>
         <ul>
@@ -608,27 +585,21 @@ fetch('menu_data.json')
       <div id="map"></div>
     </div>
     <div id="category-filter">
-      <button id="mainBtn" onclick="filterMarkers('category','전체')">
+      <button onclick="filterMarkers('category','전체')">
         <i class="fa-solid fa-globe"></i> <span class="button-text">전체</span>
       </button>
-      <button id="westLocationBtn" onclick="filterMarkers('category','서문')">
+      <button onclick="filterMarkers('category','서문')">
         <i class="fa-solid fa-tree"></i> <span class="button-text">서문</span>
       </button>
-      <button id="middleLocationBtn" onclick="filterMarkers('category','중문')">
+      <button onclick="filterMarkers('category','중문')">
         <i class="fa-solid fa-square-up-right"></i>
         <span class="button-text">중문</span>
       </button>
-      <button
-        id="mainloadLocationBtn"
-        onclick="filterMarkers('category','정문')"
-      >
+      <button onclick="filterMarkers('category','정문')">
         <i class="fa-solid fa-dungeon"></i>
         <span class="button-text">정문</span>
       </button>
-      <button
-        id="backloadLocationBtn"
-        onclick="filterMarkers('category','후문')"
-      >
+      <button onclick="filterMarkers('category','후문')">
         <i class="fa-solid fa-arrow-right"></i>
         <span class="button-text">후문</span>
       </button>
@@ -637,6 +608,23 @@ fetch('menu_data.json')
         <span class="button-text">내 위치</span>
       </button>
     </div>
+
+                 <!-- Today's Menu Sidenav (newly added) -->
+                  <div id="menuSidenav" class="sidenav">
+                    <a
+                      href="javascript:void(0)"
+                      class="closebtn"
+                      onclick="toggleNav('menuSidenav')"
+                      >&times;</a
+                    >
+                    <div class="container">
+                      <h1>오늘의 학식 메뉴</h1>
+                      <div id="menuContent"></div>
+                    </div>
+                  </div>
+                  <!-- Newly added end -->
+        
+
 
     <!-- Navbar for mobile -->
     <div class="bottom-navbar">
@@ -692,20 +680,33 @@ fetch('menu_data.json')
             <i class="fa-solid fa-shuffle fa-lg"></i>
           </a>
         </li>
-        <li>
-          <a
-            href="#"
-            class="nav-link py-3 border-bottom rounded-0"
-            title="Information"
-            data-bs-toggle="tooltip"
-            data-bs-target="information"
-            onclick="toggleNav('information')"
-          >
-            <i class="fa-solid fa-circle-info fa-lg"></i>
-          </a>
-        </li>
+
       </ul>
     </div>
+    <script>
+      // Add this script to fetch and display the menu data
+      document.addEventListener('DOMContentLoaded', function() {
+        fetch('menu_data.json')
+          .then(response => response.json())
+          .then(data => {
+            const menuContent = document.getElementById('menuContent');
+            const lastMenu = data[data.length - 1];  // Get the last menu item
+            const menuElement = document.createElement('div');
+            menuElement.classList.add('menu-item');
+            menuElement.innerHTML = `
+              <h2>${lastMenu.title}</h2>
+              <p>가격: ${lastMenu.price}원</p>
+              <p>할인가: ${lastMenu.discounted_price}원</p>
+              <h3>사이드 메뉴</h3>
+              <ul>
+                ${lastMenu.sides.map(side => `<li>${side}</li>`).join('')}
+              </ul>
+            `;
+            menuContent.appendChild(menuElement);
+          })
+          .catch(error => console.error('Error fetching menu data:', error));
+      });
+    </script>
     <div id="userGuideModal" class="modal">
       <div class="modal-content">
         <span class="close" onclick="closeGuide()">&times;</span>
